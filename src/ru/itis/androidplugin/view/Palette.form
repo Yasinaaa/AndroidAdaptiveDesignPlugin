@@ -18,17 +18,6 @@
           </component>
         </children>
       </scrollpane>
-      <scrollpane id="638f8">
-        <constraints border-constraint="Center"/>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <component id="a4bd9" class="javax.swing.JList" binding="childrenColors">
-            <constraints/>
-            <properties/>
-          </component>
-        </children>
-      </scrollpane>
     </children>
   </grid>
 </form>

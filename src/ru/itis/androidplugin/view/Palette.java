@@ -19,54 +19,45 @@ package ru.itis.androidplugin.view;
 import ru.itis.androidplugin.elements.MaterialItem;
 import ru.itis.androidplugin.elements.MaterialRecyclerView;
 import ru.itis.androidplugin.elements.MaterialTextView;
+import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.settings.UtilsEnvironment;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-//import static ru.itis.androidplugin.materialcolorpalette.Colors.allColors;
-//import static ru.itis.androidplugin.elements.MaterialDesign.allColors;
-
 /**
  * @author dvdandroid
  */
-public class Palette {
+public class Palette extends JPanel {
 
     public JPanel panel;
     private JButton button1;
-    /*private JList<MaterialColor> parentColors;
-    private JList<MaterialColor> childrenColors;*/
     private JList<MaterialItem> parentColors;
-    private JList<MaterialItem> childrenColors;
     private int lastIndex;
 
     public Palette() {
-       // DefaultListModel<MaterialColor> listModel = new DefaultListModel<>();
         DefaultListModel<MaterialItem> listModel = new DefaultListModel<>();
-        /*for (MaterialColor[] allColor : allColors) {
-            listModel.addElement(allColor[5]);
-        }*/
-
-        //for (MaterialTextView color : allColors) {
-          //  listModel.addElement(color);
-        //}
-        listModel.addElement(new MaterialRecyclerView("myrecyclerview"));
-        listModel.addElement(new MaterialTextView("textview1"));
+        for (MaterialItem item : Constants.mViewMaterialItems) {
+            listModel.addElement(item);
+        }
 
         parentColors.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-       // parentColors.setCellRenderer(new ColorRender());
         parentColors.setCellRenderer(new ViewRender());
         parentColors.setModel(listModel);
-        parentColors.setVisibleRowCount(5);
+        parentColors.setVisibleRowCount(4);
+        parentColors.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        childrenColors.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        //childrenColors.setCellRenderer(new ColorRender());
-        childrenColors.setCellRenderer(new ViewRender());
+        /*childrenColors.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        childrenColors.setCellRenderer(new ColorRender());
+        childrenColors.addMouseListener(new RightClickPopup());
+        */
 
         parentColors.addMouseListener(new RightClickPopup());
-        childrenColors.addMouseListener(new RightClickPopup());
     }
 
     {
@@ -90,10 +81,6 @@ public class Palette {
         panel.add(scrollPane1, BorderLayout.NORTH);
         parentColors = new JList();
         scrollPane1.setViewportView(parentColors);
-        final JScrollPane scrollPane2 = new JScrollPane();
-        panel.add(scrollPane2, BorderLayout.CENTER);
-        childrenColors = new JList();
-        scrollPane2.setViewportView(childrenColors);
     }
 
     /**
@@ -122,26 +109,21 @@ public class Palette {
             if (index != -1 && !list.getCellBounds(index, index).contains(e.getPoint())) {
                 return;
             }
+            buildPopup(list, index);
+
 
             if (list == parentColors) {
-                DefaultListModel<MaterialItem> children = new DefaultListModel<>();
 
-             /*   for (int i = 0; i < allColors[index]; i++) {
-                    children.addElement(allColors[index][i]);
-                }*/
 
-              //  children.addElement(allColors[index]);
-              //  children.addElement(allColors[index]);
                 lastIndex = index;
 
-                /*childrenColors.setModel(children);
-                childrenColors.setVisibleRowCount(4);*/
 
                 if (SwingUtilities.isRightMouseButton(e)) {
                     buildPopup(list, index);
                     popup.show(e.getComponent(), e.getX(), e.getY());
                 }
             } else {
+                System.out.println("child index=" + index);
                 buildPopup(list, index);
                 popup.show(e.getComponent(), e.getX(), e.getY());
             }
@@ -153,51 +135,13 @@ public class Palette {
         private void buildPopup(JList list, int index) {
             popup = new JPopupMenu();
 
-          /*  if (list == childrenColors) {
-                JMenuItem hexThisItem = new JMenuItem(String.format(PASTE, "this", "HEX code"));
-                //hexThisItem.addActionListener(e -> UtilsEnvironment.insertInEditor(allColors[lastIndex][index].hexCode));
-                hexThisItem.addActionListener(e -> UtilsEnvironment.insertInEditor(COLOR_RES));
+            JMenuItem materialViewJMenuItems = new JMenuItem(String.format(PASTE, Constants.THIS,
+                    String.format(Constants.SET_MATERIAL_ITEM, Constants.mViewMaterialItems[index].mViewName)));
+            materialViewJMenuItems.addActionListener(e -> UtilsEnvironment.insertInEditor(
+                    Constants.mViewMaterialItems[index].mViewParametrs));
 
-                JMenuItem colorResThisItem = new JMenuItem(String.format(PASTE, "this", "resource"));
-                colorResThisItem.addActionListener(e -> UtilsEnvironment.insertInEditor(allColors[lastIndex][index].colorRes));
+            this.popup.add(materialViewJMenuItems);
 
-                popup.add(hexThisItem);
-                popup.add(colorResThisItem);
-
-                return;
-            }*/
-
-           // JMenuItem hex500Item = new JMenuItem(String.format(PASTE, "primary", "HEX code"));
-            JMenuItem hex500Item = new JMenuItem(String.format(PASTE, "my own", "material text view"));
-            hex500Item.addActionListener(e -> UtilsEnvironment.insertInEditor("rec"));
-
-         /*   JMenuItem colorRes500Item = new JMenuItem(String.format(PASTE, "primary", "resource"));
-            colorRes500Item.addActionListener(e -> UtilsEnvironment.insertInEditor(allColors[index][5].colorRes));
-
-
-            JMenuItem hex700Item = new JMenuItem(String.format(PASTE, "dark primary", "HEX code"));
-            hex700Item.addActionListener(e -> UtilsEnvironment.insertInEditor(allColors[index][7].hexCode));
-
-            JMenuItem colorRes700Item = new JMenuItem(String.format(PASTE, "dark primary", "resource"));
-            colorRes700Item.addActionListener(e -> UtilsEnvironment.insertInEditor(allColors[index][7].colorRes));*/
-
-            this.popup.add(hex500Item);
-          /*  this.popup.add(colorRes500Item);
-            this.popup.addSeparator();
-            this.popup.add(hex700Item);
-            this.popup.add(colorRes700Item);*/
-
-           /* if (index < 16) {
-                JMenuItem hexAccentItem = new JMenuItem(String.format(PASTE, "accent", "HEX code"));
-                hexAccentItem.addActionListener(e -> UtilsEnvironment.insertInEditor(allColors[index][11].hexCode));
-
-                JMenuItem colorResAccentItem = new JMenuItem(String.format(PASTE, "accent", "resource"));
-                colorResAccentItem.addActionListener(e -> UtilsEnvironment.insertInEditor(allColors[index][11].colorRes));
-
-                popup.addSeparator();
-                popup.add(hexAccentItem);
-                popup.add(colorResAccentItem);
-            }*/
         }
 
     }

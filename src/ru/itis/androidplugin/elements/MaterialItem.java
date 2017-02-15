@@ -20,10 +20,13 @@ public class MaterialItem {
 
         try {
              mIcon = new ImageIcon(ImageIO.read(getClass().getResource(iconPath)));
+
         }catch (IOException ignored) {}
     }
 
-
+    public void init(String pattern, String id){
+        mViewParametrs = String.format(pattern, id);
+    }
 
 
 }
