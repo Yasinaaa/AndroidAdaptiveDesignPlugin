@@ -16,6 +16,9 @@
 
 package ru.itis.androidplugin.view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import ru.itis.androidplugin.elements.MaterialItem;
 import ru.itis.androidplugin.elements.MaterialRecyclerView;
 import ru.itis.androidplugin.elements.MaterialTextView;
@@ -36,8 +39,8 @@ import java.awt.event.MouseEvent;
 public class Palette extends JPanel {
 
     public JPanel panel;
-    private JButton button1;
     private JList<MaterialItem> parentColors;
+    private q q1;
     private int lastIndex;
 
     public Palette() {
@@ -58,6 +61,9 @@ public class Palette extends JPanel {
         */
 
         parentColors.addMouseListener(new RightClickPopup());
+
+        q1 = new q();
+        panel.add(q1.panel1, BorderLayout.WEST);
     }
 
     {

@@ -79,4 +79,44 @@ public class UtilsEnvironment {
         return null;
     }
 
+    private static void insertNewClassToProject(final String text) {
+        Project project = getOpenProject();
+        Editor editor = getEditor(project);
+
+        if (project != null && editor != null && text != null && !text.isEmpty()) {
+            /*CaretModel caretModel = editor.getCaretModel();
+            final Integer currentOffset = caretModel.getOffset();
+            final SelectionModel selectionModel = editor.getSelectionModel();
+
+            CommandProcessor.getInstance().executeCommand(project, () -> ApplicationManager.getApplication().runWriteAction(() -> {
+                Integer textLen = text.length();
+                Document document = editor.getDocument();
+
+                if (selectionModel.hasSelection()) {
+                    int selectionStart = selectionModel.getSelectionStart();
+                    document.replaceString(selectionStart, selectionModel.getSelectionEnd(), text);
+                    selectionModel.removeSelection();
+                    editor.getCaretModel().moveToOffset(selectionStart + textLen);
+                } else {
+                    document.insertString(currentOffset, text);
+                    editor.getCaretModel().moveToOffset(currentOffset + textLen);
+                }
+
+                VirtualFile file = FileDocumentManager.getInstance().getFile(document);
+                if (file != null) {
+                    PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, project);
+                    if (psiFile != null) {
+                        CodeStyleManager.getInstance(project).reformatText(psiFile, currentOffset, currentOffset + textLen);
+                    }
+                }
+            }), "Paste", UndoConfirmationPolicy.DO_NOT_REQUEST_CONFIRMATION);
+
+            VirtualFile virtualFile = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            if (virtualFile != null) {
+                FileEditorManager.getInstance(project).openFile(virtualFile, true);
+            }*/
+
+        }
+    }
+
 }

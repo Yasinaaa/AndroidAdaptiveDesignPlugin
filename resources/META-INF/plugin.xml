@@ -29,11 +29,21 @@
     <!-- Add your extensions here -->
     <!--<applicationConfigurable groupId="project" displayName="my own" id="ru.itis.androidplugin.TempClass">
     </applicationConfigurable> -->
-      <toolWindow id="Material Palette" anchor="right"
+    <toolWindow id="Material Palette" anchor="right"
                   factoryClass="ru.itis.androidplugin.settings.ToolWindowFactory"
                   icon="/icons/ic_palette.png"/>
 
   </extensions>
+  <actions>
+    <action id="AToolBox.GenerateViewPresenter"
+            class="com.GenerateViewPresenterAction"
+            text="Generate View Presenter…"
+            description="Generates view's code from selected layout file">
+      <add-to-group group-id="ProjectViewPopupMenu"
+                    anchor="after"
+                    relative-to-action="ProjectViewPopupMenuRefactoringGroup"/>
+    </action>
+  </actions>
 
   <!--<actions>
     <group id="MyPlugin.SampleMenu" text="_Sample Menu" description="Sample menu">
