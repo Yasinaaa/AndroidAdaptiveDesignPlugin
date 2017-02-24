@@ -1,5 +1,7 @@
 package ru.itis.androidplugin.elements;
 
+import ru.itis.androidplugin.view.ViewParameters;
+
 import javax.swing.*;
 
 /**
@@ -49,5 +51,10 @@ public class MaterialTextView extends MaterialItem{
 
     public void setViewParametrs(String mViewParametrs) {
         this.mViewParametrs = mViewParametrs;
+    }
+
+    @Override
+    public void setView(ViewParameters mSupplemementalViewParameter, JPanel jPanel) {
+        //TODO: set view for TextView
     }
 }

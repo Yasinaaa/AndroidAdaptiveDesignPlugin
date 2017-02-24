@@ -1,6 +1,10 @@
 package ru.itis.androidplugin.elements;
 
+import ru.itis.androidplugin.view.RecyclerViewParametrs;
+import ru.itis.androidplugin.view.ViewParameters;
+
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by yasina on 10.02.17.
@@ -31,7 +35,11 @@ public class MaterialRecyclerView extends MaterialItem{
         init(XML_VIEW_PATTERN, id);
     }
 
-
+    @Override
+    public void setView(ViewParameters mSupplemementalViewParameter, JPanel jPanel){
+        mSupplemementalViewParameter = new RecyclerViewParametrs();
+        jPanel.add(mSupplemementalViewParameter.mJPanel, BorderLayout.WEST);
+    }
 
 
 }

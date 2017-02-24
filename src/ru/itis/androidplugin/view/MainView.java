@@ -16,19 +16,13 @@
 
 package ru.itis.androidplugin.view;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
+import ru.itis.androidplugin.adapters.ViewRender;
 import ru.itis.androidplugin.elements.MaterialItem;
-import ru.itis.androidplugin.elements.MaterialRecyclerView;
-import ru.itis.androidplugin.elements.MaterialTextView;
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.settings.UtilsEnvironment;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -36,17 +30,19 @@ import java.awt.event.MouseEvent;
 /**
  * @author dvdandroid
  */
-public class Palette extends JPanel {
+public class MainView extends JPanel {
 
     public JPanel panel;
     private JList<MaterialItem> parentColors;
-    private q q1;
+    private JButton saveLayoutAndCreateButton;
+    private ViewParameters mSupplemementalViewParameter;
     private int lastIndex;
 
-    public Palette() {
+    public MainView() {
         DefaultListModel<MaterialItem> listModel = new DefaultListModel<>();
         for (MaterialItem item : Constants.mViewMaterialItems) {
             listModel.addElement(item);
+
         }
 
         parentColors.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -62,8 +58,7 @@ public class Palette extends JPanel {
 
         parentColors.addMouseListener(new RightClickPopup());
 
-        q1 = new q();
-        panel.add(q1.panel1, BorderLayout.WEST);
+
     }
 
     {
@@ -87,6 +82,9 @@ public class Palette extends JPanel {
         panel.add(scrollPane1, BorderLayout.NORTH);
         parentColors = new JList();
         scrollPane1.setViewportView(parentColors);
+        saveLayoutAndCreateButton = new JButton();
+        saveLayoutAndCreateButton.setText("Save layout and create another versions of them");
+        panel.add(saveLayoutAndCreateButton, BorderLayout.SOUTH);
     }
 
     /**
@@ -115,7 +113,9 @@ public class Palette extends JPanel {
             if (index != -1 && !list.getCellBounds(index, index).contains(e.getPoint())) {
                 return;
             }
-            buildPopup(list, index);
+            //TODO: change this thing
+            Constants.mViewMaterialItems[index].setView(mSupplemementalViewParameter, panel);
+           /* buildPopup(list, index);
 
 
             if (list == parentColors) {
@@ -126,13 +126,15 @@ public class Palette extends JPanel {
 
                 if (SwingUtilities.isRightMouseButton(e)) {
                     buildPopup(list, index);
+                    //
+
                     popup.show(e.getComponent(), e.getX(), e.getY());
                 }
             } else {
                 System.out.println("child index=" + index);
                 buildPopup(list, index);
                 popup.show(e.getComponent(), e.getX(), e.getY());
-            }
+            }*/
 
             list.setSelectedIndex(index);
         }

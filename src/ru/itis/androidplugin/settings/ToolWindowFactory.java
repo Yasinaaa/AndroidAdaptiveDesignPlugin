@@ -22,7 +22,7 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 //import ru.itis.androidplugin.view.Palette;
-import ru.itis.androidplugin.view.Palette;
+import ru.itis.androidplugin.view.MainView;
 
 import java.awt.*;
 
@@ -50,7 +50,7 @@ public class ToolWindowFactory implements com.intellij.openapi.wm.ToolWindowFact
     public class ToolWindow extends SimpleToolWindowPanel {
         public ToolWindow() {
             super(false);
-            add(new Palette().panel, BorderLayout.CENTER);
+            add(new MainView().panel, BorderLayout.CENTER);
         }
 
     }

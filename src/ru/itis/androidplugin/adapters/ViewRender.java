@@ -1,9 +1,12 @@
-package ru.itis.androidplugin.view;
+package ru.itis.androidplugin.adapters;
 
 import ru.itis.androidplugin.elements.MaterialItem;
 import ru.itis.androidplugin.settings.Constants;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -12,43 +15,14 @@ import java.awt.image.BufferedImage;
  */
 public class ViewRender extends JLabel implements ListCellRenderer<MaterialItem> {
 
-   /* public ColorRender() {
-        try {
-          /*  BufferedImage bufImg = ImageIO.read(getClass().getResource("/icons/ic_check_circle.png"));
-            icon = new JLabel(new ImageIcon(bufImg));
-
-       } catch (IOException ignored) {
-        }
-
-    }*/
-
     public ViewRender(){
         setOpaque(true);
         setIconTextGap(12);
+        Border border = getBorder();
+        Border margin = new EmptyBorder(20,10,10,10);
+        setBorder(new CompoundBorder(border, margin));
     }
 
-    /*   @Override
-       public Component getListCellRendererComponent(JList<? extends MaterialColor> list, MaterialColor color, int index, boolean isSelected, boolean cellHasFocus) {
-           final int size = 100;
-
-           setLayout(new GridBagLayout());
-
-
-          // setBackground(Color.decode(color.hexCode));
-           setToolTipText(color.fixedName);
-
-           setMinimumSize(new Dimension(size, size));
-           setMaximumSize(new Dimension(size, size));
-           setPreferredSize(new Dimension(size, size));
-
-           if (isSelected) {
-               add(icon);
-           } else {
-               remove(icon);
-           }
-
-           return this;
-       }*/
     private ImageIcon getScaledImage(ImageIcon srcImg, int w, int h){
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
@@ -75,9 +49,9 @@ public class ViewRender extends JLabel implements ListCellRenderer<MaterialItem>
         setHorizontalTextPosition(JLabel.CENTER);
         setVerticalTextPosition(JLabel.BOTTOM);
 
-        setMinimumSize(new Dimension(size, size));
-        setMaximumSize(new Dimension(size, size));
-        setPreferredSize(new Dimension(size, size));
+        setMinimumSize(new Dimension(size+10, size+10));
+        setMaximumSize(new Dimension(size+10, size+10));
+        setPreferredSize(new Dimension(size+10, size+10));
 
 
 
