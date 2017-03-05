@@ -96,7 +96,7 @@ public class MainView extends JPanel {
 
     class RightClickPopup extends MouseAdapter {
 
-        private static final String PASTE = "Paste %s color as %s";
+        private static final String PASTE = "Paste %s element as %s";
 
         private JPopupMenu popup;
 
@@ -151,6 +151,8 @@ public class MainView extends JPanel {
             this.popup.add(materialViewJMenuItems);
 
         }
+
+
 
     }
 

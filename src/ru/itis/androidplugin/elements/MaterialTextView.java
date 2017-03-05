@@ -10,12 +10,12 @@ import javax.swing.*;
 public class MaterialTextView extends MaterialItem{
 
     private static final String EMPTY = "materialTextView1";
-    private final String XML_VIEW_PATTERN = "<TextView\n"+
+    public static final String XML_VIEW_PATTERN = "<TextView\n"+
             "        android:id=\"@+id/%s\"\n"+
             "        android:layout_width=\"wrap_content\"\n"+
             "        android:layout_height=\"wrap_content\"\n"+
             "        android:layout_gravity=\"center_vertical\"\n"+
-            "         android:text=\"hi\"/>";
+            "        android:text=\"hi\"/>";
     private static final String ICON_PATH = "/icons/ic_recyclerview.png";
     private static final String VIEW_NAME = "TextView";
 
@@ -23,30 +23,14 @@ public class MaterialTextView extends MaterialItem{
     private ImageIcon mIcon;
     private String mViewParametrs;
 
-    public MaterialTextView(String id) {
-        super(VIEW_NAME, id, ICON_PATH);
-        this.mId = id;
-    }
 
     public MaterialTextView() {
-        super(VIEW_NAME, EMPTY, ICON_PATH);
+        super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
     }
 
-
-    public String getId() {
-        return mId;
-    }
-
-    public static String getViewName() {
-        return VIEW_NAME;
-    }
-
-    public void setId(String mId) {
-        this.mId = mId;
-    }
-
+    @Override
     public String getViewParametrs() {
-        return mViewParametrs;
+        return null;
     }
 
     public void setViewParametrs(String mViewParametrs) {

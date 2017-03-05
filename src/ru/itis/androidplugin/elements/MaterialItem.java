@@ -1,11 +1,9 @@
 package ru.itis.androidplugin.elements;
 
-import ru.itis.androidplugin.view.RecyclerViewParametrs;
 import ru.itis.androidplugin.view.ViewParameters;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -14,13 +12,15 @@ import java.io.IOException;
 public abstract class MaterialItem {
 
     public String mViewName;
-    public String mId;
     public ImageIcon mIcon;
     public String mViewParametrs;
+    public String mPattern;
+    public String mId;
 
-    public MaterialItem(String viewName, String id, String iconPath) {
+
+    public MaterialItem(String viewName, String pattern, String iconPath) {
         this.mViewName = viewName;
-        this.mId = id;
+        this.mPattern = pattern;
 
         try {
              mIcon = new ImageIcon(ImageIO.read(getClass().getResource(iconPath)));
@@ -28,9 +28,12 @@ public abstract class MaterialItem {
         }catch (IOException ignored) {}
     }
 
-    public void init(String pattern, String id){
-        mViewParametrs = String.format(pattern, id);
+    public void setId(String id){
+        mId = id;
+        mViewParametrs = String.format(mPattern, id);
     }
 
     public abstract void setView(ViewParameters mSupplemementalViewParameter, JPanel jPanel);
+
+    public abstract String getViewParametrs();
 }

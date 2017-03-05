@@ -20,9 +20,6 @@
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
   <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
@@ -45,26 +42,10 @@
     </action>
   </actions>
 
-  <!--<actions>
-    <group id="MyPlugin.SampleMenu" text="_Sample Menu" description="Sample menu">
-      <add-to-group group-id="MainMenu" anchor="last"  />
-      <action id="Myplugin.Textboxes" class="ru.itis.androidplugin.TextBoxes" text="Text _Boxes" description="A test menu item" />
-    </group>
-  </actions>
 
-  <application-components>
-    <component>
-      <implementation-class>ru.itis.androidplugin.ApplicationCOmponent</implementation-class>
-    </component>
-  </application-components>
-  <module-components>
-    <component>
-      <implementation-class>ru.itis.androidplugin.MyModuleComponent</implementation-class>
-    </component>
-  </module-components>
-  <project-components>
-    <component>
-      <implementation-class>ru.itis.androidplugin.MyProjectComponent</implementation-class>
-    </component>
-  </project-components> -->
+    <project-components>
+        <component>
+            <implementation-class>ru.itis.androidplugin.settings.PluginProject</implementation-class>
+        </component>
+    </project-components>
 </idea-plugin>

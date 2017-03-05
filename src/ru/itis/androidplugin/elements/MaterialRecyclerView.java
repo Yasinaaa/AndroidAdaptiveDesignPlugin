@@ -1,6 +1,6 @@
 package ru.itis.androidplugin.elements;
 
-import ru.itis.androidplugin.view.RecyclerViewParametrs;
+import ru.itis.androidplugin.view.RecyclerViewParameters;
 import ru.itis.androidplugin.view.ViewParameters;
 
 import javax.swing.*;
@@ -22,24 +22,25 @@ public class MaterialRecyclerView extends MaterialItem{
 
     private String mId = EMPTY;
     private ImageIcon mIcon;
-    private String mViewParametrs;
 
     public MaterialRecyclerView(){
-        super(VIEW_NAME, EMPTY, ICON_PATH);
-        init(XML_VIEW_PATTERN, EMPTY);
+        super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
     }
 
-    public MaterialRecyclerView(String id) {
-        super(VIEW_NAME, id, ICON_PATH);
-        this.mId = id;
-        init(XML_VIEW_PATTERN, id);
-    }
 
     @Override
     public void setView(ViewParameters mSupplemementalViewParameter, JPanel jPanel){
-        mSupplemementalViewParameter = new RecyclerViewParametrs();
+        mSupplemementalViewParameter = new RecyclerViewParameters(this);
         jPanel.add(mSupplemementalViewParameter.mJPanel, BorderLayout.WEST);
     }
 
+    @Override
+    public String getViewParametrs() {
+        return mViewParametrs;
+    }
+
+    public String getId() {
+        return mId;
+    }
 
 }

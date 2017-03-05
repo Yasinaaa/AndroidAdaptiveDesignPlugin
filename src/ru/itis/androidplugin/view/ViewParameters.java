@@ -7,14 +7,17 @@ import javax.swing.*;
 /**
  * Created by yasina on 24.02.17.
  */
-public class ViewParameters extends JComponent {
+public abstract class ViewParameters extends JComponent {
 
     public JPanel mJPanel;
-    public JLabel mLabelItemTitle;
+    public JLabel mNameTitleJLabel;
     public MaterialItem mMaterialItem;
 
-    public ViewParameters(){
+    public ViewParameters(MaterialItem mMaterialItem){
        mJPanel = new JPanel();
-       mLabelItemTitle = new JLabel();
+       mNameTitleJLabel = new JLabel();
+       this.mMaterialItem = mMaterialItem;
     }
+
+
 }
