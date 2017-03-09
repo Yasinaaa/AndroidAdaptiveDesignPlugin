@@ -133,7 +133,7 @@ public class LayoutGenerator {
         Module module = rootManager.getFileIndex().getModuleForFile(file);
         ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
         VirtualFile[] contentRoots = moduleRootManager.getContentRoots();
-        String path = contentRoots[0].getPath() + "/src/main/res/" + "/layout";
+        String path = contentRoots[0].getPath() + "/src/main/res" + "/layout";
         return path;
     }
 }

@@ -1,7 +1,5 @@
 package ru.itis.androidplugin.elements;
 
-import ru.itis.androidplugin.view.ViewParameters;
-
 import javax.swing.*;
 
 /**
@@ -16,8 +14,8 @@ public class MaterialTextView extends MaterialItem{
             "        android:layout_height=\"wrap_content\"\n"+
             "        android:layout_gravity=\"center_vertical\"\n"+
             "        android:text=\"hi\"/>";
-    private static final String ICON_PATH = "/icons/ic_recyclerview.png";
-    private static final String VIEW_NAME = "TextView";
+    private static final String ICON_PATH = "/icons/text_field.png";
+    private static final String VIEW_NAME = "Text View";
 
     private String mId = EMPTY;
     private ImageIcon mIcon;
@@ -28,17 +26,8 @@ public class MaterialTextView extends MaterialItem{
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
     }
 
-    @Override
-    public String getViewParametrs() {
-        return null;
-    }
-
     public void setViewParametrs(String mViewParametrs) {
         this.mViewParametrs = mViewParametrs;
     }
 
-    @Override
-    public void setView(ViewParameters mSupplemementalViewParameter, JPanel jPanel) {
-        //TODO: set view for TextView
-    }
 }

@@ -16,49 +16,111 @@
 
 package ru.itis.androidplugin.view;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import ru.itis.androidplugin.adapters.ViewRender;
 import ru.itis.androidplugin.elements.MaterialItem;
+import ru.itis.androidplugin.elements.MaterialRecyclerView;
 import ru.itis.androidplugin.settings.Constants;
-import ru.itis.androidplugin.settings.UtilsEnvironment;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.LinkedList;
 
 /**
- * @author dvdandroid
+ * Created by yasina on 09.03.17.
  */
 public class MainView extends JPanel {
 
     public JPanel panel;
-    private JList<MaterialItem> parentColors;
-    private JButton saveLayoutAndCreateButton;
-    private ViewParameters mSupplemementalViewParameter;
+    private JList materialJList;
+    public JTextField itemMaterialItemJTextField;
+    public JButton createButton;
+    public JLabel titleActivityClassJLabel;
+    public JLabel itemActivityClassJLabel;
+    public JLabel titleMaterialItemJLabel;
+    public JLabel nextIconJLabel;
+    public JLabel prevIconJLabel;
+    public JButton createAdapterButton;
+    public JLabel itemParentViewJLabel;
+    public JLabel titleParentViewJLabel;
     private int lastIndex;
+    private LinkedList<MaterialItem> tenClickedMaterialItems;
+    private int currentItem;
 
     public MainView() {
+        //TODO change this part
+        // begin
         DefaultListModel<MaterialItem> listModel = new DefaultListModel<>();
         for (MaterialItem item : Constants.mViewMaterialItems) {
             listModel.addElement(item);
-
         }
+        init(listModel);
+        // end
+    }
 
-        parentColors.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        parentColors.setCellRenderer(new ViewRender());
-        parentColors.setModel(listModel);
-        parentColors.setVisibleRowCount(4);
-        parentColors.setBorder(new EmptyBorder(10, 10, 10, 10));
+    private void init(DefaultListModel<MaterialItem> listModel) {
+        tenClickedMaterialItems = new LinkedList<MaterialItem>();
+        materialJList.setCellRenderer(new ViewRender());
+        materialJList.setModel(listModel);
+        materialJList.setLayoutOrientation(JList.VERTICAL_WRAP);
+        //materialItems.setModel(listModel);
+        //materialItems.setVisibleRowCount(4);
+        materialJList.setBorder(new EmptyBorder(10, 10, 10, 10));
+        materialJList.addMouseListener(new RightClickPopup());
+        materialJList.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                fixRowCountForVisibleColumns(materialJList);
+            }
+        });
 
-        /*childrenColors.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        childrenColors.setCellRenderer(new ColorRender());
-        childrenColors.addMouseListener(new RightClickPopup());
-        */
+        fixRowCountForVisibleColumns(materialJList);
 
-        parentColors.addMouseListener(new RightClickPopup());
+        //TODO: set activity/fragment
+        //titleActivityClassJLabel.setText();
 
+        //TODO: set activity/fragment name of class
+        //itemActivityClassJLabel.setText();
 
+        prevIconJLabel.setVisible(false);
+        nextIconJLabel.setVisible(false);
+        titleMaterialItemJLabel.setVisible(false);
+        itemMaterialItemJTextField.setVisible(false);
+        titleParentViewJLabel.setVisible(false);
+        itemParentViewJLabel.setVisible(false);
+        createButton.setVisible(false);
+        createAdapterButton.setVisible(false);
+    }
+
+    private static void fixRowCountForVisibleColumns(JList list) {
+        int nCols = 4;
+                //computeVisibleColumnCount(list);
+        //int nItems = list.getModel().getSize();
+
+        // Compute the number of rows that will result in the desired number of
+        // columns
+        int nRows = 5;
+        //if (nItems % nCols > 0) nRows++;
+        list.setVisibleRowCount(nRows);
+    }
+
+    private static int computeVisibleColumnCount(JList list) {
+        // It's assumed here that all cells have the same width. This method
+        // could be modified if this assumption is false. If there was cell
+        // padding, it would have to be accounted for here as well.
+        int cellWidth = list.getCellBounds(0, 0).width;
+        int width = list.getVisibleRect().width;
+        return width / cellWidth;
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 
     {
@@ -77,14 +139,43 @@ public class MainView extends JPanel {
      */
     private void $$$setupUI$$$() {
         panel = new JPanel();
-        panel.setLayout(new BorderLayout(0, 0));
+        panel.setLayout(new GridLayoutManager(5, 5, new Insets(10, 10, 10, 10), -1, -1));
         final JScrollPane scrollPane1 = new JScrollPane();
-        panel.add(scrollPane1, BorderLayout.NORTH);
-        parentColors = new JList();
-        scrollPane1.setViewportView(parentColors);
-        saveLayoutAndCreateButton = new JButton();
-        saveLayoutAndCreateButton.setText("Save layout and create another versions of them");
-        panel.add(saveLayoutAndCreateButton, BorderLayout.SOUTH);
+        panel.add(scrollPane1, new GridConstraints(1, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        materialJList = new JList();
+        scrollPane1.setViewportView(materialJList);
+        createButton = new JButton();
+        createButton.setText("Create ");
+        panel.add(createButton, new GridConstraints(4, 1, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        itemMaterialItemJTextField = new JTextField();
+        itemMaterialItemJTextField.setText("");
+        panel.add(itemMaterialItemJTextField, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        titleActivityClassJLabel = new JLabel();
+        titleActivityClassJLabel.setText("ActivityClass");
+        panel.add(titleActivityClassJLabel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        prevIconJLabel = new JLabel();
+        prevIconJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/back_arrow.png")));
+        prevIconJLabel.setText("");
+        panel.add(prevIconJLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        itemActivityClassJLabel = new JLabel();
+        itemActivityClassJLabel.setText("MainActivity");
+        panel.add(itemActivityClassJLabel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        nextIconJLabel = new JLabel();
+        nextIconJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/next_arrow.png")));
+        nextIconJLabel.setText("");
+        panel.add(nextIconJLabel, new GridConstraints(2, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        titleMaterialItemJLabel = new JLabel();
+        titleMaterialItemJLabel.setText("");
+        panel.add(titleMaterialItemJLabel, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        titleParentViewJLabel = new JLabel();
+        titleParentViewJLabel.setText("Parent ID");
+        panel.add(titleParentViewJLabel, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        itemParentViewJLabel = new JLabel();
+        itemParentViewJLabel.setText("");
+        panel.add(itemParentViewJLabel, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        createAdapterButton = new JButton();
+        createAdapterButton.setText("Create Adapter");
+        panel.add(createAdapterButton, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
@@ -94,11 +185,8 @@ public class MainView extends JPanel {
         return panel;
     }
 
+
     class RightClickPopup extends MouseAdapter {
-
-        private static final String PASTE = "Paste %s element as %s";
-
-        private JPopupMenu popup;
 
         @Override
         public void mousePressed(MouseEvent e) {
@@ -113,46 +201,31 @@ public class MainView extends JPanel {
             if (index != -1 && !list.getCellBounds(index, index).contains(e.getPoint())) {
                 return;
             }
+            /*itemPictureJLabel.setIcon(Constants.mViewMaterialItems[index].mIcon);
+            itemPictureJLabel.setText(Constants.mViewMaterialItems[index].mViewName);
+            itemPictureJLabel.setHorizontalTextPosition(JLabel.CENTER);
+            itemPictureJLabel.setVerticalTextPosition(JLabel.BOTTOM);*/
             //TODO: change this thing
-            Constants.mViewMaterialItems[index].setView(mSupplemementalViewParameter, panel);
-           /* buildPopup(list, index);
+            switch (Constants.mViewMaterialItems[index].mViewName) {
+                case MaterialRecyclerView.VIEW_NAME:
 
+                    MaterialRecyclerView materialRecyclerView = new MaterialRecyclerView();
+                    materialRecyclerView.setView(MainView.this);
 
-            if (list == parentColors) {
+                    break;
 
-
-                lastIndex = index;
-
-
-                if (SwingUtilities.isRightMouseButton(e)) {
-                    buildPopup(list, index);
-                    //
-
-                    popup.show(e.getComponent(), e.getX(), e.getY());
-                }
-            } else {
-                System.out.println("child index=" + index);
-                buildPopup(list, index);
-                popup.show(e.getComponent(), e.getX(), e.getY());
-            }*/
-
+            }
             list.setSelectedIndex(index);
         }
 
+    }
 
-        private void buildPopup(JList list, int index) {
-            popup = new JPopupMenu();
+    public void backClicked() {
+        MaterialItem materialItem = tenClickedMaterialItems.get(currentItem - 1);
 
-            JMenuItem materialViewJMenuItems = new JMenuItem(String.format(PASTE, Constants.THIS,
-                    String.format(Constants.SET_MATERIAL_ITEM, Constants.mViewMaterialItems[index].mViewName)));
-            materialViewJMenuItems.addActionListener(e -> UtilsEnvironment.insertInEditor(
-                    Constants.mViewMaterialItems[index].mViewParametrs));
+    }
 
-            this.popup.add(materialViewJMenuItems);
-
-        }
-
-
+    public void undoClicked() {
 
     }
 

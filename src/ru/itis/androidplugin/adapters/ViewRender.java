@@ -19,7 +19,7 @@ public class ViewRender extends JLabel implements ListCellRenderer<MaterialItem>
         setOpaque(true);
         setIconTextGap(12);
         Border border = getBorder();
-        Border margin = new EmptyBorder(20,10,10,10);
+        Border margin = new EmptyBorder(10,10,10,10);
         setBorder(new CompoundBorder(border, margin));
     }
 
@@ -43,15 +43,16 @@ public class ViewRender extends JLabel implements ListCellRenderer<MaterialItem>
        // setBackground(Color.decode(Constants.BACKGROUND_ITEM));
         setToolTipText(materialItem.mViewName);
 
-        setIcon(getScaledImage(materialItem.mIcon, 70, 70));
+        //setIcon(getScaledImage(materialItem.mIcon, 100, 100));
+        setIcon(materialItem.mIcon);
 
         setText(materialItem.mViewName);
         setHorizontalTextPosition(JLabel.CENTER);
         setVerticalTextPosition(JLabel.BOTTOM);
 
-        setMinimumSize(new Dimension(size+10, size+10));
+        /*setMinimumSize(new Dimension(size+10, size+10));
         setMaximumSize(new Dimension(size+10, size+10));
-        setPreferredSize(new Dimension(size+10, size+10));
+        setPreferredSize(new Dimension(size+10, size+10));*/
 
 
 

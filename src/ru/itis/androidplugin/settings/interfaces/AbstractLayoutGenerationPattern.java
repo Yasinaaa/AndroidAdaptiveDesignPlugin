@@ -1,9 +1,6 @@
 package ru.itis.androidplugin.settings.interfaces;
 
-import com.AndroidManifest;
-import com.AndroidView;
-import com.ButterKnife;
-import com.ClassHelper;
+import com.*;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -49,9 +46,21 @@ public class AbstractLayoutGenerationPattern implements CodeGenerationPattern {
        /* PsiElement psiElement = factory.createTypeElement()
         PsiResourceVariable psiFile = factory.createResourceFromText();*/
 
+        createField(psiClass, "dd");
         return psiClass;
     }
 
+    public PsiField createField(PsiClass viewClass, String fieldName) {
+        PsiElementFactory factory = JavaPsiFacade.getElementFactory(viewClass.getProject());
+        PsiField field = factory.createField(fieldName, factory.createType(viewClass));
+        PsiModifierList modifierList = field.getModifierList();
+        if (modifierList != null) {
+            modifierList.setModifierProperty(PsiModifier.PRIVATE, true);
+        } else {
+            throw new GenerateViewPresenterAction.CancellationException("Failed to create field");
+        }
+        return field;
+    }
 
     @Override
     public void setup(Project project) {

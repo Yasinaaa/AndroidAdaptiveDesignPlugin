@@ -1,7 +1,5 @@
 package ru.itis.androidplugin.elements;
 
-import ru.itis.androidplugin.view.ViewParameters;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.IOException;
@@ -33,7 +31,5 @@ public abstract class MaterialItem {
         mViewParametrs = String.format(mPattern, id);
     }
 
-    public abstract void setView(ViewParameters mSupplemementalViewParameter, JPanel jPanel);
-
-    public abstract String getViewParametrs();
+    //public abstract String getViewParametrs();
 }

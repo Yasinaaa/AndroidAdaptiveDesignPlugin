@@ -1,27 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ru.itis.androidplugin.view.MainView">
-  <grid id="27dc6" binding="panel" layout-manager="BorderLayout" hgap="0" vgap="0">
+  <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="5" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="534" height="561"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <scrollpane id="cb756">
-        <constraints border-constraint="North"/>
+      <scrollpane id="32316">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="e023d" class="javax.swing.JList" binding="parentColors">
+          <component id="36bdd" class="javax.swing.JList" binding="materialJList">
             <constraints/>
             <properties/>
           </component>
         </children>
       </scrollpane>
-      <component id="cfaea" class="javax.swing.JButton" binding="saveLayoutAndCreateButton" default-binding="true">
-        <constraints border-constraint="South"/>
+      <component id="8442e" class="javax.swing.JButton" binding="createButton">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
         <properties>
-          <text value="Save layout and create another versions of them"/>
+          <text value="Create "/>
+        </properties>
+      </component>
+      <component id="eb228" class="javax.swing.JTextField" binding="itemMaterialItemJTextField">
+        <constraints>
+          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="b6573" class="javax.swing.JLabel" binding="titleActivityClassJLabel">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="ActivityClass"/>
+        </properties>
+      </component>
+      <component id="278f" class="javax.swing.JLabel" binding="prevIconJLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <icon value="icons/back_arrow.png"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="74939" class="javax.swing.JLabel" binding="itemActivityClassJLabel">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="MainActivity"/>
+        </properties>
+      </component>
+      <component id="5f228" class="javax.swing.JLabel" binding="nextIconJLabel">
+        <constraints>
+          <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <icon value="icons/next_arrow.png"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="d0f" class="javax.swing.JLabel" binding="titleMaterialItemJLabel">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="a852c" class="javax.swing.JLabel" binding="titleParentViewJLabel">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Parent ID"/>
+        </properties>
+      </component>
+      <component id="3cc15" class="javax.swing.JLabel" binding="itemParentViewJLabel">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="d456c" class="javax.swing.JButton" binding="createAdapterButton" default-binding="true">
+        <constraints>
+          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Create Adapter"/>
         </properties>
       </component>
     </children>
