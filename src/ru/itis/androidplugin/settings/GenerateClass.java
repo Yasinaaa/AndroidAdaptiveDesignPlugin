@@ -41,7 +41,7 @@ public class GenerateClass {
 
     public void generateClass(String name){
         final Project project = PluginProject.mProject;
-        try {
+        //try {
             if (project == null) {
                 throw new GenerateViewPresenterAction.CancellationException("Unable to retrieve project");
             }
@@ -75,11 +75,11 @@ public class GenerateClass {
                 public void run() {
                 }
             });
-        } catch (GenerateViewPresenterAction.CancellationException ignored) {
+        /*} catch (GenerateViewPresenterAction.CancellationException ignored) {
             if (ignored.getMessage() != null && project != null) {
                 Messages.showErrorDialog(project, ignored.getMessage(), "Error");
             }
-        }
+        }*/
     }
     private final CodeGenerationPatternBuilder generationPattern = new CodeGenerationPatternBuilder(){
                 @Override
@@ -218,7 +218,7 @@ public class GenerateClass {
             }
         }
     }
-
+/*
     private PsiDirectory getPsiDirectoryFromPackage(PsiPackage selectedPackage) {
         PsiDirectory[] allDirectories = PackageUtil.getDirectories(selectedPackage, null, false);
         List<PsiDirectory> directories = new ArrayList<PsiDirectory>(allDirectories.length);
@@ -227,7 +227,7 @@ public class GenerateClass {
                 directories.add(directory);
             }
         }
-
+        PsiDirectory p = null;
         if (directories.size() > 1) {
             String[] dirs = new String[directories.size()];
             for (int i = 0; i < directories.size(); i++) {
@@ -237,16 +237,54 @@ public class GenerateClass {
                     "Package referenced to several folders. Select result destination",
                     dirs,
                     0);
+            int index = 0;
+
             if (dialog.showAndGet()) {
-                int index = dialog.getSelectedIndex();
+                index = dialog.getSelectedIndex();
                 if (index >= 0) {
-                    return directories.get(index);
+                    p = directories.get(index);
                 }
+}
+
+                    } else if (directories.size() == 1) {
+                    p = directories.get(0);
+                    }
+                    return p;
+                    //throw new GenerateViewPresenterAction.CancellationException();
+                    }
+ */
+    private PsiDirectory getPsiDirectoryFromPackage(PsiPackage selectedPackage) {
+        PsiDirectory[] allDirectories = PackageUtil.getDirectories(selectedPackage, null, false);
+        /*List<PsiDirectory> directories = new ArrayList<PsiDirectory>(allDirectories.length);
+        for (PsiDirectory directory : allDirectories) {
+            if (!JavaProjectRootsUtil.isInGeneratedCode(directory.getVirtualFile(), selectedPackage.getProject())) {
+                directories.add(directory);
             }
-        } else if (directories.size() == 1) {
-            return directories.get(0);
+        }*/
+        PsiDirectory p = null;
+        if (allDirectories.length > 1) {
+            String[] dirs = new String[allDirectories.length];
+            for (int i = 0; i < allDirectories.length; i++) {
+                dirs[i] = allDirectories[i].getVirtualFile().getPath();
+            }
+            ChooseDialog dialog = new ChooseDialog(selectedPackage.getProject(), "Directory Selection",
+                    "Package referenced to several folders. Select result destination",
+                    dirs,
+                    0);
+            int index = 0;
+
+            if (dialog.showAndGet()) {
+                index = dialog.getSelectedIndex();
+                /*if (index >= 0) {
+                    p = directories.get(index);
+                }*/
+            }
+            p = allDirectories[index];
+        } else if (allDirectories.length == 1) {
+            p = allDirectories[0];
         }
-        throw new GenerateViewPresenterAction.CancellationException();
+        return p;
+        //throw new GenerateViewPresenterAction.CancellationException();
     }
 
     private String selectJavaClassName(Project project, VirtualFile layoutFile, CodeGenerationPattern pattern) {

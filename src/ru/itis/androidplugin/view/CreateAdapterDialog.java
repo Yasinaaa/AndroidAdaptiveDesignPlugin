@@ -62,7 +62,7 @@ public class CreateAdapterDialog extends JDialog {
 
         mainView.itemParentViewJLabel.setText(name);
 
-        mainView.itemMaterialItemJTextField.addActionListener(new ActionListener() {
+        mainView.createAdapterButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GenerateClass generateClass = new GenerateClass();
