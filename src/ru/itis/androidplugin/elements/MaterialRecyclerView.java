@@ -21,6 +21,7 @@ public class MaterialRecyclerView extends MaterialItem{
             "        />";
     public static final String ICON_PATH = "/icons/recycler_view.png";
     public static final String VIEW_NAME = "Recycler View";
+    private MaterialItem child = null;
 
     private ImageIcon mIcon;
 
@@ -28,6 +29,7 @@ public class MaterialRecyclerView extends MaterialItem{
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
     }
 
+    @Override
     public void setView(MainView mainView) {
 
         mainView.titleMaterialItemJLabel.setVisible(true);
@@ -40,12 +42,12 @@ public class MaterialRecyclerView extends MaterialItem{
         mainView.createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("MainView.createButton click = " + mainView.itemMaterialItemJTextField.getText());
+
                 setId(mainView.itemMaterialItemJTextField.getText());
                 UtilsEnvironment.insertInEditor(mViewParametrs);
 
                 CreateAdapterDialog dialog = new CreateAdapterDialog(mainView,
-                        mainView.itemMaterialItemJTextField.getText());
+                        mainView.clickedMaterialItem);
                 dialog.pack();
                 dialog.setVisible(true);
                 //setViewItemRecyclerView(mainView);
@@ -54,5 +56,31 @@ public class MaterialRecyclerView extends MaterialItem{
 
     }
 
+
+    public void hideNotNeededThings(MainView mainView){
+        mainView.titleParentViewJLabel.setVisible(false);
+        mainView.itemParentViewJLabel.setVisible(false);
+        mainView.createAdapterButton.setVisible(false);
+    }
+
+    @Override
+    public MaterialItem getСhild() {
+        return null;
+    }
+
+    @Override
+    public void setСhild(MaterialItem child) {
+        this.child = child;
+    }
+
+    @Override
+    public void setViewChildAndParent(MainView mainView) {
+        mainView.titleParentViewJLabel.setText("RecyclerView ID");
+        mainView.itemParentViewTextField.setVisible(true);
+        mainView.createAdapterButton.setVisible(false);
+        mainView.itemParentViewJLabel.setVisible(false);
+
+
+    }
 
 }

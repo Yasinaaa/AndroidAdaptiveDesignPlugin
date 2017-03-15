@@ -16,20 +16,24 @@
 
 package ru.itis.androidplugin.view;
 
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.FileEditorManagerAdapter;
+import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
+import com.intellij.openapi.fileEditor.FileEditorManagerListener;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.util.messages.MessageBus;
+import org.jetbrains.annotations.NotNull;
 import ru.itis.androidplugin.adapters.ViewRender;
 import ru.itis.androidplugin.elements.MaterialItem;
-import ru.itis.androidplugin.elements.MaterialRecyclerView;
 import ru.itis.androidplugin.settings.Constants;
+import ru.itis.androidplugin.settings.PluginProject;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.LinkedList;
 
 /**
@@ -49,9 +53,12 @@ public class MainView extends JPanel {
     public JButton createAdapterButton;
     public JLabel itemParentViewJLabel;
     public JLabel titleParentViewJLabel;
+    public JTextField itemParentViewTextField;
+    private JList list1;
     private int lastIndex;
-    private LinkedList<MaterialItem> tenClickedMaterialItems;
-    private int currentItem;
+    public LinkedList<MaterialItem> tenClickedMaterialItems;
+    public int currentItem = 0;
+    public MaterialItem clickedMaterialItem;
 
     public MainView() {
         //TODO change this part
@@ -60,64 +67,91 @@ public class MainView extends JPanel {
         for (MaterialItem item : Constants.mViewMaterialItems) {
             listModel.addElement(item);
         }
-        init(listModel);
         // end
+
+        init(listModel);
+
     }
 
     private void init(DefaultListModel<MaterialItem> listModel) {
         tenClickedMaterialItems = new LinkedList<MaterialItem>();
+
         materialJList.setCellRenderer(new ViewRender());
         materialJList.setModel(listModel);
         materialJList.setLayoutOrientation(JList.VERTICAL_WRAP);
-        //materialItems.setModel(listModel);
-        //materialItems.setVisibleRowCount(4);
         materialJList.setBorder(new EmptyBorder(10, 10, 10, 10));
         materialJList.addMouseListener(new RightClickPopup());
         materialJList.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                fixRowCountForVisibleColumns(materialJList);
+                materialJList.setVisibleRowCount(5);
             }
         });
+        materialJList.setVisibleRowCount(5);
 
-        fixRowCountForVisibleColumns(materialJList);
-
-        //TODO: set activity/fragment
-        //titleActivityClassJLabel.setText();
-
-        //TODO: set activity/fragment name of class
-        //itemActivityClassJLabel.setText();
-
-        prevIconJLabel.setVisible(false);
-        nextIconJLabel.setVisible(false);
         titleMaterialItemJLabel.setVisible(false);
         itemMaterialItemJTextField.setVisible(false);
         titleParentViewJLabel.setVisible(false);
         itemParentViewJLabel.setVisible(false);
         createButton.setVisible(false);
         createAdapterButton.setVisible(false);
+        prevIconJLabel.setVisible(false);
+        prevIconJLabel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                prevClicked();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+        nextIconJLabel.setVisible(false);
+        nextIconJLabel.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                nextClicked();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
     }
 
-    private static void fixRowCountForVisibleColumns(JList list) {
-        int nCols = 4;
-                //computeVisibleColumnCount(list);
-        //int nItems = list.getModel().getSize();
-
-        // Compute the number of rows that will result in the desired number of
-        // columns
-        int nRows = 5;
-        //if (nItems % nCols > 0) nRows++;
-        list.setVisibleRowCount(nRows);
-    }
-
-    private static int computeVisibleColumnCount(JList list) {
-        // It's assumed here that all cells have the same width. This method
-        // could be modified if this assumption is false. If there was cell
-        // padding, it would have to be accounted for here as well.
-        int cellWidth = list.getCellBounds(0, 0).width;
-        int width = list.getVisibleRect().width;
-        return width / cellWidth;
-    }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
@@ -153,10 +187,6 @@ public class MainView extends JPanel {
         titleActivityClassJLabel = new JLabel();
         titleActivityClassJLabel.setText("ActivityClass");
         panel.add(titleActivityClassJLabel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        prevIconJLabel = new JLabel();
-        prevIconJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/back_arrow.png")));
-        prevIconJLabel.setText("");
-        panel.add(prevIconJLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         itemActivityClassJLabel = new JLabel();
         itemActivityClassJLabel.setText("MainActivity");
         panel.add(itemActivityClassJLabel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -176,6 +206,10 @@ public class MainView extends JPanel {
         createAdapterButton = new JButton();
         createAdapterButton.setText("Create Adapter");
         panel.add(createAdapterButton, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        prevIconJLabel = new JLabel();
+        prevIconJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/back_arrow.png")));
+        prevIconJLabel.setText("");
+        panel.add(prevIconJLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
@@ -205,28 +239,37 @@ public class MainView extends JPanel {
             itemPictureJLabel.setText(Constants.mViewMaterialItems[index].mViewName);
             itemPictureJLabel.setHorizontalTextPosition(JLabel.CENTER);
             itemPictureJLabel.setVerticalTextPosition(JLabel.BOTTOM);*/
-            //TODO: change this thing
-            switch (Constants.mViewMaterialItems[index].mViewName) {
-                case MaterialRecyclerView.VIEW_NAME:
 
-                    MaterialRecyclerView materialRecyclerView = new MaterialRecyclerView();
-                    materialRecyclerView.setView(MainView.this);
+            clickedMaterialItem = Constants.mViewMaterialItems[index];
+            clickedMaterialItem.setView(MainView.this);
 
-                    break;
+            if (clickedMaterialItem.getParent() != null)
+                clickedMaterialItem.hideNotNeededThings(MainView.this);
 
-            }
+            clickedMaterialItem.mLayoutPath = PluginProject.mLayoutPath;
+            clickedMaterialItem.addItemToHistoryList(MainView.this);
             list.setSelectedIndex(index);
         }
 
     }
 
-    public void backClicked() {
+    public void setBackNextLabelsVisiblility() {
+        System.out.println("tenClickedMaterialItems.size()=" + tenClickedMaterialItems.size());
+        if (tenClickedMaterialItems.size() >= 2)
+            prevIconJLabel.setVisible(true);
+        if (tenClickedMaterialItems.size() >= 3)
+            nextIconJLabel.setVisible(true);
+    }
+
+    public void prevClicked() {
         MaterialItem materialItem = tenClickedMaterialItems.get(currentItem - 1);
-
+        materialItem.setView(MainView.this);
     }
 
-    public void undoClicked() {
-
+    public void nextClicked() {
+        MaterialItem materialItem = tenClickedMaterialItems.get(currentItem + 1);
+        materialItem.setView(MainView.this);
     }
+
 
 }

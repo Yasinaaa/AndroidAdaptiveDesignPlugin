@@ -30,5 +30,13 @@ public class MaterialBottomNavigation extends MaterialItem {
     }
 
 
+    @Override
+    public MaterialItem getСhild() {
+        return null;
+    }
 
+    @Override
+    public void setView(MainView mainView) {
+
+    }
 }

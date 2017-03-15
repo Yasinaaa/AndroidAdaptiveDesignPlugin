@@ -1,7 +1,13 @@
 package ru.itis.androidplugin.settings;
 
 import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.FileEditorManagerAdapter;
+import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
+import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.util.messages.MessageBus;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -10,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 public class PluginProject implements ProjectComponent {
 
     public static Project mProject;
+    public static String mLayoutPath;
+    private MessageBus mMessageBus;
 
     public PluginProject(Project project) {
         mProject = project;
@@ -34,10 +42,35 @@ public class PluginProject implements ProjectComponent {
     @Override
     public void projectOpened() {
         // called when project is opened
+        mMessageBus = mProject.getMessageBus();
+        mMessageBus.connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new FileEditorManagerAdapter() {
+            @Override
+            public void fileOpened(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
+                super.fileOpened(source, file);
+
+            }
+
+            @Override
+            public void fileClosed(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
+                super.fileClosed(source, file);
+            }
+
+            @Override
+            public void selectionChanged(@NotNull FileEditorManagerEvent event) {
+                mLayoutPath = event.getNewFile().getPath();
+                System.out.println("selectionChanged=" + mLayoutPath);
+                super.selectionChanged(event);
+
+            }
+        });
     }
 
     @Override
     public void projectClosed() {
         // called when project is being closed
+    }
+
+    public void onFileChangedListener(){
+
     }
 }

@@ -1,5 +1,7 @@
 package ru.itis.androidplugin.elements;
 
+import ru.itis.androidplugin.view.MainView;
+
 import javax.swing.*;
 
 /**
@@ -21,5 +23,10 @@ public class MaterialButton extends MaterialItem {
 
     public MaterialButton(){
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
+    }
+
+    @Override
+    public void setView(MainView mainView) {
+
     }
 }

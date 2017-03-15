@@ -26,6 +26,7 @@
     <!-- Add your extensions here -->
     <!--<applicationConfigurable groupId="project" displayName="my own" id="ru.itis.androidplugin.TempClass">
     </applicationConfigurable> -->
+
     <toolWindow id="Material Palette" anchor="right"
                   factoryClass="ru.itis.androidplugin.settings.ToolWindowFactory"
                   icon="/icons/ic_palette.png"/>
