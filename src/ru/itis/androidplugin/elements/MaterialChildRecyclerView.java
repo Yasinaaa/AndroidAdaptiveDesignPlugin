@@ -32,22 +32,26 @@ public class MaterialChildRecyclerView extends MaterialItem{
     @Override
     public void setView(MainView mainView) {
 
-        mainView.titleParentViewJLabel.setVisible(true);
+        mainView.itemParentViewJTextField.setVisible(false);
+        mainView.itemMaterialItemJTextField.setVisible(true);
+        mainView.titleMaterialItemJLabel.setVisible(true);
+        mainView.itemMaterialItemJLabel.setVisible(false);
+
+        mainView.createButton.setText("Create Adapter");
+        mainView.titleMaterialItemJLabel.setText("Adapter Class name");
         mainView.itemParentViewJLabel.setVisible(true);
-        mainView.createAdapterButton.setVisible(true);
-        mainView.titleMaterialItemJLabel.setVisible(false);
-        mainView.itemMaterialItemJTextField.setVisible(false);
-        mainView.createButton.setVisible(false);
+        mainView.itemParentViewJLabel.setText(parentRecyclerView.mId);
 
-        mainView.itemParentViewJLabel.setText(parentRecyclerView.mViewName);
-
-        mainView.createAdapterButton.addActionListener(new ActionListener() {
+        ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GenerateClass generateClass = new GenerateClass();
                 generateClass.generateClass(mainView.itemMaterialItemJTextField.getText());
+                mainView.createButton.removeActionListener(this);
             }
-        });
+        };
+        mainView.createButton.addActionListener(actionListener);
+
 
     }
 

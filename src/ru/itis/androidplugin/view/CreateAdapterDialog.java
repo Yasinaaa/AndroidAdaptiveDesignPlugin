@@ -1,5 +1,6 @@
 package ru.itis.androidplugin.view;
 
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import ru.itis.androidplugin.elements.MaterialChildRecyclerView;
@@ -12,6 +13,7 @@ import ru.itis.androidplugin.settings.PluginProject;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import com.intellij.openapi.diagnostic.Logger;
 
 public class CreateAdapterDialog extends JDialog {
     private JPanel contentPane;
@@ -31,12 +33,17 @@ public class CreateAdapterDialog extends JDialog {
     private void init() {
         setContentPane(contentPane);
         setModal(true);
+        setLocationRelativeTo(null);
 
         childRecyclerView = new MaterialChildRecyclerView();
         childRecyclerView.mLayoutPath = PluginProject.mLayoutPath;
         // parent - child connection
         childRecyclerView.setParent(parentRecyclerView);
         parentRecyclerView.setСhild(childRecyclerView);
+
+        PluginManager.getLogger().debug("parentRecyclerView.mId=" + parentRecyclerView.mId);
+        mainView.itemParentViewJLabel.setVisible(true);
+        mainView.itemParentViewJLabel.setText(parentRecyclerView.mId);
 
         createLayoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

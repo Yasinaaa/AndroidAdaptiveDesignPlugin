@@ -41,7 +41,7 @@ public class GenerateClass {
 
     public void generateClass(String name){
         final Project project = PluginProject.mProject;
-        //try {
+        try {
             if (project == null) {
                 throw new GenerateViewPresenterAction.CancellationException("Unable to retrieve project");
             }
@@ -75,11 +75,11 @@ public class GenerateClass {
                 public void run() {
                 }
             });
-        /*} catch (GenerateViewPresenterAction.CancellationException ignored) {
-            if (ignored.getMessage() != null && project != null) {
+        } catch (GenerateViewPresenterAction.CancellationException ignored) {
+           /* if (ignored.getMessage() != null && project != null) {
                 Messages.showErrorDialog(project, ignored.getMessage(), "Error");
-            }
-        }*/
+            }*/
+        }
     }
     private final CodeGenerationPatternBuilder generationPattern = new CodeGenerationPatternBuilder(){
                 @Override
