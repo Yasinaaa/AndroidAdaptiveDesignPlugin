@@ -18,10 +18,7 @@ import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiPackage;
+import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.ui.CheckboxTreeBase;
@@ -255,13 +252,8 @@ public class GenerateClass {
  */
     private PsiDirectory getPsiDirectoryFromPackage(PsiPackage selectedPackage) {
         PsiDirectory[] allDirectories = PackageUtil.getDirectories(selectedPackage, null, false);
-        /*List<PsiDirectory> directories = new ArrayList<PsiDirectory>(allDirectories.length);
-        for (PsiDirectory directory : allDirectories) {
-            if (!JavaProjectRootsUtil.isInGeneratedCode(directory.getVirtualFile(), selectedPackage.getProject())) {
-                directories.add(directory);
-            }
-        }*/
-        PsiDirectory p = null;
+
+       PsiDirectory p = null;
         if (allDirectories.length > 1) {
             String[] dirs = new String[allDirectories.length];
             for (int i = 0; i < allDirectories.length; i++) {
@@ -322,36 +314,6 @@ public class GenerateClass {
         }
         return module;
     }
-
-    /*private CodeGenerationPattern selectCodeGenerationPattern(Project project, VirtualFile first) {
-        ChooseGenerationPatternDialog dialog = new ChooseGenerationPatternDialog(project,
-                first.getName(),
-                patternName,
-                0);
-        if (dialog.showAndGet()) {
-            int index = dialog.getSelectedIndex();
-            if (index >= 0) {
-                CodeGenerationPattern pattern = generationPattern[index].create();
-                pattern.setRecyclerViewSupport(dialog.hasRecyclerViewSupport());
-                return pattern;
-            }
-        }
-        throw new GenerateViewPresenterAction.CancellationException();
-    }*/
-
-  /*  public void update(AnActionEvent e) {
-        super.update(e);
-        boolean visible = false;
-        Project project = e.getData(PlatformDataKeys.PROJECT);
-        if (project != null) {
-            VirtualFile[] files = e.getData(PlatformDataKeys.VIRTUAL_FILE_ARRAY);
-            if (files != null && files.length == 1) {
-                String path = files[0].getPath();
-                visible = path.contains("res/layout") && path.endsWith(".xml");
-            }
-        }
-        e.getPresentation().setVisible(visible);
-    }*/
 
     public static class CancellationException extends RuntimeException {
         public CancellationException() {

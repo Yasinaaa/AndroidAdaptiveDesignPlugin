@@ -1,8 +1,7 @@
 package ru.itis.androidplugin.elements;
 
+import org.apache.commons.lang.StringUtils;
 import ru.itis.androidplugin.settings.GenerateClass;
-import ru.itis.androidplugin.settings.UtilsEnvironment;
-import ru.itis.androidplugin.view.CreateAdapterDialog;
 import ru.itis.androidplugin.view.MainView;
 
 import javax.swing.*;
@@ -35,24 +34,25 @@ public class MaterialChildRecyclerView extends MaterialItem{
         mainView.itemParentViewJTextField.setVisible(false);
         mainView.itemMaterialItemJTextField.setVisible(true);
         mainView.titleMaterialItemJLabel.setVisible(true);
-        mainView.itemMaterialItemJLabel.setVisible(false);
+        mainView.addToLayoutButton.setVisible(false);
+        mainView.itemMaterialItemJTextField.setEnabled(true);
+        mainView.itemMaterialItemJTextField.setText(StringUtils.capitalize(parentRecyclerView.mId)+"Adapter");
 
-        mainView.createButton.setText("Create Adapter");
+        mainView.createItemLayoutButton.setText("Create Adapter");
         mainView.titleMaterialItemJLabel.setText("Adapter Class name");
-        mainView.itemParentViewJLabel.setVisible(true);
-        mainView.itemParentViewJLabel.setText(parentRecyclerView.mId);
+        mainView.itemParentViewJTextField.setVisible(true);
+        mainView.itemParentViewJTextField.setEnabled(false);
+        mainView.itemParentViewJTextField.setText(parentRecyclerView.mId);
 
         ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GenerateClass generateClass = new GenerateClass();
                 generateClass.generateClass(mainView.itemMaterialItemJTextField.getText());
-                mainView.createButton.removeActionListener(this);
+                mainView.createItemLayoutButton.removeActionListener(this);
             }
         };
-        mainView.createButton.addActionListener(actionListener);
-
-
+        mainView.createItemLayoutButton.addActionListener(actionListener);
     }
 
     @Override

@@ -38,20 +38,19 @@ public class MainView extends JPanel {
     public JPanel panel;
     private JList materialJList;
     public JTextField itemMaterialItemJTextField;
-    public JButton createButton;
+    public JButton saveLayoutButton;
     public JLabel titleActivityClassJLabel;
     public JLabel itemActivityClassJLabel;
     public JLabel titleMaterialItemJLabel;
     public JLabel nextIconJLabel;
     public JLabel prevIconJLabel;
     public JButton createItemLayoutButton;
-    public JLabel itemParentViewJLabel;
     public JLabel titleParentViewJLabel;
     public JTextField itemParentViewJTextField;
     public JList layoutItemsJList;
     public JLabel layoutItemsJLabel;
     public JPanel currentMaterialItemParametersJPanel;
-    public JLabel itemMaterialItemJLabel;
+    public JButton addToLayoutButton;
     private int lastIndex;
     public LinkedList<MaterialItem> tenClickedMaterialItems;
     public int currentItem = 0;
@@ -96,8 +95,7 @@ public class MainView extends JPanel {
         titleMaterialItemJLabel.setVisible(false);
         itemMaterialItemJTextField.setVisible(false);
         titleParentViewJLabel.setVisible(false);
-        itemParentViewJLabel.setVisible(false);
-        createButton.setVisible(false);
+        saveLayoutButton.setVisible(false);
         createItemLayoutButton.setVisible(false);
         prevIconJLabel.setVisible(false);
         prevIconJLabel.addMouseListener(new MouseListener() {
@@ -177,16 +175,13 @@ public class MainView extends JPanel {
      */
     private void $$$setupUI$$$() {
         panel = new JPanel();
-        panel.setLayout(new GridLayoutManager(5, 5, new Insets(10, 10, 10, 10), -1, -1));
+        panel.setLayout(new GridLayoutManager(6, 5, new Insets(10, 10, 10, 10), -1, -1));
         final JScrollPane scrollPane1 = new JScrollPane();
         panel.add(scrollPane1, new GridConstraints(1, 0, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         materialJList = new JList();
         scrollPane1.setViewportView(materialJList);
-        titleActivityClassJLabel = new JLabel();
-        titleActivityClassJLabel.setText("ActivityClass");
-        panel.add(titleActivityClassJLabel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         itemActivityClassJLabel = new JLabel();
-        itemActivityClassJLabel.setText("MainActivity");
+        itemActivityClassJLabel.setText("");
         panel.add(itemActivityClassJLabel, new GridConstraints(0, 2, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         layoutItemsJLabel = new JLabel();
         layoutItemsJLabel.setText("Layout items");
@@ -198,35 +193,35 @@ public class MainView extends JPanel {
         layoutItemsJList = new JList();
         panel.add(layoutItemsJList, new GridConstraints(2, 2, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         currentMaterialItemParametersJPanel = new JPanel();
-        currentMaterialItemParametersJPanel.setLayout(new GridLayoutManager(2, 4, new Insets(0, 0, 0, 0), -1, -1));
+        currentMaterialItemParametersJPanel.setLayout(new GridLayoutManager(3, 5, new Insets(0, 0, 0, 0), -1, -1));
         panel.add(currentMaterialItemParametersJPanel, new GridConstraints(3, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         titleParentViewJLabel = new JLabel();
         titleParentViewJLabel.setText("Parent ID");
         currentMaterialItemParametersJPanel.add(titleParentViewJLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        itemParentViewJTextField = new JTextField();
-        currentMaterialItemParametersJPanel.add(itemParentViewJTextField, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        itemMaterialItemJTextField = new JTextField();
-        itemMaterialItemJTextField.setText("");
-        currentMaterialItemParametersJPanel.add(itemMaterialItemJTextField, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        itemParentViewJLabel = new JLabel();
-        itemParentViewJLabel.setText("");
-        currentMaterialItemParametersJPanel.add(itemParentViewJLabel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         titleMaterialItemJLabel = new JLabel();
         titleMaterialItemJLabel.setText("");
         currentMaterialItemParametersJPanel.add(titleMaterialItemJLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        itemMaterialItemJLabel = new JLabel();
-        itemMaterialItemJLabel.setText("");
-        currentMaterialItemParametersJPanel.add(itemMaterialItemJLabel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         createItemLayoutButton = new JButton();
         createItemLayoutButton.setText("Create ");
-        currentMaterialItemParametersJPanel.add(createItemLayoutButton, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        createButton = new JButton();
-        createButton.setText("Save layout");
-        panel.add(createButton, new GridConstraints(4, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        currentMaterialItemParametersJPanel.add(createItemLayoutButton, new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        itemParentViewJTextField = new JTextField();
+        currentMaterialItemParametersJPanel.add(itemParentViewJTextField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        addToLayoutButton = new JButton();
+        addToLayoutButton.setText("Add to Layout");
+        currentMaterialItemParametersJPanel.add(addToLayoutButton, new GridConstraints(2, 0, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        itemMaterialItemJTextField = new JTextField();
+        itemMaterialItemJTextField.setText("");
+        currentMaterialItemParametersJPanel.add(itemMaterialItemJTextField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        saveLayoutButton = new JButton();
+        saveLayoutButton.setText("Save layout");
+        panel.add(saveLayoutButton, new GridConstraints(5, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         nextIconJLabel = new JLabel();
         nextIconJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/next_arrow.png")));
         nextIconJLabel.setText("");
         panel.add(nextIconJLabel, new GridConstraints(2, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        titleActivityClassJLabel = new JLabel();
+        titleActivityClassJLabel.setText("");
+        panel.add(titleActivityClassJLabel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

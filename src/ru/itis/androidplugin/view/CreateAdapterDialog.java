@@ -41,9 +41,10 @@ public class CreateAdapterDialog extends JDialog {
         childRecyclerView.setParent(parentRecyclerView);
         parentRecyclerView.setСhild(childRecyclerView);
 
-        PluginManager.getLogger().debug("parentRecyclerView.mId=" + parentRecyclerView.mId);
-        mainView.itemParentViewJLabel.setVisible(true);
-        mainView.itemParentViewJLabel.setText(parentRecyclerView.mId);
+
+        //mainView.itemParentViewJLabel.setVisible(true);
+        //mainView.itemParentViewJLabel.setText(parentRecyclerView.mId);
+        newItemJTextField.setText("item_" + parentRecyclerView.mId.toLowerCase());
 
         createLayoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

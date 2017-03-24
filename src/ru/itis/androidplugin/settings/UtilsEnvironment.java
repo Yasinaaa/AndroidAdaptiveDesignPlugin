@@ -1,28 +1,21 @@
 package ru.itis.androidplugin.settings;
 
-import com.*;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.command.UndoConfirmationPolicy;
-import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiPackage;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiUtilBase;
+import ru.itis.androidplugin.elements.values.Attrs;
 
 /**
  * Created by yasina on 10.02.17.
@@ -30,6 +23,7 @@ import com.intellij.psi.util.PsiUtilBase;
 public class UtilsEnvironment {
 
     public static void insertInEditor(final String text) {
+        new Attrs().addAttrsToProject();
         Project project = getOpenProject();
         Editor editor = getEditor(project);
 
@@ -87,47 +81,5 @@ public class UtilsEnvironment {
         return null;
     }
 
-    private static void insertNewClassToProject(final String text) {
-        final Project project = getOpenProject();
-       /* try {
-            if (project == null) {
-                throw new GenerateViewPresenterAction.CancellationException("Unable to retrieve project");
-            }
-            final VirtualFile layoutFile = getSelectedLayoutFile(e);
-            Module module = getModuleOfFile(project, layoutFile);
-            final AndroidManifest androidManifest = getAndroidManifest(module, layoutFile);
-            AndroidView androidView = getAndroidViews(layoutFile, project);
-
-            final CodeGenerationPattern pattern = selectCodeGenerationPattern(project, layoutFile);
-            final AndroidView filteredViews = selectViews(project, androidView);
-            PsiPackage selectedPackage = selectDestinationPackage(module, androidManifest);
-            final PsiDirectory resultDirectory = getPsiDirectoryFromPackage(selectedPackage);
-            String fileName = selectJavaClassName(project, layoutFile, pattern);
-            throwIfFileAlreadyExists(resultDirectory, fileName);
-            String className = FileUtil.removeExtension(fileName);
-
-            final String outputClassName = selectedPackage.getQualifiedName() + "." + className;
-            pattern.setup(project);
-            new WriteCommandAction.Simple(project) {
-                @Override
-                protected void run() throws Throwable {
-                    PsiClass resultClass = pattern.generateOutput(project, androidManifest, filteredViews,
-                            layoutFile.getName(), outputClassName);
-                    saveClass(resultDirectory, resultClass);
-                }
-            }.execute();
-            ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                @Override
-                public void run() {
-                }
-            });
-        } catch (GenerateViewPresenterAction.CancellationException ignored) {
-            if (ignored.getMessage() != null && project != null) {
-                Messages.showErrorDialog(project, ignored.getMessage(), "Error");
-            }
-        }
-
-        */
-    }
 
 }

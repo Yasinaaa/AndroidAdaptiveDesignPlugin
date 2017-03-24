@@ -1,12 +1,13 @@
 package ru.itis.androidplugin.generation;
 
-import com.GenerateViewPresenterAction;
+import com.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.Messages;
@@ -41,8 +42,11 @@ public class NewLayoutsCreating {
         final VirtualFile layoutFile = FileDocumentManager.getInstance().getFile(document);
         String path = layoutFile.getPath().substring(0, layoutFile.getPath().lastIndexOf("/"));
 
+        Module module = getModuleOfFile(layoutFile);
+        final AndroidManifest androidManifest = getAndroidManifest(module, layoutFile);
+        AndroidView androidView = getAndroidViews(layoutFile);
+
         String newPath = createPathToLayoutFolder(layoutFile) + "/" + "layout-sw600dp";
-        mainView.itemParentViewJTextField.setText(newPath);
         System.out.println(newPath);
         new WriteCommandAction.Simple(PluginProject.mProject) {
             @Override
@@ -112,4 +116,56 @@ public class NewLayoutsCreating {
         return path;
     }
 
+    private AndroidManifest getAndroidManifest(Module module, VirtualFile layoutFile) {
+        VirtualFile manifestFile = getManifestFile(module, layoutFile);
+        AndroidManifest androidManifest = new AndroidManifestParser().parse(manifestFile);
+        if (androidManifest == null) {
+            throw new GenerateViewPresenterAction.CancellationException("Failed to read AndroidManifest.xml");
+        }
+        return androidManifest;
+    }
+    private VirtualFile getManifestFile(Module module, VirtualFile layoutFile) {
+        ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+        VirtualFile[] contentRoots = moduleRootManager.getContentRoots();
+        VirtualFile result = lookupForManifest(layoutFile.getParent().getParent(), contentRoots);
+        if (result == null) {
+            throw new GenerateViewPresenterAction.CancellationException("AndroidManifest.xml not found");
+        }
+        return result;
+    }
+    private VirtualFile lookupForManifest(VirtualFile dir, VirtualFile[] topDirs) {
+        //noinspection UnsafeVfsRecursion
+        for (VirtualFile file : dir.getChildren()) {
+            if (!file.isDirectory() && "AndroidManifest.xml".equals(file.getName())) {
+                return file;
+            }
+        }
+
+        for (VirtualFile topDir : topDirs) {
+            if (topDir.equals(dir)) {
+                return null;
+            }
+        }
+
+        VirtualFile parent = dir.getParent();
+        if (!dir.isDirectory()) {
+            return null;
+        }
+
+        return lookupForManifest(parent, topDirs);
+    }
+
+    private AndroidView getAndroidViews(VirtualFile layoutFile) {
+        AndroidLayoutParser parser = new AndroidLayoutParser(PluginProject.mProject);
+        return parser.parse(layoutFile);
+    }
+
+    private Module getModuleOfFile(VirtualFile layoutFile) {
+        ProjectRootManager rootManager = ProjectRootManager.getInstance(PluginProject.mProject);
+        Module module = rootManager.getFileIndex().getModuleForFile(layoutFile);
+        if (module == null) {
+            throw new GenerateViewPresenterAction.CancellationException("Failed to determine module with selected layout");
+        }
+        return module;
+    }
 }

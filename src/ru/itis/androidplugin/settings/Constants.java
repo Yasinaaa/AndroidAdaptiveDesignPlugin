@@ -13,6 +13,7 @@ public class Constants {
     public static final String THIS = "this";
     public static final String SET_MATERIAL_ITEM = "set material %s";
     public static final String BACKGROUND_ITEM = "#E3F2FD";
+    public static final String XMLNS = "xmlns:app=\"http://schemas.android.com/apk/res-auto\"";
 
     private static MaterialRecyclerView materialRecyclerView = new MaterialRecyclerView();
     private static MaterialTextView materialTextView = new MaterialTextView();

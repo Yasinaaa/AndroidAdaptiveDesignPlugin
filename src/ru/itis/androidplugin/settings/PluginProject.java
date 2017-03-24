@@ -8,6 +8,7 @@ import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.messages.MessageBus;
+import groovy.ui.SystemOutputInterceptor;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -26,6 +27,8 @@ public class PluginProject implements ProjectComponent {
     @Override
     public void initComponent() {
         // TODO: insert component initialization logic here
+
+        System.out.println("mProject.getBasePath()= " + mProject.getBasePath());
     }
 
     @Override
@@ -68,9 +71,13 @@ public class PluginProject implements ProjectComponent {
     @Override
     public void projectClosed() {
         // called when project is being closed
+        mMessageBus.dispose();
+        System.out.println("mMessageBus.dispose()");
+
     }
 
-    public void onFileChangedListener(){
 
+    public void onFileChangedListener(){
+        System.out.println();
     }
 }

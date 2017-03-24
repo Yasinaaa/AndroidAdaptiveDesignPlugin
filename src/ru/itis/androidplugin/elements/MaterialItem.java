@@ -1,5 +1,10 @@
 package ru.itis.androidplugin.elements;
 
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import ru.itis.androidplugin.settings.Constants;
+import ru.itis.androidplugin.settings.PluginProject;
 import ru.itis.androidplugin.view.MainView;
 
 import javax.imageio.ImageIO;
@@ -24,8 +29,9 @@ public abstract class MaterialItem {
 
         try {
              mIcon = new ImageIcon(ImageIO.read(getClass().getResource(iconPath)));
-
         }catch (IOException ignored) {}
+
+
     }
 
     public void setId(String id){
@@ -64,5 +70,4 @@ public abstract class MaterialItem {
     public void hideNotNeededThings(MainView mainView){
 
     }
-
 }
