@@ -36,7 +36,7 @@ public class NewLayoutsCreating {
 
     public NewLayoutsCreating(){}
 
-    public void initAllScreenLayouts(MainView mainView, String name) {
+    public void initAllScreenLayouts(String name) {
         FileEditorManager manager = FileEditorManager.getInstance(PluginProject.mProject);
         Document document = manager.getSelectedTextEditor().getDocument();
         final VirtualFile layoutFile = FileDocumentManager.getInstance().getFile(document);
@@ -60,12 +60,12 @@ public class NewLayoutsCreating {
             }
         });
     }
-    private void writeAndroidStringToLocal(String path, String name) {
+    private VirtualFile writeAndroidStringToLocal(String path, String name) {
         File file = new File(path);
         file.mkdir();
         file = new File(path+name);
 
-        final VirtualFile virtualFile;
+        VirtualFile virtualFile = null;
         boolean fileExits = true;
         try {
             //file.getParentFile().mkdirs();
@@ -86,18 +86,20 @@ public class NewLayoutsCreating {
         if (fileExits) {
             virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
             if (virtualFile == null)
-                return;
+                return null;
+            /*VirtualFile finalVirtualFile = virtualFile;
             virtualFile.refresh(true, false, new Runnable() {
                 @Override
                 public void run() {
-                    openFile(virtualFile);
+                    openFile(finalVirtualFile);
                 }
-            });
+            });*/
         } else {
             virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file);
-            openFile(virtualFile);
+            //openFile(virtualFile);
 
         }
+        return virtualFile;
     }
 
     private void openFile(VirtualFile virtualFile){

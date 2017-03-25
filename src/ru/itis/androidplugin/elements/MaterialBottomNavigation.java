@@ -1,12 +1,8 @@
 package ru.itis.androidplugin.elements;
 
-import ru.itis.androidplugin.settings.UtilsEnvironment;
-import ru.itis.androidplugin.view.CreateAdapterDialog;
 import ru.itis.androidplugin.view.MainView;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by yasina on 09.03.17.
@@ -31,7 +27,7 @@ public class MaterialBottomNavigation extends MaterialItem {
 
 
     @Override
-    public MaterialItem getСhild() {
+    public MaterialItem[] getСhild() {
         return null;
     }
 

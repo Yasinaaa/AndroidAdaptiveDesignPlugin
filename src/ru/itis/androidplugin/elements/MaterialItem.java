@@ -1,10 +1,5 @@
 package ru.itis.androidplugin.elements;
 
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileEditor.FileEditorManager;
-import ru.itis.androidplugin.settings.Constants;
-import ru.itis.androidplugin.settings.PluginProject;
 import ru.itis.androidplugin.view.MainView;
 
 import javax.imageio.ImageIO;
@@ -36,14 +31,25 @@ public abstract class MaterialItem {
 
     public void setId(String id){
         mId = id;
-        mViewParametrs = String.format(mPattern, id);
     }
 
-    public MaterialItem getСhild() {
+    public void setLayoutPath(String layoutName){
+        mLayoutPath = layoutName;
+    }
+
+    public String getLayoutPath(){
+        return mLayoutPath;
+    }
+
+    public void setViewParameters(){
+
+    }
+
+    public MaterialItem[] getСhild() {
         return null;
     }
 
-    public void setСhild(MaterialItem child) {}
+    public void setСhild(MaterialItem[] child) {}
 
     public void setView(MainView mainView) {
 

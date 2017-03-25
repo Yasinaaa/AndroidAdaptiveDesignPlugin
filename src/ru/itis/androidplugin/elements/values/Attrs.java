@@ -1,5 +1,6 @@
 package ru.itis.androidplugin.elements.values;
 
+import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.settings.PluginProject;
 
 import java.io.File;
@@ -16,7 +17,7 @@ import java.nio.file.StandardCopyOption;
 public class Attrs {
 
     public static final String ATTRS = "/xmls/attrs.xml";
-    public static final String PATH_VALUES = "/app/src/main/res/values/attrs.xml";
+    public static final String PATH_VALUES = String.format("%sattrs.xml",Constants.VALUES_PATH);
     public static final String PATH = String.format("%s" + PATH_VALUES, PluginProject.mProject.getBasePath());
 
     public Attrs(){

@@ -14,6 +14,32 @@ public class Constants {
     public static final String SET_MATERIAL_ITEM = "set material %s";
     public static final String BACKGROUND_ITEM = "#E3F2FD";
     public static final String XMLNS = "xmlns:app=\"http://schemas.android.com/apk/res-auto\"";
+    public static final String RES_PATH = "/app/src/main/res/";
+    public static final String VALUES_PATH = String.format("%s/values/", RES_PATH);
+
+    //dimens {
+        // elements text {
+        public static final String ACTIVITY_HORISONTAL_MARGIN =
+                "<dimen name=\"activity_horizontal_margin\">%ddp</dimen>";
+        public static final String ACTIVITY_VERTICAL_MARGIN =
+                "<dimen name=\"activity_vertical_margin\">%ddp</dimen>";
+        public static final String ACTIVITY_DETAIL_VERTICAL_MARGIN =
+                "<dimen name=\"activity_detail_vertical_margin\">88dp</dimen>";
+        // elements text }
+
+        // mobile constants {
+        public static final int M_ACTIVITY_HORISONTAL_MARGIN = 16;
+        public static final int M_ACTIVITY_VERTICAL_MARGIN = 16;
+        public static final int M_ACTIVITY_DETAIL_VERTICAL_MARGIN = 88;
+
+        public static final String MDPI_ACTIVITY_HORISONTAL_MARGIN =
+                String.format(ACTIVITY_HORISONTAL_MARGIN, M_ACTIVITY_HORISONTAL_MARGIN);
+        public static final String MDPI_ACTIVITY_VERTICAL_MARGIN =
+                String.format(ACTIVITY_VERTICAL_MARGIN, M_ACTIVITY_VERTICAL_MARGIN);
+        public static final String MDPI_ACTIVITY_DETAIL_VERTICAL_MARGIN =
+                String.format(ACTIVITY_DETAIL_VERTICAL_MARGIN, M_ACTIVITY_DETAIL_VERTICAL_MARGIN);
+        // mobile constants }
+    //dimens }
 
     private static MaterialRecyclerView materialRecyclerView = new MaterialRecyclerView();
     private static MaterialTextView materialTextView = new MaterialTextView();

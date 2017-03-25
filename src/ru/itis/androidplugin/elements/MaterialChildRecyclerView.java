@@ -38,7 +38,6 @@ public class MaterialChildRecyclerView extends MaterialItem{
         mainView.itemMaterialItemJTextField.setEnabled(true);
         mainView.itemMaterialItemJTextField.setText(StringUtils.capitalize(parentRecyclerView.mId)+"Adapter");
 
-        mainView.createItemLayoutButton.setText("Create Adapter");
         mainView.titleMaterialItemJLabel.setText("Adapter Class name");
         mainView.itemParentViewJTextField.setVisible(true);
         mainView.itemParentViewJTextField.setEnabled(false);
@@ -49,10 +48,10 @@ public class MaterialChildRecyclerView extends MaterialItem{
             public void actionPerformed(ActionEvent e) {
                 GenerateClass generateClass = new GenerateClass();
                 generateClass.generateClass(mainView.itemMaterialItemJTextField.getText());
-                mainView.createItemLayoutButton.removeActionListener(this);
+                //mainView.itemOpenLayoutButton.removeActionListener(this);
             }
         };
-        mainView.createItemLayoutButton.addActionListener(actionListener);
+        //mainView.itemOpenLayoutButton.addActionListener(actionListener);
     }
 
     @Override

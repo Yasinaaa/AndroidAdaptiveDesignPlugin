@@ -54,7 +54,9 @@ public class LayoutGenerator {
     public LayoutGenerator() {
     }
 
-    public void insertNewLayout(String name){
+
+    public VirtualFile insertNewLayout(String name){
+        final VirtualFile[] virtualFile = {null};
 
         try {
             if (project == null) {
@@ -66,26 +68,27 @@ public class LayoutGenerator {
             String path = layoutFile.getPath().substring(0,layoutFile.getPath().lastIndexOf("/"));
             String newPath =  createPathToLayoutFolder(path, layoutFile) + "/" + name + ".xml";
 
+            File file = new File(newPath);
+            virtualFile[0] = LocalFileSystem.getInstance().findFileByIoFile(file);
 
-            new WriteCommandAction.Simple(project) {
-                @Override
-                protected void run() throws Throwable {
-                    writeAndroidStringToLocal(newPath);
-                }
-            }.execute();
-            ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                @Override
-                public void run() {
-                }
-            });
+            if (virtualFile[0] == null) {
+                new WriteCommandAction.Simple(project) {
+                    @Override
+                    protected void run() throws Throwable {
+                        virtualFile[0] = writeAndroidStringToLocal(newPath);
+                    }
+                }.execute();
+            }
+
         } catch (GenerateViewPresenterAction.CancellationException ignored) {
             if (ignored.getMessage() != null && project != null) {
                 Messages.showErrorDialog(project, ignored.getMessage(), "Error");
             }
         }
+        return virtualFile[0];
     }
 
-    private void writeAndroidStringToLocal(String path) {
+    private VirtualFile writeAndroidStringToLocal(String path) {
         File file = new File(path);
         final VirtualFile virtualFile;
         boolean fileExits = true;
@@ -108,24 +111,22 @@ public class LayoutGenerator {
         if (fileExits) {
             virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
             if (virtualFile == null)
-                return;
-            virtualFile.refresh(true, false, new Runnable() {
+                return null;
+            /*virtualFile.refresh(true, false, new Runnable() {
                 @Override
                 public void run() {
                     openFile(virtualFile);
                 }
-            });
+            });*/
         } else {
             virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file);
-            openFile(virtualFile);
-
         }
+        return virtualFile;
     }
 
-    private void openFile(VirtualFile virtualFile){
+    public void openFile(VirtualFile virtualFile){
         FileEditorManager fileEditorManager = FileEditorManager.getInstance(PluginProject.mProject);
         fileEditorManager.openFile(virtualFile, true, true);
-
     }
 
     private String createPathToLayoutFolder(String name, VirtualFile file){

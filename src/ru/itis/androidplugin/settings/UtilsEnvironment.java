@@ -16,6 +16,8 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiUtilBase;
 import ru.itis.androidplugin.elements.values.Attrs;
+import ru.itis.androidplugin.elements.values.Dimens;
+import ru.itis.androidplugin.elements.values.XmlTypes;
 
 /**
  * Created by yasina on 10.02.17.
@@ -24,6 +26,9 @@ public class UtilsEnvironment {
 
     public static void insertInEditor(final String text) {
         new Attrs().addAttrsToProject();
+        Dimens dimens = new Dimens();
+        dimens.addLines(dimens.getActivityDimens());
+
         Project project = getOpenProject();
         Editor editor = getEditor(project);
 
