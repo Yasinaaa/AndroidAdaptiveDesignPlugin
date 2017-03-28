@@ -3,8 +3,6 @@ package ru.itis.androidplugin.settings;
 import com.*;
 import com.intellij.ide.projectView.impl.nodes.PackageUtil;
 import com.intellij.ide.util.PackageChooserDialog;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
@@ -14,7 +12,6 @@ import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.JavaProjectRootsUtil;
-import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -24,11 +21,9 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiPackage;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
-import com.intellij.psi.xml.XmlFile;
 import com.intellij.ui.CheckboxTreeBase;
 import com.intellij.ui.CheckedTreeNode;
-import ru.itis.androidplugin.settings.interfaces.AbstractLayoutGenerationPattern;
-import ru.itis.androidplugin.settings.interfaces.LayoutPattern;
+import ru.itis.androidplugin.settings.interfaces.InsertMetodToClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +70,7 @@ public class InsertNewThing {
             new WriteCommandAction.Simple(project) {
                 @Override
                 protected void run() throws Throwable {
-                    AbstractLayoutGenerationPattern layoutGenerationPattern = new AbstractLayoutGenerationPattern();
+                    InsertMetodToClass layoutGenerationPattern = new InsertMetodToClass();
                     PsiClass resultClass = layoutGenerationPattern.generateOutput(project, name, "Holder");
                     saveClass(resultDirectory, resultClass);
                 }

@@ -16,11 +16,24 @@
 
 package ru.itis.androidplugin.view;
 
+import com.intellij.openapi.fileChooser.FileChooser;
+import com.intellij.openapi.fileChooser.FileChooserDescriptor;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import ru.itis.androidplugin.adapters.ViewRender;
 import ru.itis.androidplugin.elements.MaterialItem;
+import ru.itis.androidplugin.settings.ActivityInit;
 import ru.itis.androidplugin.settings.Constants;
+import ru.itis.androidplugin.settings.FileParameters;
 import ru.itis.androidplugin.settings.PluginProject;
 
 import javax.swing.*;
@@ -28,7 +41,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.LinkedList;
+import java.util.Observer;
 
 /**
  * Created by yasina on 09.03.17.
@@ -40,7 +55,7 @@ public class MainView extends JPanel {
     public JTextField itemMaterialItemJTextField;
     public JButton saveLayoutButton;
     public JLabel titleActivityClassJLabel;
-    public JLabel itemActivityClassJLabel;
+    public JLabel addActivityClassJLabel;
     public JLabel titleMaterialItemJLabel;
     public JLabel nextIconJLabel;
     public JLabel iconPrevJLabel;
@@ -61,10 +76,13 @@ public class MainView extends JPanel {
     public JLabel openLoadingLayoutJLabel;
     public JLabel removeEmptyLayoutJLabel;
     public JLabel removeLoadingLayoutJLabel;
+    private JLabel itemActivityClassJLabel;
     private int lastIndex;
     public LinkedList<MaterialItem> tenClickedMaterialItems;
     public int currentItem = 0;
     public MaterialItem clickedMaterialItem;
+    private Observer fileObserver;
+    private String path;
 
     public MainView() {
         //TODO change this part
@@ -80,6 +98,7 @@ public class MainView extends JPanel {
     }
 
     private void init(DefaultListModel<MaterialItem> listModel) {
+        setObserverToOwnerClass();
         tenClickedMaterialItems = new LinkedList<MaterialItem>();
 
         materialJList.setCellRenderer(new ViewRender());
@@ -118,6 +137,51 @@ public class MainView extends JPanel {
                 nextClicked();
             }
         });
+        addActivityClassJLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                File file = new File(PluginProject.mProject.getBasePath() + "/app/src");
+                VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
+                FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(true, true, false, false, false, false);
+                VirtualFile selectedFile = FileChooser.chooseFile(fileChooserDescriptor, PluginProject.mProject, virtualFile);
+                path = selectedFile.getCanonicalPath();
+
+                //todo: change layout's line (if it already exists) tools:context="..."
+                if (!path.contains(".java")) {
+                    JFrame frame = new JFrame();
+                    Object stringArray[] = {"Choose java", "Cancel"};
+                    JOptionPane.showOptionDialog(frame, "It's not Java class", "Error",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray,
+                            stringArray[0]);
+                } else {
+                    //todo: add to layout tools:context="..."
+                    itemActivityClassJLabel.setText(path.substring(path.indexOf("java") + 5, path.lastIndexOf(".java")).replaceAll("/", "."));
+                }
+            }
+        });
+
+
+        saveLayoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("save layout btn clicked");
+                /*String newPath = path.substring(path.lastIndexOf("/"), path.length());
+                NewLayoutsCreating newLayoutsCreating = new NewLayoutsCreating();
+                newLayoutsCreating.initAllScreenLayouts(newPath);*/
+                path = itemActivityClassJLabel.getText();
+                //PsiClass cls = JavaPsiFacade.getInstance(PluginProject.mProject).findClass("ru.itis.android.training.MainActivity", GlobalSearchScope.allScope(PluginProject.mProject));
+                new ActivityInit().addInitToClass(path, PluginProject.mLayoutPath);
+                //saveLayoutButton.removeActionListener(this);
+                /*//todo: temp
+                PsiClass psiClass = JavaPsiFacade.getInstance(PluginProject.mProject).
+                        findClass("ru.itis.android.training.MainActivity",
+                                GlobalSearchScope.allScope(PluginProject.mProject));
+
+                PsiElementFactory elementFactory = JavaPsiFacade.getInstance(PluginProject.mProject).getElementFactory();
+                psiClass.add(elementFactory.createMethodFromText("public int describeContents() { return 0; }", null));
+
+                //todo: temp*/
+            }
+        });
     }
 
 
@@ -141,26 +205,20 @@ public class MainView extends JPanel {
      */
     private void $$$setupUI$$$() {
         panel = new JPanel();
-        panel.setLayout(new GridLayoutManager(6, 6, new Insets(10, 10, 10, 10), -1, -1));
+        panel.setLayout(new GridLayoutManager(6, 17, new Insets(10, 10, 10, 10), -1, -1));
         final JScrollPane scrollPane1 = new JScrollPane();
-        panel.add(scrollPane1, new GridConstraints(1, 0, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel.add(scrollPane1, new GridConstraints(1, 0, 1, 16, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         materialJList = new JList();
+        final DefaultListModel defaultListModel1 = new DefaultListModel();
+        materialJList.setModel(defaultListModel1);
         scrollPane1.setViewportView(materialJList);
-        itemActivityClassJLabel = new JLabel();
-        itemActivityClassJLabel.setText("");
-        panel.add(itemActivityClassJLabel, new GridConstraints(0, 2, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        itemsLayoutsJLabel = new JLabel();
-        itemsLayoutsJLabel.setText("Layout items");
-        panel.add(itemsLayoutsJLabel, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         iconPrevJLabel = new JLabel();
         iconPrevJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/back_arrow.png")));
         iconPrevJLabel.setText("");
         panel.add(iconPrevJLabel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        itemsLayoutJList = new JList();
-        panel.add(itemsLayoutJList, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         currentMaterialItemParametersJPanel = new JPanel();
         currentMaterialItemParametersJPanel.setLayout(new GridLayoutManager(6, 4, new Insets(0, 0, 0, 0), -1, -1));
-        panel.add(currentMaterialItemParametersJPanel, new GridConstraints(3, 0, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel.add(currentMaterialItemParametersJPanel, new GridConstraints(3, 0, 1, 16, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         titleParentViewJLabel = new JLabel();
         titleParentViewJLabel.setText("Parent ID");
         currentMaterialItemParametersJPanel.add(titleParentViewJLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -212,16 +270,28 @@ public class MainView extends JPanel {
         openLoadingLayoutJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/go.png")));
         openLoadingLayoutJLabel.setText("");
         currentMaterialItemParametersJPanel.add(openLoadingLayoutJLabel, new GridConstraints(4, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        saveLayoutButton = new JButton();
+        saveLayoutButton.setText("Create another versions of layout");
+        panel.add(saveLayoutButton, new GridConstraints(5, 0, 1, 16, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        itemActivityClassJLabel = new JLabel();
+        itemActivityClassJLabel.setText("");
+        panel.add(itemActivityClassJLabel, new GridConstraints(0, 2, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         titleActivityClassJLabel = new JLabel();
-        titleActivityClassJLabel.setText("");
-        panel.add(titleActivityClassJLabel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        titleActivityClassJLabel.setText("Own Class");
+        panel.add(titleActivityClassJLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        itemsLayoutsJLabel = new JLabel();
+        itemsLayoutsJLabel.setText("Layout items");
+        panel.add(itemsLayoutsJLabel, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        addActivityClassJLabel = new JLabel();
+        addActivityClassJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/choose.png")));
+        addActivityClassJLabel.setText("");
+        panel.add(addActivityClassJLabel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        itemsLayoutJList = new JList();
+        panel.add(itemsLayoutJList, new GridConstraints(2, 2, 1, 9, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         nextIconJLabel = new JLabel();
         nextIconJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/next_arrow.png")));
         nextIconJLabel.setText("");
-        panel.add(nextIconJLabel, new GridConstraints(2, 3, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        saveLayoutButton = new JButton();
-        saveLayoutButton.setText("Create another versions of layout");
-        panel.add(saveLayoutButton, new GridConstraints(5, 0, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel.add(nextIconJLabel, new GridConstraints(2, 15, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
@@ -285,5 +355,11 @@ public class MainView extends JPanel {
         materialItem.setView(MainView.this);
     }
 
+    private void setObserverToOwnerClass() {
+
+        fileObserver = new FileParameters.FileOwnerListener(itemActivityClassJLabel);
+        itemActivityClassJLabel.setText(FileParameters.FileOwnerListener.getOwner(PluginProject.mLayoutPath));
+        PluginProject.fileParameters.addObserver(fileObserver);
+    }
 
 }

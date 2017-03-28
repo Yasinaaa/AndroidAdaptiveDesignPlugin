@@ -17,6 +17,7 @@ public abstract class MaterialItem {
     public String mPattern;
     public String mId;
     public String mLayoutPath;
+    public String mClassPath;
 
     public MaterialItem(String viewName, String pattern, String iconPath) {
         this.mViewName = viewName;
@@ -75,5 +76,13 @@ public abstract class MaterialItem {
 
     public void hideNotNeededThings(MainView mainView){
 
+    }
+
+    public String getmClassPath() {
+        return mClassPath;
+    }
+
+    public void setmClassPath(String mClassPath) {
+        this.mClassPath = mClassPath;
     }
 }

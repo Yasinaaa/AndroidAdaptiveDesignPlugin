@@ -23,6 +23,10 @@ public class MaterialChildRecyclerView extends MaterialItem{
     private String childItemPath = null;
     private MaterialItem parentRecyclerView = null;
     private ImageIcon mIcon;
+    private String[] childRecyclerView = new String[]{
+      "item_", "empty_", "loading_"
+    };
+    private String type;
 
     public MaterialChildRecyclerView(){
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
@@ -64,4 +68,11 @@ public class MaterialChildRecyclerView extends MaterialItem{
         this.parentRecyclerView = parent;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

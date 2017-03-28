@@ -1,7 +1,6 @@
 package ru.itis.androidplugin.generation;
 
 import com.GenerateViewPresenterAction;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -15,8 +14,6 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import ru.itis.androidplugin.settings.PluginProject;
-import ru.itis.androidplugin.settings.interfaces.AbstractLayoutGenerationPattern;
-import ru.itis.androidplugin.settings.interfaces.LayoutPattern;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,7 +62,7 @@ public class LayoutGenerator {
 
             Document document = editor.getDocument();
             final VirtualFile layoutFile = FileDocumentManager.getInstance().getFile(document);
-            String path = layoutFile.getPath().substring(0,layoutFile.getPath().lastIndexOf("/"));
+            String path = layoutFile.getPath().substring(0, layoutFile.getPath().lastIndexOf("/"));
             String newPath =  createPathToLayoutFolder(path, layoutFile) + "/" + name + ".xml";
 
             File file = new File(newPath);

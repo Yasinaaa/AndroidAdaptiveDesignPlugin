@@ -33,6 +33,7 @@ public class ToolWindowFactory implements com.intellij.openapi.wm.ToolWindowFact
 
     //TODO: get title from Settings and remove this item
     String mTitle = "Easy Adaptive Design";
+    public static com.intellij.openapi.wm.ToolWindow pluginToolWindow;
 
 
     @Override
@@ -40,7 +41,8 @@ public class ToolWindowFactory implements com.intellij.openapi.wm.ToolWindowFact
         ToolWindow newToolWindow = new ToolWindow();
         Content content = ContentFactory.SERVICE.getInstance().createContent(newToolWindow, "", false);
 
-        toolWindow.setAvailable(true, null);
+        pluginToolWindow = toolWindow;
+        //toolWindow.setAvailable(true, null);
         toolWindow.setToHideOnEmptyContent(true);
         toolWindow.setTitle(mTitle);
 

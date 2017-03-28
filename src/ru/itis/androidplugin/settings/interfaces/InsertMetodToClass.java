@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.xml.util.XmlPsiUtil;
@@ -23,26 +24,25 @@ import java.util.Locale;
 /**
  * Created by yasina on 24.02.17.
  */
-public class AbstractLayoutGenerationPattern implements CodeGenerationPattern {
-    @Override
+public class InsertMetodToClass {
+
     public String getName() {
         return null;
     }
 
-    @Override
     public String getSuggestedClassName(String layoutFileName) {
         return layoutFileName;
     }
 
-    @Override
-    public PsiClass generateOutput(Project project,
-                                   String layoutFileName, String outputClass) {
+    public static PsiClass generateOutput(PsiClass psiClass,
+                                   AndroidView androidView) {
 
-        PsiElementFactory factory = JavaPsiFacade.getElementFactory(project);
+        /*PsiElementFactory factory = JavaPsiFacade.getElementFactory(project);
 
-        PsiClass psiClass = factory.createClass(ClassHelper.getClassNameFromFullQualified(outputClass));
+        factory.createClass(ClassHelper.getClassNameFromFullQualified(outputClass));
 
-
+        PsiClass psiClass = JavaPsiFacade.getInstance(project).findClass("MainActivity",
+                GlobalSearchScope.allScope(project));*/
        /* PsiElement psiElement = factory.createTypeElement()
         PsiResourceVariable psiFile = factory.createResourceFromText();*/
 
@@ -50,7 +50,20 @@ public class AbstractLayoutGenerationPattern implements CodeGenerationPattern {
         return psiClass;
     }
 
-    public PsiField createField(PsiClass viewClass, String fieldName) {
+    public static PsiClass generateOutput(Project project,
+                                          String layoutName, String outputClass) {
+
+        PsiElementFactory factory = JavaPsiFacade.getElementFactory(project);
+
+        PsiClass psiClass = factory.createClass(ClassHelper.getClassNameFromFullQualified(outputClass));
+       /* PsiElement psiElement = factory.createTypeElement()
+        PsiResourceVariable psiFile = factory.createResourceFromText();*/
+
+        createField(psiClass, "dd");
+        return psiClass;
+    }
+
+    public static PsiField createField(PsiClass viewClass, String fieldName) {
         PsiElementFactory factory = JavaPsiFacade.getElementFactory(viewClass.getProject());
         PsiField field = factory.createField(fieldName, factory.createType(viewClass));
         PsiModifierList modifierList = field.getModifierList();
@@ -62,7 +75,7 @@ public class AbstractLayoutGenerationPattern implements CodeGenerationPattern {
         return field;
     }
 
-    @Override
+
     public void setup(Project project) {
 
     }

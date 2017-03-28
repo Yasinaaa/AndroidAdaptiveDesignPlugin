@@ -19,6 +19,7 @@ public class PluginProject implements ProjectComponent {
     public static Project mProject;
     public static String mLayoutPath;
     private MessageBus mMessageBus;
+    public static FileParameters fileParameters;
 
     public PluginProject(Project project) {
         mProject = project;
@@ -27,6 +28,7 @@ public class PluginProject implements ProjectComponent {
     @Override
     public void initComponent() {
         // TODO: insert component initialization logic here
+        fileParameters = new FileParameters();
 
         System.out.println("mProject.getBasePath()= " + mProject.getBasePath());
     }
@@ -44,7 +46,7 @@ public class PluginProject implements ProjectComponent {
 
     @Override
     public void projectOpened() {
-        // called when project is opened
+
         mMessageBus = mProject.getMessageBus();
         mMessageBus.connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new FileEditorManagerAdapter() {
             @Override
@@ -61,6 +63,7 @@ public class PluginProject implements ProjectComponent {
             @Override
             public void selectionChanged(@NotNull FileEditorManagerEvent event) {
                 mLayoutPath = event.getNewFile().getPath();
+                //fileParameters.setFilePath(mLayoutPath);
                 System.out.println("selectionChanged=" + mLayoutPath);
                 super.selectionChanged(event);
 
@@ -77,7 +80,4 @@ public class PluginProject implements ProjectComponent {
     }
 
 
-    public void onFileChangedListener(){
-        System.out.println();
-    }
 }

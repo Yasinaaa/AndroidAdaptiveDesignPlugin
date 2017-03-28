@@ -41,15 +41,16 @@ public class UtilsEnvironment {
                 Integer textLen = text.length();
                 Document document = editor.getDocument();
 
-                if (selectionModel.hasSelection()) {
+                //todo: changed to addition after </> or </%s>
+                /*if (selectionModel.hasSelection()) {
                     int selectionStart = selectionModel.getSelectionStart();
                     document.replaceString(selectionStart, selectionModel.getSelectionEnd(), text);
                     selectionModel.removeSelection();
                     editor.getCaretModel().moveToOffset(selectionStart + textLen);
-                } else {
-                    document.insertString(currentOffset, text);
-                    editor.getCaretModel().moveToOffset(currentOffset + textLen);
-                }
+                } else {*/
+                document.insertString(currentOffset, text);
+                editor.getCaretModel().moveToOffset(currentOffset + textLen);
+                //}
 
                 VirtualFile file = FileDocumentManager.getInstance().getFile(document);
                 if (file != null) {

@@ -1,7 +1,12 @@
 package ru.itis.androidplugin.elements;
 
+import com.intellij.openapi.fileChooser.FileChooser;
+import com.intellij.openapi.fileChooser.FileChooserDescriptor;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import ru.itis.androidplugin.generation.LayoutGenerator;
 import ru.itis.androidplugin.generation.NewLayoutsCreating;
+import ru.itis.androidplugin.settings.ActivityInit;
 import ru.itis.androidplugin.settings.PluginProject;
 import ru.itis.androidplugin.settings.UtilsEnvironment;
 import ru.itis.androidplugin.view.MainView;
@@ -14,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -38,7 +44,7 @@ public class MaterialRecyclerView extends MaterialItem{
     public static final String VIEW_NAME = "Recycler View";
     private final String EMPTY = "empty_";
     private final String LOADING = "loading_";
-    private MaterialItem[] childrens = null;
+    private MaterialChildRecyclerView[] childrens = null;
     private int childrensNum = 3;
     private boolean isAlreadyInserted = false;
 
@@ -60,7 +66,7 @@ public class MaterialRecyclerView extends MaterialItem{
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
         setIcons();
         layoutGenerator = new LayoutGenerator();
-        childrens = new MaterialItem[childrensNum];
+        childrens = new MaterialChildRecyclerView[childrensNum];
     }
 
     @Override
@@ -81,19 +87,19 @@ public class MaterialRecyclerView extends MaterialItem{
         mainView.titleParentViewJLabel.setText("Recycler View ID");
 
         //icons
-        mainView.openItemLayoutJLabel.setVisible(false);
+        //mainView.openItemLayoutJLabel.setVisible(false);
         setLayoutJLabelClickers(mainView.itemMaterialItemJTextField, null,
-                mainView.openItemLayoutJLabel, null);
-        mainView.openEmptyLayoutJLabel.setVisible(false);
+                mainView.openItemLayoutJLabel, childrens[0]);
+        /*mainView.openEmptyLayoutJLabel.setVisible(false);
         mainView.openLoadingLayoutJLabel.setVisible(false);
-        mainView.removeEmptyLayoutJLabel.setVisible(false);
-        mainView.removeEmptyLayoutJLabel.setIcon(mRemoveIcon);
+        mainView.removeEmptyLayoutJLabel.setVisible(false);*/
+        //mainView.removeEmptyLayoutJLabel.setIcon(mRemoveIcon);
         setLayoutJLabelClickers(mainView.emptyItemLayoutJTextField, mainView.removeEmptyLayoutJLabel,
-                mainView.openEmptyLayoutJLabel, EMPTY);
-        mainView.removeLoadingLayoutJLabel.setVisible(false);
-        mainView.removeLoadingLayoutJLabel.setIcon(mRemoveIcon);
+                mainView.openEmptyLayoutJLabel, childrens[1]);
+        //mainView.removeLoadingLayoutJLabel.setVisible(false);
+        //mainView.removeLoadingLayoutJLabel.setIcon(mRemoveIcon);
         setLayoutJLabelClickers(mainView.loadingItemLayoutJTextField, mainView.removeLoadingLayoutJLabel,
-                mainView.openLoadingLayoutJLabel, LOADING);
+                mainView.openLoadingLayoutJLabel, childrens[2]);
         //icons
 
         //labels
@@ -117,25 +123,20 @@ public class MaterialRecyclerView extends MaterialItem{
             System.out.println("no children");
         }
 
+
         mainView.addToLayoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("add to layout btn clicked");
                 insertToLayoutOrNo();
                 mainView.addToLayoutButton.removeActionListener(this);
+
+                mainView.openItemLayoutJLabel.setVisible(true);
+                mainView.openEmptyLayoutJLabel.setVisible(true);
+                mainView.openLoadingLayoutJLabel.setVisible(true);
             }
         });
-        mainView.saveLayoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("save layout btn clicked");
-                String path = PluginProject.mLayoutPath;
-                String newPath = path.substring(path.lastIndexOf("/"), path.length());
-                NewLayoutsCreating newLayoutsCreating = new NewLayoutsCreating();
-                newLayoutsCreating.initAllScreenLayouts(newPath);
-                mainView.saveLayoutButton.removeActionListener(this);
-            }
-        });
+
 
     }
 
@@ -155,7 +156,7 @@ public class MaterialRecyclerView extends MaterialItem{
 
     @Override
     public void setСhild(MaterialItem[] child) {
-        this.childrens = child;
+        this.childrens = (MaterialChildRecyclerView[]) child;
     }
 
     @Override
@@ -259,20 +260,23 @@ public class MaterialRecyclerView extends MaterialItem{
     }*/
 
     private void setLayoutJLabelClickers(JTextField textField, JLabel addRemoveLabel, JLabel openLabel,
-                                         String layoutType){
+                                         MaterialChildRecyclerView materialChildRecyclerView){
+        openLabel.setVisible(false);
+
         openLabel.addMouseListener(new MouseAdapter()
         {
             public void mouseClicked(MouseEvent e)
             {
-                //todo: change
                 layoutGenerator.openFile(layoutGenerator.insertNewLayout(textField.getText()));
-                /*
-                childRecyclerView.setView(mainView);
-                childRecyclerView.addItemToHistoryList(mainView);
-                */
+                materialChildRecyclerView.setView(mainView);
+                materialChildRecyclerView.addItemToHistoryList(mainView);
+
             }
         });
         if (addRemoveLabel != null){
+            addRemoveLabel.setVisible(false);
+            addRemoveLabel.setIcon(mRemoveIcon);
+
             addRemoveLabel.addMouseListener(new MouseAdapter()
             {
                 public void mouseClicked(MouseEvent e)
@@ -286,7 +290,8 @@ public class MaterialRecyclerView extends MaterialItem{
                     }
                     else if(i.equals(mAddIcon)){
                         addRemoveLabel.setIcon(mRemoveIcon);
-                        textField.setText(layoutType + mainView.itemParentViewJTextField.getText());
+                        textField.setText(materialChildRecyclerView.getType() +
+                                mainView.itemParentViewJTextField.getText());
                         textField.setEnabled(true);
                     }
 
