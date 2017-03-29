@@ -20,11 +20,11 @@ public class Constants {
     //dimens {
         // elements text {
         public static final String ACTIVITY_HORISONTAL_MARGIN =
-                "<dimen name=\"activity_horizontal_margin\">%ddp</dimen>";
+                "    <dimen name=\"activity_horizontal_margin\">%ddp</dimen>";
         public static final String ACTIVITY_VERTICAL_MARGIN =
-                "<dimen name=\"activity_vertical_margin\">%ddp</dimen>";
+                "    <dimen name=\"activity_vertical_margin\">%ddp</dimen>";
         public static final String ACTIVITY_DETAIL_VERTICAL_MARGIN =
-                "<dimen name=\"activity_detail_vertical_margin\">88dp</dimen>";
+                "    <dimen name=\"activity_detail_vertical_margin\">%ddp</dimen>";
         // elements text }
 
         // mobile constants {

@@ -3,7 +3,10 @@ package ru.itis.androidplugin.elements.values;
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.settings.PluginProject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -17,25 +20,33 @@ import static ru.itis.androidplugin.settings.Constants.MDPI_ACTIVITY_VERTICAL_MA
  */
 public class Dimens {
 
-    private String projectPath;
+    private String[] allValues = new String[]{
+            "values", "values-hdpi", "values-xhdpi", "values-xxhdpi", "values-xxxhdpi"
+    };
+    private final String mTextXML= "<resources>\n</resources>";
 
     public Dimens(){
 
     }
+    public void addAllDimens(String[] lines){
+        for (String valueXML : allValues){
+            addLines(getPathToDimens(valueXML), lines);
+        }
+    }
 
-    public void addLines(String[] lines){
+    private void addLines(String projectPath, String[] lines){
         List<String> list = null;
-        projectPath = getPathToDimens();
 
         try {
             list = Files.readAllLines(Paths.get(projectPath));
-            list.add(list.size() - 1,"    ");
             for(int i=0; i<lines.length; i++){
-                if (!list.contains(lines[i]))
+                boolean l = list.contains(lines[i]);
+                if (!list.contains(lines[i])){
                     list.add(list.size() - 1,"    " + lines[i]);
-                    //list.add(list.size() - (lines.length-i), lines[i]);
+                }
 
             }
+
             Files.write(Paths.get(projectPath), list);
 
         } catch (IOException e) {
@@ -44,10 +55,29 @@ public class Dimens {
 
     }
 
-    private String getPathToDimens(){
-        return PluginProject.mProject.getBasePath() + Constants.VALUES_PATH
-                + "/dimens.xml";
+    private String getPathToDimens(String value){
+        String path = PluginProject.mProject.getBasePath() + Constants.RES_PATH + value;
+        File file = new File(path);
+
+        try {
+            if (!file.exists()) {
+                //file.createNewFile();
+                file.mkdirs();
+                FileOutputStream fos = new FileOutputStream(file.getAbsoluteFile()+ "/dimens.xml");
+                OutputStreamWriter osw = new OutputStreamWriter(fos,"UTF-8");
+                osw.write(mTextXML);
+                osw.close();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return path + "/dimens.xml";
     }
+
+
 
     public String[] getActivityDimens(){
         return new String[]{MDPI_ACTIVITY_HORISONTAL_MARGIN, MDPI_ACTIVITY_VERTICAL_MARGIN,

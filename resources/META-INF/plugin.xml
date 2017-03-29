@@ -42,6 +42,7 @@
                     anchor="after"
                     relative-to-action="ProjectViewPopupMenuRefactoringGroup"/>
     </action>
+
   </actions>
 
 

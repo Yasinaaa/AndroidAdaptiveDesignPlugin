@@ -27,7 +27,7 @@ public class UtilsEnvironment {
     public static void insertInEditor(final String text) {
         new Attrs().addAttrsToProject();
         Dimens dimens = new Dimens();
-        dimens.addLines(dimens.getActivityDimens());
+        dimens.addAllDimens(dimens.getActivityDimens());
 
         Project project = getOpenProject();
         Editor editor = getEditor(project);
