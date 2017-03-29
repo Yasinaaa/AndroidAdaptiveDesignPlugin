@@ -170,16 +170,7 @@ public class MainView extends JPanel {
                 path = itemActivityClassJLabel.getText();
                 //PsiClass cls = JavaPsiFacade.getInstance(PluginProject.mProject).findClass("ru.itis.android.training.MainActivity", GlobalSearchScope.allScope(PluginProject.mProject));
                 new ActivityInit().addInitToClass(path, PluginProject.mLayoutPath);
-                //saveLayoutButton.removeActionListener(this);
-                /*//todo: temp
-                PsiClass psiClass = JavaPsiFacade.getInstance(PluginProject.mProject).
-                        findClass("ru.itis.android.training.MainActivity",
-                                GlobalSearchScope.allScope(PluginProject.mProject));
 
-                PsiElementFactory elementFactory = JavaPsiFacade.getInstance(PluginProject.mProject).getElementFactory();
-                psiClass.add(elementFactory.createMethodFromText("public int describeContents() { return 0; }", null));
-
-                //todo: temp*/
             }
         });
     }
@@ -356,7 +347,6 @@ public class MainView extends JPanel {
     }
 
     private void setObserverToOwnerClass() {
-
         fileObserver = new FileParameters.FileOwnerListener(itemActivityClassJLabel);
         itemActivityClassJLabel.setText(FileParameters.FileOwnerListener.getOwner(PluginProject.mLayoutPath));
         PluginProject.fileParameters.addObserver(fileObserver);

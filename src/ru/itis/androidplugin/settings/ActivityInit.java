@@ -1,6 +1,7 @@
 package ru.itis.androidplugin.settings;
 
 import com.*;
+import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -92,9 +93,10 @@ public class ActivityInit {
 
             addImport(psiClass, rvClass);
             psiClass.getExtendsList().add(factory.createClassReferenceElement(rvHolderClass));
-            generateRecyclerViewCompatConstructor(psiClass, layoutFileName);
+            //generateRecyclerViewCompatConstructor(psiClass, layoutFileName);
         }
         generateBody(androidView, butterKnife, psiClass, project);
+        //callInitMethodOnCreateView(psiClass);
         //addRClassImport(psiClass, layoutFileName);
 
         return psiClass;
@@ -114,34 +116,11 @@ public class ActivityInit {
         manager.addImport((PsiJavaFile) containingFile, importClass);
     }
 
-    protected void generateRecyclerViewCompatConstructor(PsiClass psiClass, String layoutFileName) {
-        PsiElementFactory factory = JavaPsiFacade.getElementFactory(psiClass.getProject());
-        PsiMethod constructor = factory.createConstructor();
-        PsiClass layoutInflaterClass = ClassHelper.findClass(psiClass.getProject(), ANDROID_LAYOUT_INFLATER_CLASS);
-        PsiParameter inflaterParam = factory.createParameter("inflater", factory.createType(layoutInflaterClass));
-        PsiClass viewGroupClass = ClassHelper.findClass(psiClass.getProject(), ANDROID_VIEW_GROUP_CLASS);
-        PsiParameter viewParentParam = factory.createParameter("parent", factory.createType(viewGroupClass));
-        constructor.getParameterList().add(inflaterParam);
-        constructor.getParameterList().add(viewParentParam);
-
-        if (constructor.getBody() == null) {
-            throw new GenerateViewPresenterAction.CancellationException("Failed to create recyclerView compat constructor");
-        }
-
-        PsiStatement callPrimaryConstructorStatement =
-                factory.createStatementFromText("this(" + inflaterParam.getName() + ".inflate(R.layout."
-                        + FileUtil.removeExtension(layoutFileName)
-                        + ", " + viewParentParam.getName()
-                        + ", false));", constructor.getContext());
-        constructor.getBody().add(callPrimaryConstructorStatement);
-        psiClass.add(constructor);
-    }
-
     protected void generateBody(AndroidView androidView, ButterKnife butterKnife, final PsiClass psiClass, Project project) {
         FieldGenerator fieldGenerator = new FieldGenerator();
         Map<AndroidView, PsiField> fieldMappings = fieldGenerator.generateFields(
                 androidView, project, butterKnife, new FieldGenerator.AddToPsiClassCallback(psiClass));
-        generateConstructor(androidView, butterKnife, fieldMappings, psiClass);
+        generateInitMethod(androidView, butterKnife, fieldMappings, psiClass);
         generateGetters(psiClass, fieldMappings.values());
     }
     protected String generateGetterName(String field) {
@@ -154,42 +133,50 @@ public class ActivityInit {
     private void generateGetters(PsiClass psiClass, Collection<PsiField> psiFields) {
         for (PsiField psiField : psiFields) {
             PsiMethod method = PropertyUtil.generateGetterPrototype(psiField);
-            if (method != null) {
+            PsiMethod existsMethod = psiClass.findMethodBySignature(method, true);
+            if (existsMethod == null && method != null){
                 psiClass.add(method);
             }
         }
     }
 
-    private void generateConstructor(AndroidView androidView, ButterKnife butterKnife, Map<AndroidView, PsiField> fieldMappings, PsiClass psiClass) {
+    private void generateInitMethod(AndroidView androidView, ButterKnife butterKnife, Map<AndroidView, PsiField> fieldMappings, PsiClass psiClass) {
         PsiElementFactory factory = JavaPsiFacade.getElementFactory(psiClass.getProject());
-        PsiMethod constructor = factory.createConstructor();
-        PsiClass viewClass = ClassHelper.findClass(psiClass.getProject(), ANDROID_VIEW_CLASS);
+
+        /*PsiClass viewClass = ClassHelper.findClass(psiClass.getProject(), ANDROID_VIEW_CLASS);
         PsiParameter viewParam = factory.createParameter("view", factory.createType(viewClass));
-        constructor.getParameterList().add(viewParam);
-
-        if (constructor.getBody() == null) {
-            throw new GenerateViewPresenterAction.CancellationException("Failed to create ViewHolder constructor");
-        }
-
-        if (hasRecyclerViewSupport()) {
-            constructor.getBody().add(factory.createStatementFromText(
-                    "super(" + viewParam.getName() + ");", constructor.getContext()));
-        }
+        initMethod.getParameterList().add(viewParam);
 
         androidView.setTagName(ANDROID_VIEW_CLASS);
-        androidView.setIdValue(viewParam.getName());
-        if (butterKnife != null) {
-            String injectorClassName = butterKnife.getInjectorPsiClass().getName();
-            PsiStatement injectStatement =
-                    factory.createStatementFromText(injectorClassName
-                            + "." + butterKnife.getMethodName()
-                            + "(this, " + viewParam.getName() + ");", constructor.getContext());
-            constructor.getBody().add(injectStatement);
-        } else {
-            addFindViewStatements(factory, constructor, androidView, fieldMappings);
+        androidView.setIdValue(viewParam.getName());*/
+        PsiMethod initMethod;
+        try {
+            initMethod = psiClass.findMethodsByName("init", true)[0];
+            if (initMethod == null){
+                System.out.println("hah");
+            }
+        }catch (java.lang.ArrayIndexOutOfBoundsException e){
+            initMethod = factory.createMethodFromText("public void init() {}", psiClass);
+            addFindViewStatements(factory, initMethod, androidView, fieldMappings);
+            psiClass.add(initMethod);
+            callInitMethodOnCreateView(psiClass, initMethod);
         }
 
-        psiClass.add(constructor);
+    }
+
+    private void callInitMethodOnCreateView(PsiClass psiClass, PsiMethod psiMethod){
+        PsiElementFactory factory = JavaPsiFacade.getElementFactory(psiClass.getProject());
+        //    @Override
+    //protected void onCreate(Bundle savedInstanceState) {
+        PsiMethod onCreateView = psiClass.findMethodsByName("onCreate", true)[0];
+
+        //setContentView(R.layout.activity_main);
+
+        if(!onCreateView.getBody().getText().contains("init();")) {
+            PsiStatement assignmentStatement =
+                    factory.createStatementFromText("init();", psiClass);
+            onCreateView.getBody().add(assignmentStatement);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -200,9 +187,13 @@ public class ActivityInit {
                 new FindViewByIdStatementGenerator.ClassFieldAssigner(fieldMappings, view.getIdValue()) {
                     @Override
                     protected void onStatementCreated(String statement, PsiField field, AndroidView view) {
-                        PsiStatement assignmentStatement =
-                                factory.createStatementFromText(statement, constructor.getContext());
-                        constructor.getBody().add(assignmentStatement);
+
+                        if(!constructor.getBody().getText().contains(statement)){
+                            PsiStatement assignmentStatement =
+                                    factory.createStatementFromText(statement, constructor.getContext());
+                            constructor.getBody().add(assignmentStatement);
+                        }
+
                     }
 
                     @Override
