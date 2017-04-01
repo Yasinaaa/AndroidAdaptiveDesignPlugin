@@ -1,7 +1,7 @@
 package ru.itis.androidplugin.elements;
 
 import org.apache.commons.lang.StringUtils;
-import ru.itis.androidplugin.settings.GenerateClass;
+import ru.itis.androidplugin.generator.GenerateClass;
 import ru.itis.androidplugin.view.MainView;
 
 import javax.swing.*;
@@ -23,7 +23,7 @@ public class MaterialChildRecyclerView extends MaterialItem{
     private String childItemPath = null;
     private MaterialItem parentRecyclerView = null;
     private ImageIcon mIcon;
-    private String[] childRecyclerView = new String[]{
+    public static String[] childRecyclerViewType = new String[]{
       "item_", "empty_", "loading_"
     };
     private String type;
@@ -34,8 +34,8 @@ public class MaterialChildRecyclerView extends MaterialItem{
 
     @Override
     public void setView(MainView mainView) {
-
-        mainView.itemParentViewJTextField.setVisible(false);
+        mainView.currentMaterialItemParametersJPanel.setVisible(false);
+        /*mainView.itemParentViewJTextField.setVisible(false);
         mainView.itemMaterialItemJTextField.setVisible(true);
         mainView.titleMaterialItemJLabel.setVisible(true);
         mainView.addToLayoutButton.setVisible(false);
@@ -45,17 +45,18 @@ public class MaterialChildRecyclerView extends MaterialItem{
         mainView.titleMaterialItemJLabel.setText("Adapter Class name");
         mainView.itemParentViewJTextField.setVisible(true);
         mainView.itemParentViewJTextField.setEnabled(false);
-        mainView.itemParentViewJTextField.setText(parentRecyclerView.mId);
+        mainView.itemParentViewJTextField.setText(parentRecyclerView.mId);*/
 
         ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GenerateClass generateClass = new GenerateClass();
-                generateClass.generateClass(mainView.itemMaterialItemJTextField.getText());
-                //mainView.itemOpenLayoutButton.removeActionListener(this);
+                generateClass.generateClass("LaHolder");
+                mainView.saveLayoutButton.removeActionListener(this);
             }
         };
-        //mainView.itemOpenLayoutButton.addActionListener(actionListener);
+        mainView.saveLayoutButton.setText("Save layout & Create Adapter");
+        mainView.saveLayoutButton.addActionListener(actionListener);
     }
 
     @Override

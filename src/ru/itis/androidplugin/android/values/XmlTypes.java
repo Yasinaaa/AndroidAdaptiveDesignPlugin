@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.elements.values;
+package ru.itis.androidplugin.android.values;
 
 /**
  * Created by yasina on 24.03.17.

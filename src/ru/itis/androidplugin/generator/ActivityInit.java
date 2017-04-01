@@ -1,17 +1,17 @@
-package ru.itis.androidplugin.settings;
+package ru.itis.androidplugin.generator;
 
 import com.*;
-import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
-import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PropertyUtil;
-import ru.itis.androidplugin.settings.interfaces.InsertMetodToClass;
+import ru.itis.androidplugin.android.AndroidManifest;
+import ru.itis.androidplugin.android.AndroidView;
+import ru.itis.androidplugin.settings.PluginProject;
 
 import java.io.File;
 import java.util.Collection;
@@ -87,14 +87,14 @@ public class ActivityInit {
             addImport(psiClass, butterKnife.getInjectViewClass());
             addImport(psiClass, butterKnife.getInjectorPsiClass());
         }
-        if (recyclerViewSupport) {
+        /*if (recyclerViewSupport) {
             PsiClass rvClass = ClassHelper.findClass(project, ANDROID_RECYCLER_VIEW_CLASS);
             PsiClass rvHolderClass = ClassHelper.findClass(project, ANDROID_RECYCLER_VIEW_VIEWHOLDER_CLASS);
 
             addImport(psiClass, rvClass);
             psiClass.getExtendsList().add(factory.createClassReferenceElement(rvHolderClass));
             //generateRecyclerViewCompatConstructor(psiClass, layoutFileName);
-        }
+        }*/
         generateBody(androidView, butterKnife, psiClass, project);
         //callInitMethodOnCreateView(psiClass);
         //addRClassImport(psiClass, layoutFileName);

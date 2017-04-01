@@ -8,8 +8,8 @@ import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.messages.MessageBus;
-import groovy.ui.SystemOutputInterceptor;
 import org.jetbrains.annotations.NotNull;
+import ru.itis.androidplugin.generator.FileOwner;
 
 /**
  * Created by yasina on 24.02.17.
@@ -19,7 +19,7 @@ public class PluginProject implements ProjectComponent {
     public static Project mProject;
     public static String mLayoutPath;
     private MessageBus mMessageBus;
-    public static FileParameters fileParameters;
+    public static FileOwner fileParameters;
 
     public PluginProject(Project project) {
         mProject = project;
@@ -28,7 +28,7 @@ public class PluginProject implements ProjectComponent {
     @Override
     public void initComponent() {
         // TODO: insert component initialization logic here
-        fileParameters = new FileParameters();
+        fileParameters = new FileOwner();
 
         System.out.println("mProject.getBasePath()= " + mProject.getBasePath());
     }

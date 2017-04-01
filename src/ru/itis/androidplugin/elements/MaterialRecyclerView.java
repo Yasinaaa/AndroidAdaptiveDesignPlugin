@@ -1,14 +1,9 @@
 package ru.itis.androidplugin.elements;
 
-import com.intellij.openapi.fileChooser.FileChooser;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import ru.itis.androidplugin.generation.LayoutGenerator;
-import ru.itis.androidplugin.generation.NewLayoutsCreating;
-import ru.itis.androidplugin.settings.ActivityInit;
-import ru.itis.androidplugin.settings.PluginProject;
-import ru.itis.androidplugin.settings.UtilsEnvironment;
+import com.intellij.ui.DocumentAdapter;
+import ru.itis.androidplugin.generator.FileGenerator;
+import ru.itis.androidplugin.settings.Constants;
+import ru.itis.androidplugin.generator.UtilsEnvironment;
 import ru.itis.androidplugin.view.MainView;
 
 import javax.imageio.ImageIO;
@@ -19,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -27,20 +21,23 @@ import java.io.IOException;
  */
 public class MaterialRecyclerView extends MaterialItem{
 
-    public static final String XML_VIEW_PATTERN = "<RecyclerView\n"+
+    private static final String XML_VIEW_PATTERN = "<RecyclerView\n"+
             "        android:id=\"@+id/%s\"\n"+
             "        android:layout_width=\"wrap_content\"\n"+
             "        android:layout_height=\"wrap_content\"\n"+
-            "        app:layout_item=\"@layout/%s\"\n"+
-            "        app:layout_empty=\"@layout/%s\"\n"+
-            "        app:layout_loading=\"@layout/%s\"\n"+
+            "        app:layout_item=\"@layout/%s\"\n %s%s"+
             "        android:clipToPadding=\"false\"\n"+
             "        android:paddingBottom=\"@dimen/activity_vertical_margin\""+
             "        android:paddingLeft=\"@dimen/activity_horizontal_margin\"" +
             "        android:paddingRight=\"@dimen/activity_horizontal_margin\"" +
             "        android:paddingTop=\"@dimen/activity_horizontal_margin\"" +
             "        />";
-    public static final String ICON_PATH = "/icons/recycler_view.png";
+
+    private final String[] ANOTHER_LAYOUTS = new String[]{
+            "        app:layout_empty=\"@layout/%s\"\n",  "        app:layout_loading=\"@layout/%s\"\n"
+    };
+
+    private static final String ICON_PATH = "/icons/recycler_view.png";
     public static final String VIEW_NAME = "Recycler View";
     private final String EMPTY = "empty_";
     private final String LOADING = "loading_";
@@ -60,13 +57,14 @@ public class MaterialRecyclerView extends MaterialItem{
         "LISTVIEW", "TABLEVIEW"
     };
     public String recyclerViewType;
-    private LayoutGenerator layoutGenerator = null;
+    private FileGenerator layoutGenerator = null;
 
     public MaterialRecyclerView(){
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
         setIcons();
-        layoutGenerator = new LayoutGenerator();
+        layoutGenerator = new FileGenerator();
         childrens = new MaterialChildRecyclerView[childrensNum];
+        createChildItems();
     }
 
     @Override
@@ -87,17 +85,10 @@ public class MaterialRecyclerView extends MaterialItem{
         mainView.titleParentViewJLabel.setText("Recycler View ID");
 
         //icons
-        //mainView.openItemLayoutJLabel.setVisible(false);
         setLayoutJLabelClickers(mainView.itemMaterialItemJTextField, null,
                 mainView.openItemLayoutJLabel, childrens[0]);
-        /*mainView.openEmptyLayoutJLabel.setVisible(false);
-        mainView.openLoadingLayoutJLabel.setVisible(false);
-        mainView.removeEmptyLayoutJLabel.setVisible(false);*/
-        //mainView.removeEmptyLayoutJLabel.setIcon(mRemoveIcon);
         setLayoutJLabelClickers(mainView.emptyItemLayoutJTextField, mainView.removeEmptyLayoutJLabel,
                 mainView.openEmptyLayoutJLabel, childrens[1]);
-        //mainView.removeLoadingLayoutJLabel.setVisible(false);
-        //mainView.removeLoadingLayoutJLabel.setIcon(mRemoveIcon);
         setLayoutJLabelClickers(mainView.loadingItemLayoutJTextField, mainView.removeLoadingLayoutJLabel,
                 mainView.openLoadingLayoutJLabel, childrens[2]);
         //icons
@@ -144,7 +135,9 @@ public class MaterialRecyclerView extends MaterialItem{
         if(!isAlreadyInserted){
             setId(mainView.itemParentViewJTextField.getText());
             setViewParameters();
-            UtilsEnvironment.insertInEditor(mViewParametrs);
+            UtilsEnvironment.insertInEditor(Constants.RECYCLERVIEW_DIMENS_TAGS,
+                    Constants.RECYCLERVIEW_DIMENS_VALUE,
+                    mViewParametrs);
             isAlreadyInserted = true;
         }
     }
@@ -167,42 +160,46 @@ public class MaterialRecyclerView extends MaterialItem{
 
     @Override
     public void setViewParameters(){
-        createChildItems(new JTextField[]{mainView.itemMaterialItemJTextField,
+        String[] parametrs = createChildItems(new JTextField[]{mainView.itemMaterialItemJTextField,
                 mainView.emptyItemLayoutJTextField, mainView.loadingItemLayoutJTextField});
-
-        String[] parametrs = {mId, childrens[0].mViewName, childrens[1].mViewName, childrens[2].mViewName};
         mViewParametrs = String.format(mPattern, parametrs);
     }
 
-    private void createChildItems(JTextField[] textFields){
-        for (int i = 0; i< childrensNum; i++) {
-            if (textFields[i].getText().equals("None"))
+    private String[] createChildItems(JTextField[] textFields){
+        String[] items = new String[4];
+        items[0] = mId;
+        for (int i = 1; i < childrensNum + 1; i++) {
+            String text = textFields[i-1].getText();
+
+            if (text.equals("None")) {
                 childrens[i] = null;
-            else {
-                childrens[i] = new MaterialChildRecyclerView();
-                childrens[i].setParent(this);
-                childrens[i].mViewName = textFields[i].getText();
-                childrens[i].setLayoutPath(layoutGenerator.
-                        insertNewLayout(textFields[i].getText()).getCanonicalPath());
+                items[i] = "";
             }
+            else {
+                //childrens[i-1] = new MaterialChildRecyclerView();
+                //childrens[i-1].setParent(this);
+                childrens[i-1].mViewName = text;
+                childrens[i-1].setLayoutPath(layoutGenerator.
+                        insertNewLayout(text).getCanonicalPath());
+                items[i] = i>1 ? String.format(ANOTHER_LAYOUTS[i-2], text) : text;
+            }
+        }
+        return items;
+    }
+
+    private void createChildItems(){
+        for (int i = 0; i < childrensNum; i++) {
+            childrens[i] = new MaterialChildRecyclerView();
+            childrens[i].setParent(this);
+            childrens[i].setType(MaterialChildRecyclerView.childRecyclerViewType[i]);
         }
     }
 
     private void setOnRecyclerViewTitleChanged(){
-        mainView.itemParentViewJTextField.getDocument().addDocumentListener(new DocumentListener() {
+        mainView.itemParentViewJTextField.getDocument().addDocumentListener(new DocumentAdapter() {
             @Override
-            public void insertUpdate(DocumentEvent e) {
+            protected void textChanged(DocumentEvent e) {
                 setLayoutsNames();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                setLayoutsNames();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-               setLayoutsNames();
             }
         });
     }

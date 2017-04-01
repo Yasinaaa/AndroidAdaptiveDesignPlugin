@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.settings;
+package ru.itis.androidplugin.generator;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
@@ -15,19 +15,18 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiUtilBase;
-import ru.itis.androidplugin.elements.values.Attrs;
-import ru.itis.androidplugin.elements.values.Dimens;
-import ru.itis.androidplugin.elements.values.XmlTypes;
+import ru.itis.androidplugin.android.values.Attrs;
+import ru.itis.androidplugin.android.values.Dimens;
 
 /**
  * Created by yasina on 10.02.17.
  */
 public class UtilsEnvironment {
 
-    public static void insertInEditor(final String text) {
+    public static void insertInEditor(String[] allDimensTag, int[] allDimensValue, final String text) {
         new Attrs().addAttrsToProject();
         Dimens dimens = new Dimens();
-        dimens.addAllDimens(dimens.getActivityDimens());
+        dimens.addAllDimens(allDimensTag, allDimensValue);
 
         Project project = getOpenProject();
         Editor editor = getEditor(project);

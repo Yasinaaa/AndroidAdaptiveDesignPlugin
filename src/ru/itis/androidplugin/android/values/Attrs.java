@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.elements.values;
+package ru.itis.androidplugin.android.values;
 
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.settings.PluginProject;

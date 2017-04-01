@@ -1,20 +1,11 @@
-package ru.itis.androidplugin.settings;
+package ru.itis.androidplugin.generator;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.openapi.vfs.newvfs.BulkFileListener;
-import com.intellij.openapi.vfs.newvfs.events.VFileEvent;
-import com.intellij.util.messages.MessageBusConnection;
-import org.jetbrains.annotations.NotNull;
-import ru.itis.androidplugin.elements.values.XmlTypes;
+import ru.itis.androidplugin.settings.ToolWindowFactory;
 
 import javax.swing.*;
 import java.io.*;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.regex.Matcher;
@@ -23,11 +14,11 @@ import java.util.regex.Pattern;
 /**
  * Created by yasina on 15.03.17.
  */
-public class FileParameters extends Observable{
+public class FileOwner extends Observable{
 
     private String filePath;
 
-    public FileParameters() {
+    public FileOwner() {
     }
 
     public String getFilePath() {
