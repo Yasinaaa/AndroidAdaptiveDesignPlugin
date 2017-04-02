@@ -1,14 +1,13 @@
 package ru.itis.androidplugin.generator.classes;
 
-import com.ButterKnife;
-import com.ClassHelper;
-import com.FieldGenerator;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import ru.itis.androidplugin.android.AndroidManifest;
 import ru.itis.androidplugin.android.AndroidView;
+import ru.itis.androidplugin.generator.helper.ButterKnife;
+import ru.itis.androidplugin.generator.helper.ClassHelper;
+import ru.itis.androidplugin.generator.helper.FieldGenerator;
 import ru.itis.androidplugin.settings.PluginProject;
-
 import java.util.Map;
 
 /**
@@ -54,7 +53,8 @@ public class ActivityPattern extends ClassPattern {
                                     PsiClass psiClass) {
         FieldGenerator fieldGenerator = new FieldGenerator();
         Map<AndroidView, PsiField> fieldMappings = fieldGenerator.generateFields(
-                androidView, PluginProject.mProject, butterKnife, new FieldGenerator.AddToPsiClassCallback(psiClass));
+                androidView, PluginProject.mProject, butterKnife,
+                new FieldGenerator.AddToPsiClassCallback(psiClass));
 
         generateGetters(psiClass, fieldMappings.values());
         PsiMethod initMethod;

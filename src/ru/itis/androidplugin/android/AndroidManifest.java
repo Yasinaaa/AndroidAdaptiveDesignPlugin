@@ -1,6 +1,5 @@
 package ru.itis.androidplugin.android;
 
-import com.GenerateViewPresenterAction;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
@@ -71,20 +70,13 @@ public class AndroidManifest extends DefaultHandler {
 
     }
 
-  /*  public AndroidManifest getAndroidManifest() {
 
-        AndroidManifest androidManifest = new AndroidManifestParser().parse(manifestFile);
-        if (androidManifest == null) {
-            throw new GenerateViewPresenterAction.CancellationException("Failed to read AndroidManifest.xml");
-        }
-        return androidManifest;
-    }*/
     private VirtualFile getManifestFile(Module module, VirtualFile layoutFile) {
         ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
         VirtualFile[] contentRoots = moduleRootManager.getContentRoots();
         VirtualFile result = lookupForManifest(layoutFile.getParent().getParent(), contentRoots);
         if (result == null) {
-            throw new GenerateViewPresenterAction.CancellationException("AndroidManifest.xml not found");
+            throw new RuntimeException("AndroidManifest.xml not found");
         }
         return result;
     }
@@ -92,7 +84,7 @@ public class AndroidManifest extends DefaultHandler {
         ProjectRootManager rootManager = ProjectRootManager.getInstance(PluginProject.mProject);
         Module module = rootManager.getFileIndex().getModuleForFile(layoutFile);
         if (module == null) {
-            throw new GenerateViewPresenterAction.CancellationException("Failed to determine module with selected layout");
+            throw new RuntimeException("Failed to determine module with selected layout");
         }
         return module;
     }

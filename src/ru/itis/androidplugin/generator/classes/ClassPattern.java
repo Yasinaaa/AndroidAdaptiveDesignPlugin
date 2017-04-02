@@ -1,9 +1,6 @@
 package ru.itis.androidplugin.generator.classes;
 
-import com.ButterKnife;
-import com.ClassHelper;
-import com.FieldGenerator;
-import com.FindViewByIdStatementGenerator;
+import ru.itis.androidplugin.generator.helper.*;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.util.PropertyUtil;
@@ -101,7 +98,8 @@ public abstract class ClassPattern {
     @SuppressWarnings("ConstantConditions")
     protected void addFindViewStatements(final PsiElementFactory factory, final PsiMethod constructor,
                                        final AndroidView view, final Map<AndroidView, PsiField> fieldMappings) {
-        FindViewByIdStatementGenerator findViewByIdStatementGenerator = new FindViewByIdStatementGenerator();
+        FindViewByIdStatementGenerator findViewByIdStatementGenerator = new
+                FindViewByIdStatementGenerator();
         FindViewByIdStatementGenerator.ClassFieldAssigner fieldAssigner =
                 new FindViewByIdStatementGenerator.ClassFieldAssigner(fieldMappings, view.getIdValue()) {
                     @Override
@@ -121,5 +119,14 @@ public abstract class ClassPattern {
                     }
                 };
         findViewByIdStatementGenerator.createFindViewStatements(type, view, fieldAssigner);
+    }
+
+    public static String removeExtension(String filename) {
+        int index = filename.lastIndexOf('.');
+        if (index > 0) {
+            return filename.substring(0, index);
+        } else {
+            return filename;
+        }
     }
 }

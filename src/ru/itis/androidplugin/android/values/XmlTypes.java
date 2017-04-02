@@ -6,8 +6,10 @@ package ru.itis.androidplugin.android.values;
 public enum XmlTypes{
     NONE("layout"), SMALL("layout-small"), LARGE("layout-large"),
     XLARGE("layout-xlarge"), MEDIUM(""), MEDIUM_LAND(""),
-    SMALL_LAND("layout-small-land"), LARGE_LAND("layout-large-land"), XLARGE_LAND("layout-xlarge-land"),
-    SW600("layout-sw600dp"), SW720("layout-sw720dp");
+    SMALL_LAND("layout-small-land"), LARGE_LAND("layout-large-land"),
+    XLARGE_LAND("layout-xlarge-land"),
+    SW600("layout-sw600dp"), SW720("layout-sw720dp"), TABLETS("layout-swxxdp");
+
 
     private final String name;
 
@@ -23,5 +25,9 @@ public enum XmlTypes{
     @Override
     public String toString() {
         return this.name;
+    }
+
+    public String[] getXmlTypes(){
+        return new String[]{NONE.name, TABLETS.name};
     }
 }

@@ -1,6 +1,6 @@
 package ru.itis.androidplugin.generator.classes;
 
-import com.*;
+import ru.itis.androidplugin.generator.helper.*;
 import com.intellij.psi.*;
 import ru.itis.androidplugin.android.AndroidManifest;
 import ru.itis.androidplugin.android.AndroidView;
@@ -55,9 +55,9 @@ public class RecyclerViewHolderPattern extends ClassPattern{
         PsiParameter viewParam = factory.createParameter("view", factory.createType(viewClass));
         constructor.getParameterList().add(viewParam);
 
-        if (constructor.getBody() == null) {
+        /*if (constructor.getBody() == null) {
             throw new GenerateViewPresenterAction.CancellationException("Failed to create ViewHolder constructor");
-        }
+        }*/
 
         if (hasRecyclerViewSupport()) {
             constructor.getBody().add(factory.createStatementFromText(
@@ -91,13 +91,13 @@ public class RecyclerViewHolderPattern extends ClassPattern{
         constructor.getParameterList().add(inflaterParam);
         constructor.getParameterList().add(viewParentParam);
 
-        if (constructor.getBody() == null) {
+        /*if (constructor.getBody() == null) {
             throw new GenerateViewPresenterAction.CancellationException("Failed to create recyclerView compat constructor");
-        }
+        }*/
 
         PsiStatement callPrimaryConstructorStatement =
                 factory.createStatementFromText("this(" + inflaterParam.getName() + ".inflate(R.layout."
-                        + FileUtil.removeExtension(layoutFileName)
+                        + removeExtension(layoutFileName)
                         + ", " + viewParentParam.getName()
                         + ", false));", constructor.getContext());
         constructor.getBody().add(callPrimaryConstructorStatement);

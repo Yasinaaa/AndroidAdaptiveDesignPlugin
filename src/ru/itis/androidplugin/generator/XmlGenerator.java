@@ -45,7 +45,8 @@ public class XmlGenerator extends Generator{
     public XmlGenerator(){
     }
 
-    public VirtualFile insertNewLayout(MaterialChildRecyclerView materialChildRecyclerView, String name){
+    public VirtualFile insertNewLayout(MaterialChildRecyclerView materialChildRecyclerView,
+                                       String name){
         final VirtualFile[] solutionVirtualFile = {null};
 
         try {
@@ -98,11 +99,6 @@ public class XmlGenerator extends Generator{
                 }
             }
         }.execute();
-        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-            @Override
-            public void run() {
-            }
-        });
     }
 
     //todo: should it return VirtualFile?
