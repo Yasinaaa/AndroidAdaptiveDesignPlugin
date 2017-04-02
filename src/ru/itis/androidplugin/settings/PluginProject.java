@@ -11,6 +11,8 @@ import com.intellij.util.messages.MessageBus;
 import org.jetbrains.annotations.NotNull;
 import ru.itis.androidplugin.generator.FileOwner;
 
+import java.util.List;
+
 /**
  * Created by yasina on 24.02.17.
  */
@@ -23,6 +25,7 @@ public class PluginProject implements ProjectComponent {
 
     public PluginProject(Project project) {
         mProject = project;
+
     }
 
     @Override
@@ -52,7 +55,6 @@ public class PluginProject implements ProjectComponent {
             @Override
             public void fileOpened(@NotNull FileEditorManager source, @NotNull VirtualFile file) {
                 super.fileOpened(source, file);
-
             }
 
             @Override
@@ -63,10 +65,9 @@ public class PluginProject implements ProjectComponent {
             @Override
             public void selectionChanged(@NotNull FileEditorManagerEvent event) {
                 mLayoutPath = event.getNewFile().getPath();
-                //fileParameters.setFilePath(mLayoutPath);
+                fileParameters.setFilePath(mLayoutPath);
                 System.out.println("selectionChanged=" + mLayoutPath);
                 super.selectionChanged(event);
-
             }
         });
     }

@@ -1,20 +1,16 @@
 package ru.itis.androidplugin.generator;
 
-import ru.itis.androidplugin.android.AndroidManifest;
 import ru.itis.androidplugin.android.AndroidView;
 import com.GenerateViewPresenterAction;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import ru.itis.androidplugin.elements.MaterialChildRecyclerView;
 import ru.itis.androidplugin.settings.PluginProject;
 
 import java.io.File;
@@ -25,9 +21,9 @@ import java.io.OutputStreamWriter;
 /**
  * Created by yasina on 01.04.17.
  */
-public class FileGenerator {
+public class XmlGenerator extends Generator{
 
-    private final String mTextXML= "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+    private final String SIMPLE_RELATIVE_LAYOUT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
             "<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
             "              android:orientation=\"vertical\"\n" +
             "              android:layout_width=\"match_parent\"\n" +
@@ -35,33 +31,21 @@ public class FileGenerator {
             "\n" +
             "</RelativeLayout>";
 
-    private Editor editor;
-    private Document document;
-    private VirtualFile virtualFile;
-    private FileEditorManager fileEditorManager;
-    //private String pathToLastFolder;
-    //private AndroidView androidViews;
+    private final String CHILD_RECYCLERVIEW = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+            "<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
+            "              xmlns:app=\"http://schemas.android.com/apk/res-auto\"" +
+            "              android:orientation=\"vertical\"\n" +
+            "              android:layout_width=\"match_parent\"\n" +
+            "              android:layout_height=\"match_parent\"\n" +
+            "              app:child_type_recyclerview=\"%s\""+
+            "              app:parent_recyclerview=\"@id/%s\">"+
+            "\n" +
+            "</RelativeLayout>";
 
-
-    public FileGenerator(){
+    public XmlGenerator(){
     }
 
-    public void init(){
-        fileEditorManager = FileEditorManager.getInstance(PluginProject.mProject);
-        editor = fileEditorManager.getSelectedTextEditor();
-        document = editor.getDocument();
-        virtualFile = FileDocumentManager.getInstance().getFile(document);
-
-        //pathToLastFolder = virtualFile.getPath().substring(0, virtualFile.getPath().lastIndexOf("/"));
-    }
-
-    public void insertNewClass(String name){
-        init();
-        AndroidManifest androidManifest = new AndroidManifest(virtualFile).getAndroidManifest();
-        AndroidView androidView = AndroidView.getAndroidViews(virtualFile);
-    }
-
-    public VirtualFile insertNewLayout(String name){
+    public VirtualFile insertNewLayout(MaterialChildRecyclerView materialChildRecyclerView, String name){
         final VirtualFile[] solutionVirtualFile = {null};
 
         try {
@@ -77,7 +61,13 @@ public class FileGenerator {
                     protected void run() throws Throwable {
                         File file = new File(path);
                         file.getParentFile().mkdirs();
-                        solutionVirtualFile[0] = createCleanXMLfile(file);
+                        solutionVirtualFile[0] = materialChildRecyclerView == null ?
+                                createCleanXMLfile(SIMPLE_RELATIVE_LAYOUT, file) :
+                                createCleanXMLfile(String.format(CHILD_RECYCLERVIEW,
+                                        new String[]{
+                                                materialChildRecyclerView.getParent().mId,
+                                                materialChildRecyclerView.getAttrType()
+                                        }),file);
                     }
                 }.execute();
             }
@@ -104,7 +94,7 @@ public class FileGenerator {
                     File file = new File(path + "/" + folder);
                     file.mkdir();
                     file = new File(path + layoutTitle);
-                    createCleanXMLfile(file);
+                    createCleanXMLfile(SIMPLE_RELATIVE_LAYOUT, file);
                 }
             }
         }.execute();
@@ -116,7 +106,7 @@ public class FileGenerator {
     }
 
     //todo: should it return VirtualFile?
-    private VirtualFile createCleanXMLfile(File file) {
+    private VirtualFile createCleanXMLfile(String inputText, File file) {
 
         VirtualFile solutionVirtualFile = null;
         boolean fileExits = true;
@@ -129,7 +119,7 @@ public class FileGenerator {
 
             FileOutputStream fos = new FileOutputStream(file.getAbsoluteFile());
             OutputStreamWriter osw = new OutputStreamWriter(fos,"UTF-8");
-            osw.write(mTextXML);
+            osw.write(inputText);
             osw.close();
         } catch (IOException e) {
             e.printStackTrace();

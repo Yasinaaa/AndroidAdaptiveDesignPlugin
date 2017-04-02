@@ -28,6 +28,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import ru.itis.androidplugin.adapters.ViewRender;
 import ru.itis.androidplugin.android.AndroidManifest;
+import ru.itis.androidplugin.elements.MaterialChildRecyclerView;
 import ru.itis.androidplugin.elements.MaterialItem;
 import ru.itis.androidplugin.generator.ActivityInit;
 import ru.itis.androidplugin.generator.FileOwner;
@@ -47,6 +48,7 @@ import java.util.Observer;
  */
 public class MainView extends JPanel {
 
+    public static MainView mainView;
     public JPanel panel;
     private JList materialJList;
     public JTextField itemMaterialItemJTextField;
@@ -71,13 +73,17 @@ public class MainView extends JPanel {
     public JLabel openLoadingLayoutJLabel;
     public JLabel removeEmptyLayoutJLabel;
     public JLabel removeLoadingLayoutJLabel;
-    private JLabel itemActivityClassJLabel;
+    public JLabel itemActivityClassJLabel;
+    public JLabel titleParentIDJLabel;
+    public JLabel itemParentIDJLabel;
     private int lastIndex;
     public LinkedList<MaterialItem> tenClickedMaterialItems;
     public int currentItem = 0;
     public MaterialItem clickedMaterialItem;
     private Observer fileObserver;
     private String path;
+    public ActionListener saveLayoutActionListener;
+    private VirtualFile virtualFile;
 
     public MainView() {
         //TODO change this part
@@ -92,17 +98,24 @@ public class MainView extends JPanel {
 
     }
 
-    private void updateAndroidManifest() {
+    private VirtualFile getCurrentVirtualFile() {
         FileEditorManager manager = FileEditorManager.getInstance(PluginProject.mProject);
         Editor editor = manager.getSelectedTextEditor();
         Document document = editor.getDocument();
-        final VirtualFile layoutFile = FileDocumentManager.getInstance().getFile(document);
-        AndroidManifest androidManifest = new AndroidManifest(layoutFile);
+        final VirtualFile virtualFile = FileDocumentManager.getInstance().getFile(document);
+        return virtualFile;
+    }
+
+    private void updateAndroidManifest(VirtualFile virtualFile) {
+        AndroidManifest androidManifest = new AndroidManifest(virtualFile);
         androidManifest.setDifferentScreenSupport();
     }
 
     private void init(DefaultListModel<MaterialItem> listModel) {
-        setObserverToOwnerClass();
+        mainView = this;
+        virtualFile = getCurrentVirtualFile();
+        System.out.println("current = " + virtualFile.getCanonicalPath());
+
         tenClickedMaterialItems = new LinkedList<MaterialItem>();
 
         materialJList.setCellRenderer(new ViewRender());
@@ -123,21 +136,14 @@ public class MainView extends JPanel {
                 new LineBorder(Color.GRAY, 1, true),
                 BorderFactory.createEmptyBorder(20, 20, 20, 20)));
 
+        titleParentIDJLabel.setVisible(false);
+        itemParentIDJLabel.setVisible(false);
         titleMaterialItemJLabel.setVisible(false);
         itemMaterialItemJTextField.setVisible(false);
         titleParentViewJLabel.setVisible(false);
         iconPrevJLabel.setVisible(false);
-        iconPrevJLabel.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                prevClicked();
-            }
-        });
         nextIconJLabel.setVisible(false);
-        nextIconJLabel.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                nextClicked();
-            }
-        });
+
         addActivityClassJLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 File file = new File(PluginProject.mProject.getBasePath() + "/app/src");
@@ -161,7 +167,7 @@ public class MainView extends JPanel {
         });
 
 
-        saveLayoutButton.addActionListener(new ActionListener() {
+        saveLayoutActionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("save layout btn clicked");
@@ -169,12 +175,21 @@ public class MainView extends JPanel {
                         PluginProject.mLayoutPath.length());
                 /*NewLayoutsCreating newLayoutsCreating = new NewLayoutsCreating();
                 newLayoutsCreating.initAllScreenLayouts(newPath);*/
+                ActivityInit activityInit = new ActivityInit();
+                if (itemParentIDJLabel.getText() != null && itemParentIDJLabel.isVisible()) {
+                    //todo: change
+                    activityInit.insertNewClass("LaHolder");
+                } else {
+                    path = itemActivityClassJLabel.getText();
+                    activityInit.addInitToClass(path, PluginProject.mLayoutPath);
+                }
+                //todo: change
+                updateAndroidManifest(getCurrentVirtualFile());
 
-                path = itemActivityClassJLabel.getText();
-                new ActivityInit().addInitToClass(path, PluginProject.mLayoutPath);
-                updateAndroidManifest();
             }
-        });
+        };
+        saveLayoutButton.addActionListener(saveLayoutActionListener);
+        setObserverToOwnerClass();
     }
 
 
@@ -280,16 +295,12 @@ public class MainView extends JPanel {
         nextIconJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/next_arrow.png")));
         nextIconJLabel.setText("");
         panel.add(nextIconJLabel, new GridConstraints(3, 15, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label1 = new JLabel();
-        label1.setText("Parent ID");
-        panel.add(label1, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label2 = new JLabel();
-        label2.setText("rec2");
-        panel.add(label2, new GridConstraints(1, 2, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label3 = new JLabel();
-        label3.setIcon(new ImageIcon(getClass().getResource("/icons/go.png")));
-        label3.setText("");
-        panel.add(label3, new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        titleParentIDJLabel = new JLabel();
+        titleParentIDJLabel.setText("Parent ID");
+        panel.add(titleParentIDJLabel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        itemParentIDJLabel = new JLabel();
+        itemParentIDJLabel.setText("");
+        panel.add(itemParentIDJLabel, new GridConstraints(1, 2, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
@@ -315,11 +326,6 @@ public class MainView extends JPanel {
             if (index != -1 && !list.getCellBounds(index, index).contains(e.getPoint())) {
                 return;
             }
-            /*itemPictureJLabel.setIcon(Constants.mViewMaterialItems[index].mIcon);
-            itemPictureJLabel.setText(Constants.mViewMaterialItems[index].mViewName);
-            itemPictureJLabel.setHorizontalTextPosition(JLabel.CENTER);
-            itemPictureJLabel.setVerticalTextPosition(JLabel.BOTTOM);*/
-
             clickedMaterialItem = Constants.mViewMaterialItems[index];
             clickedMaterialItem.setView(MainView.this);
 
@@ -327,35 +333,24 @@ public class MainView extends JPanel {
                 clickedMaterialItem.hideNotNeededThings(MainView.this);
 
             clickedMaterialItem.mLayoutPath = PluginProject.mLayoutPath;
-            clickedMaterialItem.addItemToHistoryList(MainView.this);
             list.setSelectedIndex(index);
         }
 
     }
 
-    public void setBackNextLabelsVisiblility() {
-        System.out.println("tenClickedMaterialItems.size()=" + tenClickedMaterialItems.size());
-        if (tenClickedMaterialItems.size() >= 2)
-            iconPrevJLabel.setVisible(true);
-        if (tenClickedMaterialItems.size() >= 3)
-            nextIconJLabel.setVisible(true);
-    }
-
-    public void prevClicked() {
-        System.out.println("prev clicked");
-        nextIconJLabel.setVisible(true);
-        MaterialItem materialItem = tenClickedMaterialItems.get(currentItem - 1);
-        materialItem.setView(MainView.this);
-    }
-
-    public void nextClicked() {
-        MaterialItem materialItem = tenClickedMaterialItems.get(currentItem + 1);
-        materialItem.setView(MainView.this);
-    }
-
     private void setObserverToOwnerClass() {
-        fileObserver = new FileOwner.FileOwnerListener(itemActivityClassJLabel);
-        itemActivityClassJLabel.setText(FileOwner.FileOwnerListener.getOwner(PluginProject.mLayoutPath));
+        fileObserver = new FileOwner.FileOwnerListener(this);
+        String[] answer = FileOwner.FileOwnerListener.getOwner(virtualFile.getCanonicalPath());
+        itemActivityClassJLabel.setText(answer[0]);
+        if (answer[1] != null) {
+            titleParentIDJLabel.setVisible(true);
+            itemParentIDJLabel.setVisible(true);
+            itemParentIDJLabel.setText(answer[1]);
+            saveLayoutButton.removeActionListener(saveLayoutActionListener);
+            clickedMaterialItem = new MaterialChildRecyclerView(virtualFile.getCanonicalPath(),
+                    "simple_item");
+            clickedMaterialItem.setView();
+        }
         PluginProject.fileParameters.addObserver(fileObserver);
     }
 

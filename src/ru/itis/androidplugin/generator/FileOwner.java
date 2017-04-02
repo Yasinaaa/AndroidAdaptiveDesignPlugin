@@ -2,9 +2,14 @@ package ru.itis.androidplugin.generator;
 
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import ru.itis.androidplugin.elements.MaterialChildRecyclerView;
+import ru.itis.androidplugin.elements.MaterialRecyclerView;
+import ru.itis.androidplugin.settings.PluginProject;
 import ru.itis.androidplugin.settings.ToolWindowFactory;
+import ru.itis.androidplugin.view.MainView;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.Observable;
 import java.util.Observer;
@@ -34,23 +39,48 @@ public class FileOwner extends Observable{
 
     public static class FileOwnerListener implements Observer {
 
-        private JLabel label;
+        /*
+        private JLabel classLabel, parentIdLabel, parentIdItem;
+        public FileOwnerListener(JLabel classLabel, JLabel parentIdLabel, JLabel parentIdItem) {
+            this.classLabel = classLabel;
+            this.parentIdLabel = parentIdLabel;
+            this.parentIdItem = parentIdItem;
+        }*/
+        private MainView mainView;
 
-        public FileOwnerListener(JLabel label) {
-            this.label = label;
+        public FileOwnerListener(MainView mainView){
+            this.mainView = mainView;
         }
 
         @Override
         public void update(Observable obj, Object arg) {
             if (arg instanceof String) {
-                if (chooseType((String) arg).equals(fileTypes[0])) label.setText(getOwner((String) arg));
+                if (chooseType((String) arg).equals(fileTypes[0])){
+                    String[] answer = getOwner((String) arg);
+                    mainView.itemActivityClassJLabel.setText(answer[0]);
+                    if(answer[1] != null){
+                        mainView.titleParentIDJLabel.setVisible(true);
+                        mainView.itemParentIDJLabel.setVisible(true);
+                        mainView.itemParentIDJLabel.setText(answer[1]);
+                        mainView.clickedMaterialItem = new MaterialChildRecyclerView((String) arg, "simple_item");
+                        MainView.mainView.clickedMaterialItem.setView();
+                    }else {
+                        /*mainView.clickedMaterialItem = new MaterialRecyclerView();
+                        mainView.clickedMaterialItem.mLayoutPath = PluginProject.mLayoutPath;
+                        MainView.mainView.clickedMaterialItem.setView();*/
+                        mainView.currentMaterialItemParametersJPanel.setVisible(false);
+                        mainView.titleParentIDJLabel.setVisible(false);
+                        mainView.itemParentIDJLabel.setVisible(false);
+                    }
+
+                }
             } else {
                 System.out.println("FileOwnerObserver: Some other change to subject!");
             }
         }
 
-        public static String getOwner(String path){
-            String owner = null;
+        public static String[] getOwner(String path){
+            String[] answer = new String[3];
             File file = new File(path);
             VirtualFile layoutFile = LocalFileSystem.getInstance().findFileByIoFile(file);
             try {
@@ -58,16 +88,28 @@ public class FileOwner extends Observable{
                 InputStreamReader streamReader = new InputStreamReader(stream);
                 BufferedReader bufferReader = new BufferedReader(streamReader);
                 String line = null;
+                boolean isItemChild = false;
                 while ((line=bufferReader.readLine()) != null){
                     if(line.contains("tools:context=")){
                         Pattern pattern = Pattern.compile("\"(.*?)\"");
                         Matcher matcher = pattern.matcher(line);
                         if (matcher.find()) {
-                            owner = matcher.group(1);
+                            answer[0] = matcher.group(1);
                         }
-                        System.out.println("owner = " + owner);
+                        System.out.println("owner = " + answer[0]);
                         break;
                     }
+                    if(isItemChild){
+                        answer[1] = isRecyclerViewChild(line);
+                        break;
+                    }
+                    if (line.contains("app:child_type_recyclerview=\"simple_item\"")){
+                        /*int l1 = line.indexOf("\"" + 1);
+                        int l2 = line.lastIndexOf("\"");
+                        answer[2] = line.substring(line.indexOf("\""), line.lastIndexOf("\""));*/
+                        isItemChild = true;
+                    }
+
                     if(line.contains("\">")) break;
                 }
 
@@ -78,7 +120,7 @@ public class FileOwner extends Observable{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return owner;
+            return answer;
         }
 
         public String[] fileTypes = new String[]{
@@ -101,6 +143,17 @@ public class FileOwner extends Observable{
 
             }
             return type;
+        }
+
+        private static String isRecyclerViewChild(String line){
+            String answer = null;
+            if (line.contains("app:parent_recyclerview=")){
+                int l1 = line.indexOf("/");
+                int l2 = line.lastIndexOf("\"");
+                answer = line.substring(line.indexOf("/") + 1, line.lastIndexOf("\""));
+                System.out.println("parent id = " + answer);
+            }
+            return answer;
         }
     }
 

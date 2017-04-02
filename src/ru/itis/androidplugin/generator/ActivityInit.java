@@ -1,11 +1,17 @@
 package ru.itis.androidplugin.generator;
 
 import com.*;
+import com.intellij.ide.projectView.impl.nodes.PackageUtil;
+import com.intellij.ide.util.PackageChooserDialog;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.impl.ModuleImpl;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PropertyUtil;
@@ -22,10 +28,59 @@ import static ru.itis.androidplugin.settings.PluginProject.mProject;
 /**
  * Created by yasina on 27.03.17.
  */
-public class ActivityInit {
+public class ActivityInit extends Generator{
+
 
     public ActivityInit(){
 
+    }
+
+    public void insertNewClass(String className){
+        extendedInit();
+        //PsiPackage selectedPackage = JavaPsiFacade.getInstance(PluginProject.mProject).findPackage(virtualFile.getCanonicalPath());
+       // Module module = new ModuleImpl(virtualFile.getPath().substring(0, virtualFile.getCanonicalPath().indexOf("/main")),
+         //       PluginProject.mProject);
+
+        PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Destination Package", module);
+
+        PsiPackage selectedPackage;
+        if (packageChooserDialog.showAndGet()) {
+            selectedPackage = packageChooserDialog.getSelectedPackage();
+            PsiDirectory resultDirectory = getPsiDirectoryFromPackage(selectedPackage);
+            //todo: show error dialog
+            //throwIfFileAlreadyExists(resultDirectory, className);
+
+            new WriteCommandAction.Simple(PluginProject.mProject) {
+                @Override
+                protected void run() throws Throwable {
+                    PsiClass resultClass = generateOutput(androidViews, selectedPackage.getQualifiedName()
+                            + "." + className);
+                    saveClass(resultDirectory, resultClass);
+                }
+            }.execute();
+            /*ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                @Override
+                public void run() {
+                }
+            });*/
+
+        } else {
+            //throw new GenerateViewPresenterAction.CancellationException();
+        }
+    }
+
+    private void saveClass(final PsiDirectory resultDirectory, final PsiClass resultClass) {
+        if (resultDirectory != null) {
+            if (resultClass != null) {
+                PsiClass added = (PsiClass) resultDirectory.add(resultClass);
+                PsiFile psiFile = added.getNavigationElement().getContainingFile();
+                JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(added.getProject());
+                styleManager.optimizeImports(psiFile);
+                CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(added.getProject());
+                PsiClass formatted = (PsiClass) codeStyleManager.reformat(added);
+                formatted.navigate(true);
+            }
+        }
     }
 
     private AndroidView getAndroidViews(VirtualFile layoutFile, Project project) {
@@ -37,7 +92,6 @@ public class ActivityInit {
         PsiClass psiClass = JavaPsiFacade.getInstance(PluginProject.mProject).findClass(parentPath,
                 GlobalSearchScope.allScope(PluginProject.mProject));
 
-        System.out.println("p=" + psiClass.getContainingFile().getOriginalFile().getVirtualFile().getCanonicalPath());
         File file = new File(layoutPath);
         VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
         AndroidView androidView = getAndroidViews(virtualFile, PluginProject.mProject);
@@ -46,17 +100,51 @@ public class ActivityInit {
         new WriteCommandAction.Simple(mProject) {
             @Override
             protected void run() throws Throwable {
-                //PsiClass resultClass = InsertMetodToClass.generateOutput(psiClass, androidView);
-                /*InsertMetodToClass.createField(psiClass, "yasina");
-                saveClass(psiClass);*/
                 PsiElementFactory elementFactory = JavaPsiFacade.getInstance(PluginProject.mProject).getElementFactory();
-                //psiClass.add(elementFactory.createFieldFromText("private int yasina=0;", psiClass.getOriginalElement()));
-                //psiClass.add(elementFactory.createMethodFromText("public int describeContents() { return 0; }", psiClass));
                 generateOutput(androidView,psiClass,layoutPath);
             }
         }.execute();
 
     }
+
+    private PsiDirectory getPsiDirectoryFromPackage(PsiPackage selectedPackage) {
+        PsiDirectory[] allDirectories = PackageUtil.getDirectories(selectedPackage, null, false);
+
+        PsiDirectory p = null;
+        if (allDirectories.length > 1) {
+            String[] dirs = new String[allDirectories.length];
+            for (int i = 0; i < allDirectories.length; i++) {
+                dirs[i] = allDirectories[i].getVirtualFile().getPath();
+            }
+            ChooseDialog dialog = new ChooseDialog(selectedPackage.getProject(), "Directory Selection",
+                    "Package referenced to several folders. Select result destination",
+                    dirs,
+                    0);
+            int index = 0;
+
+            if (dialog.showAndGet()) {
+                index = dialog.getSelectedIndex();
+                /*if (index >= 0) {
+                    p = directories.get(index);
+                }*/
+            }
+            p = allDirectories[index];
+        } else if (allDirectories.length == 1) {
+            p = allDirectories[0];
+        }
+        return p;
+        //throw new GenerateViewPresenterAction.CancellationException();
+    }
+
+    private void throwIfFileAlreadyExists(PsiDirectory resultDirectory, String fileName) {
+        for (PsiFile file : resultDirectory.getFiles()) {
+            String name = file.getName();
+            if (name != null && name.equalsIgnoreCase(fileName)) {
+                throw new GenerateViewPresenterAction.CancellationException("File \"" + fileName + "\" already exists");
+            }
+        }
+    }
+
 
     public static final String ANDROID_VIEW_CLASS = "android.view.View";
     public static final String ANDROID_VIEW_GROUP_CLASS = "android.view.ViewGroup";
@@ -105,6 +193,20 @@ public class ActivityInit {
         }
     }
 
+    protected PsiClass generateOutput(AndroidView androidView, String className) {
+        PsiElementFactory factory = JavaPsiFacade.getElementFactory(PluginProject.mProject);
+        PsiClass psiClass = factory.createClass(ClassHelper.getClassNameFromFullQualified(className));
+        ButterKnife butterKnife = ButterKnife.find(PluginProject.mProject);
+        if (butterKnife != null) {
+            addImport(psiClass, butterKnife.getInjectViewClass());
+            addImport(psiClass, butterKnife.getInjectorPsiClass());
+        }
+        generateBody(androidView, butterKnife, psiClass, PluginProject.mProject);
+        addRClassImport(psiClass, androidManifest);
+
+        return psiClass;
+    }
+
     private void addRClassImport(PsiClass psiClass, AndroidManifest androidManifest) {
         PsiClass rClass = ClassHelper.findClass(psiClass.getProject(), androidManifest.getPackageName() + ".R");
         addImport(psiClass, rClass);
@@ -116,7 +218,9 @@ public class ActivityInit {
         manager.addImport((PsiJavaFile) containingFile, importClass);
     }
 
-    protected void generateBody(AndroidView androidView, ButterKnife butterKnife, final PsiClass psiClass, Project project) {
+    protected void generateBody(AndroidView androidView, ButterKnife butterKnife,
+                                final PsiClass psiClass, Project project) {
+
         FieldGenerator fieldGenerator = new FieldGenerator();
         Map<AndroidView, PsiField> fieldMappings = fieldGenerator.generateFields(
                 androidView, project, butterKnife, new FieldGenerator.AddToPsiClassCallback(psiClass));
@@ -159,7 +263,12 @@ public class ActivityInit {
             initMethod = factory.createMethodFromText("public void init() {}", psiClass);
             addFindViewStatements(factory, initMethod, androidView, fieldMappings);
             psiClass.add(initMethod);
-            callInitMethodOnCreateView(psiClass, initMethod);
+            try {
+                callInitMethodOnCreateView(psiClass, initMethod);
+            }catch (java.lang.ArrayIndexOutOfBoundsException e2){
+
+            }
+
         }
 
     }

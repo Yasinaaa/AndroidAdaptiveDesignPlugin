@@ -1,9 +1,18 @@
 package ru.itis.androidplugin.elements;
 
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.vfs.VirtualFile;
+import ru.itis.androidplugin.android.AndroidManifest;
+import ru.itis.androidplugin.settings.PluginProject;
 import ru.itis.androidplugin.view.MainView;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 /**
@@ -52,7 +61,12 @@ public abstract class MaterialItem {
 
     public void setСhild(MaterialItem[] child) {}
 
+    //todo: remove one of it
     public void setView(MainView mainView) {
+
+    }
+
+    public void setView() {
 
     }
 
@@ -68,9 +82,9 @@ public abstract class MaterialItem {
 
     public void addItemToHistoryList(MainView mainView){
         // <- ->
-        mainView.tenClickedMaterialItems.add(mainView.currentItem, this);
+        /*mainView.tenClickedMaterialItems.add(mainView.currentItem, this);
         mainView.setBackNextLabelsVisiblility();
-        mainView.currentItem++;
+        mainView.currentItem++;*/
         // <- ->
     }
 
@@ -85,4 +99,13 @@ public abstract class MaterialItem {
     public void setmClassPath(String mClassPath) {
         this.mClassPath = mClassPath;
     }
+
+    public void removeAllExistenActionListeners(JButton button){
+        ActionListener[] allActionListeners = button.getListeners(ActionListener.class);
+        for (ActionListener actionListener: allActionListeners){
+            button.removeActionListener(actionListener);
+        }
+    }
+
+
 }

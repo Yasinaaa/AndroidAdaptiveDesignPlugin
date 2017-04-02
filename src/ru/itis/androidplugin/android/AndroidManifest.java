@@ -86,7 +86,7 @@ public class AndroidManifest {
         }
         return result;
     }
-    private Module getModuleOfFile(VirtualFile layoutFile) {
+    public Module getModuleOfFile(VirtualFile layoutFile) {
         ProjectRootManager rootManager = ProjectRootManager.getInstance(PluginProject.mProject);
         Module module = rootManager.getFileIndex().getModuleForFile(layoutFile);
         if (module == null) {
