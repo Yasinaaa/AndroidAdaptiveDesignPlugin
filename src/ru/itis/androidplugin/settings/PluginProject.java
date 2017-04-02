@@ -9,9 +9,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.messages.MessageBus;
 import org.jetbrains.annotations.NotNull;
-import ru.itis.androidplugin.generator.FileOwner;
-
-import java.util.List;
 
 /**
  * Created by yasina on 24.02.17.

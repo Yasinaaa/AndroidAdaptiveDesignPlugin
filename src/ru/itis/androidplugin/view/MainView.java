@@ -30,8 +30,10 @@ import ru.itis.androidplugin.adapters.ViewRender;
 import ru.itis.androidplugin.android.AndroidManifest;
 import ru.itis.androidplugin.elements.MaterialChildRecyclerView;
 import ru.itis.androidplugin.elements.MaterialItem;
-import ru.itis.androidplugin.generator.ActivityInit;
-import ru.itis.androidplugin.generator.FileOwner;
+import ru.itis.androidplugin.generator.classes.ActivityPattern;
+import ru.itis.androidplugin.generator.classes.ClassGenerator;
+import ru.itis.androidplugin.generator.classes.RecyclerViewHolderPattern;
+import ru.itis.androidplugin.settings.FileOwner;
 import ru.itis.androidplugin.settings.*;
 
 import javax.swing.*;
@@ -84,6 +86,7 @@ public class MainView extends JPanel {
     private String path;
     public ActionListener saveLayoutActionListener;
     private VirtualFile virtualFile;
+    private AndroidManifest androidManifest;
 
     public MainView() {
         //TODO change this part
@@ -106,14 +109,11 @@ public class MainView extends JPanel {
         return virtualFile;
     }
 
-    private void updateAndroidManifest(VirtualFile virtualFile) {
-        AndroidManifest androidManifest = new AndroidManifest(virtualFile);
-        androidManifest.setDifferentScreenSupport();
-    }
 
     private void init(DefaultListModel<MaterialItem> listModel) {
         mainView = this;
         virtualFile = getCurrentVirtualFile();
+
         System.out.println("current = " + virtualFile.getCanonicalPath());
 
         tenClickedMaterialItems = new LinkedList<MaterialItem>();
@@ -175,16 +175,21 @@ public class MainView extends JPanel {
                         PluginProject.mLayoutPath.length());
                 /*NewLayoutsCreating newLayoutsCreating = new NewLayoutsCreating();
                 newLayoutsCreating.initAllScreenLayouts(newPath);*/
-                ActivityInit activityInit = new ActivityInit();
+                ClassGenerator activityInit = new ClassGenerator();
+                VirtualFile virtualFile = getCurrentVirtualFile();
+                androidManifest = new AndroidManifest(virtualFile);
+
                 if (itemParentIDJLabel.getText() != null && itemParentIDJLabel.isVisible()) {
                     //todo: change
-                    activityInit.insertNewClass("LaHolder");
+                    activityInit.insertNewClass(new RecyclerViewHolderPattern(androidManifest),
+                            virtualFile.getName());
                 } else {
                     path = itemActivityClassJLabel.getText();
-                    activityInit.addInitToClass(path, PluginProject.mLayoutPath);
+                    activityInit.addInitToClass(new ActivityPattern(androidManifest),
+                            path, PluginProject.mLayoutPath);
                 }
                 //todo: change
-                updateAndroidManifest(getCurrentVirtualFile());
+                androidManifest.setDifferentScreenSupport();
 
             }
         };
@@ -327,7 +332,7 @@ public class MainView extends JPanel {
                 return;
             }
             clickedMaterialItem = Constants.mViewMaterialItems[index];
-            clickedMaterialItem.setView(MainView.this);
+            clickedMaterialItem.setView();
 
             if (clickedMaterialItem.getParent() != null)
                 clickedMaterialItem.hideNotNeededThings(MainView.this);
@@ -346,7 +351,6 @@ public class MainView extends JPanel {
             titleParentIDJLabel.setVisible(true);
             itemParentIDJLabel.setVisible(true);
             itemParentIDJLabel.setText(answer[1]);
-            saveLayoutButton.removeActionListener(saveLayoutActionListener);
             clickedMaterialItem = new MaterialChildRecyclerView(virtualFile.getCanonicalPath(),
                     "simple_item");
             clickedMaterialItem.setView();

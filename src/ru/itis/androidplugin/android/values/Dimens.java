@@ -43,8 +43,8 @@ public class Dimens {
                 String newDensity = new Float(allDimensValue[i]*density).toString().
                         replaceAll("\\.?0*$", "");
                 String newTag = String.format(allDimensTag[i], newDensity);
-                boolean l = list.contains(newTag);
-                if (!list.contains(newTag)){
+                boolean l = list.contains("    " + newTag);
+                if (!list.contains("    " + newTag)){
                     list.add(list.size() - 1,"    " + newTag);
                 }
 

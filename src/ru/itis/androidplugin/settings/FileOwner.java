@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.generator;
+package ru.itis.androidplugin.settings;
 
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;

@@ -1,17 +1,14 @@
 package ru.itis.androidplugin.elements;
 
 import com.intellij.ui.DocumentAdapter;
-import ru.itis.androidplugin.generator.ActivityInit;
 import ru.itis.androidplugin.generator.XmlGenerator;
 import ru.itis.androidplugin.settings.Constants;
-import ru.itis.androidplugin.generator.UtilsEnvironment;
-import ru.itis.androidplugin.settings.PluginProject;
+import ru.itis.androidplugin.generator.XmlChanger;
 import ru.itis.androidplugin.view.MainView;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -45,7 +42,6 @@ public class MaterialRecyclerView extends MaterialItem{
     private final String LOADING = "loading_";
     private MaterialChildRecyclerView[] childrens = null;
     private int childrensNum = 3;
-    private boolean isAlreadyInserted = false;
 
     //icons
     private final String ICON_REMOVE_PATH = "/icons/remove.png";
@@ -136,14 +132,11 @@ public class MaterialRecyclerView extends MaterialItem{
     }
 
     private void insertToLayoutOrNo(){
-        if(!isAlreadyInserted){
-            setId(mainView.itemParentViewJTextField.getText());
-            setViewParameters();
-            UtilsEnvironment.insertInEditor(Constants.RECYCLERVIEW_DIMENS_TAGS,
-                    Constants.RECYCLERVIEW_DIMENS_VALUE,
-                    mViewParametrs);
-            isAlreadyInserted = true;
-        }
+        setId(mainView.itemParentViewJTextField.getText());
+        setViewParameters();
+        XmlChanger.insertInEditor(Constants.RECYCLERVIEW_DIMENS_TAGS,
+                Constants.RECYCLERVIEW_DIMENS_VALUE,
+                mViewParametrs);
     }
 
     @Override

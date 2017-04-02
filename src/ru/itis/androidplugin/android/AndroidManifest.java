@@ -1,23 +1,27 @@
 package ru.itis.androidplugin.android;
 
-import com.AndroidManifestParser;
 import com.GenerateViewPresenterAction;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 import ru.itis.androidplugin.settings.PluginProject;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
+import java.io.InputStream;
+
+import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Created by yasina on 30.03.17.
  */
-public class AndroidManifest {
+public class AndroidManifest extends DefaultHandler {
 
     private final String SCREEN_SUPPORT = "    <supports-screens \n" + "%s%s%s%s%s" + "/>";
 
@@ -44,16 +48,14 @@ public class AndroidManifest {
     public AndroidManifest(VirtualFile layoutFile){
         Module module = getModuleOfFile(layoutFile);
         manifestFile = getManifestFile(module, layoutFile);
+        parse(manifestFile);
     }
 
-    public AndroidManifest(){
-
-    }
 
     public void setDifferentScreenSupport(){
         //todo: change
         File androidManifest = new File(manifestFile.getCanonicalPath());
-        try {
+        /*try {
             List<String> list = Files.readAllLines(Paths.get(manifestFile.getCanonicalPath()));
             String supportScreen = String.format(SCREEN_SUPPORT, ALL_SCREENS);
             boolean l = list.contains(supportScreen);
@@ -65,18 +67,18 @@ public class AndroidManifest {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
-    public AndroidManifest getAndroidManifest() {
+  /*  public AndroidManifest getAndroidManifest() {
 
         AndroidManifest androidManifest = new AndroidManifestParser().parse(manifestFile);
         if (androidManifest == null) {
             throw new GenerateViewPresenterAction.CancellationException("Failed to read AndroidManifest.xml");
         }
         return androidManifest;
-    }
+    }*/
     private VirtualFile getManifestFile(Module module, VirtualFile layoutFile) {
         ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
         VirtualFile[] contentRoots = moduleRootManager.getContentRoots();
@@ -115,6 +117,38 @@ public class AndroidManifest {
         }
 
         return lookupForManifest(parent, topDirs);
+    }
+
+    public void parse(VirtualFile virtualFile) {
+        try {
+            parse(virtualFile.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void parse(InputStream inputStream) {
+        try {
+            SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+            SAXParser saxParser = saxParserFactory.newSAXParser();
+            saxParser.parse(inputStream, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+    }
+
+    @Override
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        if (qName.equals("manifest")) {
+            setPackageName(attributes.getValue("package"));
+        }
     }
 
 }

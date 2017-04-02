@@ -21,7 +21,7 @@ import ru.itis.androidplugin.android.values.Dimens;
 /**
  * Created by yasina on 10.02.17.
  */
-public class UtilsEnvironment {
+public class XmlChanger {
 
     public static void insertInEditor(String[] allDimensTag, int[] allDimensValue, final String text) {
         new Attrs().addAttrsToProject();
@@ -47,14 +47,16 @@ public class UtilsEnvironment {
                     selectionModel.removeSelection();
                     editor.getCaretModel().moveToOffset(selectionStart + textLen);
                 } else {*/
-                document.insertString(currentOffset, text);
-                editor.getCaretModel().moveToOffset(currentOffset + textLen);
+                //document.insertString(currentOffset, text);
+                //editor.getCaretModel().moveToOffset(currentOffset + textLen);
                 //}
 
                 VirtualFile file = FileDocumentManager.getInstance().getFile(document);
                 if (file != null) {
                     PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, project);
-                    if (psiFile != null) {
+                    if(!psiFile.getText().contains(text) && psiFile != null){
+                        document.insertString(currentOffset, text);
+                        editor.getCaretModel().moveToOffset(currentOffset + textLen);
                         CodeStyleManager.getInstance(project).reformatText(psiFile, currentOffset, currentOffset + textLen);
                     }
                 }

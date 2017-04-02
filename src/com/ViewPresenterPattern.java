@@ -185,6 +185,6 @@ public class ViewPresenterPattern extends AbstractCodeGenerationPattern {
                         return view.getParent() != null;
                     }
                 };
-        findViewByIdStatementGenerator.createFindViewStatements(view, fieldAssigner);
+        findViewByIdStatementGenerator.createFindViewStatements("presenter",view, fieldAssigner);
     }
 }

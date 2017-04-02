@@ -34,7 +34,7 @@ public abstract class Generator {
 
     public void extendedInit(){
         init();
-        androidManifest = new AndroidManifest(virtualFile).getAndroidManifest();
+        androidManifest = new AndroidManifest(virtualFile);
         module = androidManifest.getModuleOfFile(virtualFile);
         androidViews = AndroidView.getAndroidViews(virtualFile);
     }

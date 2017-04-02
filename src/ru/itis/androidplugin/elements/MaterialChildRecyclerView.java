@@ -1,16 +1,10 @@
 package ru.itis.androidplugin.elements;
 
-import com.intellij.openapi.vfs.VfsUtil;
-import org.apache.commons.lang.StringUtils;
-import ru.itis.androidplugin.generator.ActivityInit;
-import ru.itis.androidplugin.generator.FileOwner;
-import ru.itis.androidplugin.generator.GenerateClass;
+import ru.itis.androidplugin.settings.FileOwner;
 import ru.itis.androidplugin.settings.PluginProject;
 import ru.itis.androidplugin.view.MainView;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by yasina on 15.03.17.

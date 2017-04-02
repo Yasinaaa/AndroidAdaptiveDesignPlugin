@@ -65,8 +65,8 @@ public class XmlGenerator extends Generator{
                                 createCleanXMLfile(SIMPLE_RELATIVE_LAYOUT, file) :
                                 createCleanXMLfile(String.format(CHILD_RECYCLERVIEW,
                                         new String[]{
-                                                materialChildRecyclerView.getParent().mId,
-                                                materialChildRecyclerView.getAttrType()
+                                                materialChildRecyclerView.getAttrType(),
+                                                materialChildRecyclerView.getParent().mId
                                         }),file);
                     }
                 }.execute();
