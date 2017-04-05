@@ -27,7 +27,8 @@ public enum XmlTypes{
         return this.name;
     }
 
-    public String[] getXmlTypes(){
+    //todo change
+    public static String[] getXmlTypes(){
         return new String[]{NONE.name, TABLETS.name};
     }
 }

@@ -34,7 +34,7 @@ public class FieldGenerator {
 
     public Map<AndroidView, PsiField> generateFields(AndroidView androidView, Project project,
                                                      ButterKnife butterKnife, @Nullable CreateFieldCallback createFieldCallback)
-            throws GenerateViewPresenterAction.CancellationException {
+            throws RuntimeException {
         List<AndroidView> views = androidView.getAllChildViews();
         Map<String, Integer> idsCount = new HashMap<String, Integer>();
         Map<AndroidView, PsiField> fieldMappings = new HashMap<AndroidView, PsiField>();
@@ -77,7 +77,7 @@ public class FieldGenerator {
              if (modifierList != null) {
                  modifierList.setModifierProperty(PsiModifier.PRIVATE, true);
              } else {
-                 throw new GenerateViewPresenterAction.CancellationException("Failed to create field");
+                 throw new RuntimeException("Failed to create field");
              }
          }
 
@@ -93,7 +93,7 @@ public class FieldGenerator {
             annotation.setDeclaredAttributeValue("value",
                     factory.createExpressionFromText("R.id." + view.getIdValue(), annotation));
         } else {
-            throw new GenerateViewPresenterAction.CancellationException("Failed to create field");
+            throw new RuntimeException("Failed to create field");
         }
     }
 

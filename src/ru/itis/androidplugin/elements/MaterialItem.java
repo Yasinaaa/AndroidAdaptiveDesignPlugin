@@ -28,6 +28,9 @@ public abstract class MaterialItem {
     public String mLayoutPath;
     public String mClassPath;
 
+    //todo change
+    public String recyclerViewType;
+
     public MaterialItem(String viewName, String pattern, String iconPath) {
         this.mViewName = viewName;
         this.mPattern = pattern;
@@ -74,6 +77,9 @@ public abstract class MaterialItem {
 
     }
 
+    public void insertToLayoutOrNo(){
+
+    }
     public MaterialItem getParent() {
         return null;
     }

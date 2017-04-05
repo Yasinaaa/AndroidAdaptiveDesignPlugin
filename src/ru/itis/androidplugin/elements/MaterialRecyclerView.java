@@ -5,6 +5,7 @@ import ru.itis.androidplugin.generator.XmlGenerator;
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.generator.XmlChanger;
 import ru.itis.androidplugin.view.MainView;
+import ru.itis.androidplugin.view.VisibleInvisible;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -20,10 +21,12 @@ import java.io.IOException;
  */
 public class MaterialRecyclerView extends MaterialItem{
 
-    private static final String XML_VIEW_PATTERN = "<RecyclerView\n"+
+    private static final String XML_VIEW_PATTERN =
+            "<android.support.v7.widget.RecyclerView\n"+
             "        android:id=\"@+id/%s\"\n"+
             "        android:layout_width=\"wrap_content\"\n"+
             "        android:layout_height=\"wrap_content\"\n"+
+            "        app:type=\"%s\"\n" +
             "        app:layout_item=\"@layout/%s\"\n %s%s"+
             "        android:clipToPadding=\"false\"\n"+
             "        android:paddingBottom=\"@dimen/activity_vertical_margin\""+
@@ -33,7 +36,8 @@ public class MaterialRecyclerView extends MaterialItem{
             "        />";
 
     private final String[] ANOTHER_LAYOUTS = new String[]{
-            "        app:layout_empty=\"@layout/%s\"\n",  "        app:layout_loading=\"@layout/%s\"\n"
+            "        app:layout_empty=\"@layout/%s\"\n",
+            "        app:layout_loading=\"@layout/%s\"\n"
     };
 
     private static final String ICON_PATH = "/icons/recycler_view.png";
@@ -52,9 +56,9 @@ public class MaterialRecyclerView extends MaterialItem{
 
     private MainView mainView;
     public static final String[] recyclerViewTypes = new String[]{
-        "LISTVIEW", "TABLEVIEW"
+        "horizontall_linearlayout", "verticall_linearlayout", "tablelayout"
     };
-    public String recyclerViewType;
+
     private XmlGenerator layoutGenerator = null;
 
     public MaterialRecyclerView(){
@@ -73,17 +77,17 @@ public class MaterialRecyclerView extends MaterialItem{
         mainView.currentMaterialItemParametersJPanel.setVisible(true);
 
         //textfield
-        mainView.itemMaterialItemJTextField.setVisible(true);
+        //mainView.itemMaterialItemJTextField.setVisible(true);
         setOnRecyclerViewTitleChanged();
         //textfield
 
         //labels
-        mainView.titleMaterialItemJLabel.setVisible(true);
+        //mainView.titleMaterialItemJLabel.setVisible(true);
         mainView.titleMaterialItemJLabel.setText("Item layout");
-        mainView.titleParentViewJLabel.setVisible(true);
+        //mainView.titleParentViewJLabel.setVisible(true);
         mainView.titleParentViewJLabel.setText("Recycler View ID");
-        mainView.titleParentIDJLabel.setVisible(false);
-        mainView.itemParentIDJLabel.setVisible(false);
+        //mainView.titleParentIDJLabel.setVisible(false);
+        //mainView.itemParentIDJLabel.setVisible(false);
 
         //icons
         setLayoutJLabelClickers(mainView.itemMaterialItemJTextField, null,
@@ -97,46 +101,39 @@ public class MaterialRecyclerView extends MaterialItem{
         //labels
 
         //buttons
-        mainView.saveLayoutButton.setVisible(true);
+        //mainView.saveLayoutButton.setVisible(true);
         //buttons
 
         //combobox
+        recyclerViewType = recyclerViewTypes[0];
         mainView.typeJComboBox.addItem(recyclerViewTypes[0]);
         mainView.typeJComboBox.addItem(recyclerViewTypes[1]);
-        //combobox
-
-        if (getСhild() != null) {
-            /*mainView.itemMaterialItemJTextField.setEnabled(false); todo: maybe it's can be important
-            mainView.itemMaterialItemJTextField.setText(childrens.mId);
-            mainView.itemMaterialItemJTextField.setVisible(false);
-            mainView.itemParentViewJTextField.setVisible(true);
-            mainView.itemParentViewJTextField.setText(mId);*/
-        } else {
-            System.out.println("no children");
-        }
-
-
-        mainView.addToLayoutButton.addActionListener(new ActionListener() {
+        mainView.typeJComboBox.addItem(recyclerViewTypes[2]);
+        mainView.typeJComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("add to layout btn clicked");
-                insertToLayoutOrNo();
-                mainView.addToLayoutButton.removeActionListener(this);
-
-                mainView.openItemLayoutJLabel.setVisible(true);
-                mainView.openEmptyLayoutJLabel.setVisible(true);
-                mainView.openLoadingLayoutJLabel.setVisible(true);
+                recyclerViewType = (String) mainView.typeJComboBox.getSelectedItem();
             }
         });
+        //combobox
+
+
 
     }
 
-    private void insertToLayoutOrNo(){
-        setId(mainView.itemParentViewJTextField.getText());
-        setViewParameters();
-        XmlChanger.insertInEditor(Constants.RECYCLERVIEW_DIMENS_TAGS,
-                Constants.RECYCLERVIEW_DIMENS_VALUE,
-                mViewParametrs);
+    @Override
+    public void insertToLayoutOrNo(){
+        try {
+            setId(mainView.itemParentViewJTextField.getText());
+            setViewParameters();
+            XmlChanger.changeXml(Constants.RECYCLERVIEW_DIMENS_TAGS,
+                    Constants.RECYCLERVIEW_DIMENS_VALUE,
+                    mViewParametrs);
+            VisibleInvisible.layoutsForRecyclerViewCreated(mainView);
+        }catch (java.io.IOException e){
+
+        }
+
     }
 
     @Override
@@ -152,7 +149,8 @@ public class MaterialRecyclerView extends MaterialItem{
     @Override
     public void setViewChildAndParent(MainView mainView) {
         mainView.titleParentViewJLabel.setText("RecyclerView ID");
-        mainView.itemParentViewJTextField.setVisible(true);
+        //mainView.itemParentViewJTextField.setVisible(true);
+        VisibleInvisible.isChild(true, mainView);
     }
 
     @Override
@@ -163,22 +161,22 @@ public class MaterialRecyclerView extends MaterialItem{
     }
 
     private String[] createChildItems(JTextField[] textFields){
-        String[] items = new String[4];
+        String[] items = new String[5];
         items[0] = mId;
-        for (int i = 1; i < childrensNum + 1; i++) {
-            String text = textFields[i-1].getText();
+        items[1] = recyclerViewType;
+
+        for (int i = 2; i < childrensNum + 2; i++) {
+            String text = textFields[i-2].getText();
 
             if (text.equals("None")) {
-                childrens[i-1] = null;
+                childrens[i-2] = null;
                 items[i] = "";
             }
             else {
-                //childrens[i-1] = new MaterialChildRecyclerView();
-                //childrens[i-1].setParent(this);
-                childrens[i-1].mId = text;
-                childrens[i-1].setLayoutPath(layoutGenerator.
-                        insertNewLayout(childrens[i-1], text).getCanonicalPath());
-                items[i] = i>1 ? String.format(ANOTHER_LAYOUTS[i-2], text) : text;
+                childrens[i-2].mId = text;
+                childrens[i-2].setLayoutPath(layoutGenerator.
+                        insertNewLayout(childrens[i-2], text).getCanonicalPath());
+                items[i] = i>2 ? String.format(ANOTHER_LAYOUTS[i-3], text) : text;
             }
         }
         return items;
@@ -201,7 +199,6 @@ public class MaterialRecyclerView extends MaterialItem{
         });
     }
     private void setLayoutsNames(){
-        String recyclerViewTitle = mainView.itemParentViewJTextField.getText();
         if(!mainView.itemParentViewJTextField.getText().equals("")){
             mainView.itemMaterialItemJTextField.setText("item_"
                     + mainView.itemParentViewJTextField.getText());
@@ -236,22 +233,6 @@ public class MaterialRecyclerView extends MaterialItem{
         }
     }
 
-    /*private void setOpenItemLayoutJLabelClick(){
-        mainView.openItemLayoutJLabel.addMouseListener(new MouseAdapter()
-        {
-            public void mouseClicked(MouseEvent e)
-            {
-                if(layoutGenerator != null){
-                    layoutGenerator.openFile();
-                }else {
-                    layoutGenerator = new LayoutGenerator();
-                    layoutGenerator.insertNewLayout(mainView.itemMaterialItemJTextField.getText());
-                }
-                childRecyclerView.setView(mainView);
-                childRecyclerView.addItemToHistoryList(mainView);
-            }
-        });
-    }*/
 
     private void setLayoutJLabelClickers(JTextField textField, JLabel addRemoveLabel, JLabel openLabel,
                                          MaterialChildRecyclerView materialChildRecyclerView){
@@ -261,7 +242,9 @@ public class MaterialRecyclerView extends MaterialItem{
         {
             public void mouseClicked(MouseEvent e)
             {
-                layoutGenerator.openFile(layoutGenerator.insertNewLayout(materialChildRecyclerView, textField.getText()));
+
+                layoutGenerator.openFile(layoutGenerator.insertNewLayout(materialChildRecyclerView,
+                         "/layout/" + textField.getText() + ".xml"));
                 materialChildRecyclerView.setView(mainView);
                 materialChildRecyclerView.addItemToHistoryList(mainView);
 
@@ -275,7 +258,6 @@ public class MaterialRecyclerView extends MaterialItem{
             {
                 public void mouseClicked(MouseEvent e)
                 {
-
                     ImageIcon i = (ImageIcon) addRemoveLabel.getIcon();
                     if(i.equals(mRemoveIcon)){
                         addRemoveLabel.setIcon(mAddIcon);

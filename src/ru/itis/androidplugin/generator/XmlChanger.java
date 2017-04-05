@@ -18,15 +18,29 @@ import com.intellij.psi.util.PsiUtilBase;
 import ru.itis.androidplugin.android.values.Attrs;
 import ru.itis.androidplugin.android.values.Dimens;
 
+import java.io.IOException;
+
 /**
  * Created by yasina on 10.02.17.
  */
 public class XmlChanger {
 
-    public static void insertInEditor(String[] allDimensTag, int[] allDimensValue, final String text) {
+    public static void changeXml(String[] allDimensTag, int[] allDimensValue, final String text)
+            throws IOException{
         new Attrs().addAttrsToProject();
-        Dimens dimens = new Dimens();
-        dimens.addAllDimens(allDimensTag, allDimensValue);
+        new Dimens().addAllDimens(allDimensTag, allDimensValue);
+        insertInEditor(text);
+    }
+
+    public static void changeXml(String tag, int value, final String text)
+            throws IOException{
+        new Dimens().addLine(tag, value + "");
+        insertInEditor(text);
+
+    }
+
+    private static void insertInEditor(final String text)
+            throws IOException {
 
         Project project = getOpenProject();
         Editor editor = getEditor(project);

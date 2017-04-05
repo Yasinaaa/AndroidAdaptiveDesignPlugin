@@ -1,10 +1,9 @@
 package ru.itis.androidplugin.settings;
 
 import com.intellij.openapi.components.ProjectComponent;
-import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.fileEditor.FileEditorManagerAdapter;
-import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
-import com.intellij.openapi.fileEditor.FileEditorManagerListener;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.messages.MessageBus;
@@ -23,6 +22,13 @@ public class PluginProject implements ProjectComponent {
     public PluginProject(Project project) {
         mProject = project;
 
+    }
+    public static VirtualFile getCurrentVirtualFile() {
+        FileEditorManager manager = FileEditorManager.getInstance(PluginProject.mProject);
+        Editor editor = manager.getSelectedTextEditor();
+        Document document = editor.getDocument();
+        final VirtualFile virtualFile = FileDocumentManager.getInstance().getFile(document);
+        return virtualFile;
     }
 
     @Override

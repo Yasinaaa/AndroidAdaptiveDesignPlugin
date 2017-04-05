@@ -28,6 +28,8 @@ public class Constants {
         public static final String[] RECYCLERVIEW_DIMENS_TAGS = new String[]{
           ACTIVITY_HORISONTAL_MARGIN, ACTIVITY_VERTICAL_MARGIN
         };
+        public static final String BOTTOM_NAVIGATION_VIEW_HEIGHT =
+                "    <dimen name=\"bottom_navigation_view_height\">%sdp</dimen>";
         // elements text }
 
         // mobile constants {
@@ -36,6 +38,7 @@ public class Constants {
         public static final int M_ACTIVITY_DETAIL_VERTICAL_MARGIN = 88;
         public static final int[] RECYCLERVIEW_DIMENS_VALUE = new int[]{M_ACTIVITY_HORISONTAL_MARGIN,
         M_ACTIVITY_VERTICAL_MARGIN};
+        public static final int BOTTOM_NAVIGATION_VIEW_HEIGHT_VALUE = 56;
 
         /*public static final String MDPI_ACTIVITY_HORISONTAL_MARGIN =
                 String.format(ACTIVITY_HORISONTAL_MARGIN, M_ACTIVITY_HORISONTAL_MARGIN);

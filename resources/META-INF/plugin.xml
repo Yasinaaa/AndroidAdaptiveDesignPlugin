@@ -34,15 +34,6 @@
 
   </extensions>
   <actions>
-    <action id="AToolBox.GenerateViewPresenter"
-            class="com.GenerateViewPresenterAction"
-            text="Generate View Presenter…"
-            description="Generates view's code from selected layout file">
-      <add-to-group group-id="ProjectViewPopupMenu"
-                    anchor="after"
-                    relative-to-action="ProjectViewPopupMenuRefactoringGroup"/>
-    </action>
-
   </actions>
 
 

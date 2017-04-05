@@ -1,7 +1,6 @@
 package ru.itis.androidplugin.generator;
 
 import ru.itis.androidplugin.android.AndroidView;
-import com.GenerateViewPresenterAction;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.module.Module;
@@ -10,13 +9,17 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import ru.itis.androidplugin.android.Menu;
 import ru.itis.androidplugin.elements.MaterialChildRecyclerView;
+import ru.itis.androidplugin.elements.MaterialRecyclerView;
+import ru.itis.androidplugin.presenters.BottomNavigationPresenterImpl;
 import ru.itis.androidplugin.settings.PluginProject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 /**
  * Created by yasina on 01.04.17.
@@ -51,7 +54,7 @@ public class XmlGenerator extends Generator{
 
         try {
             init();
-            String path = createPathToRESFolder(virtualFile) + "/layout/" + name + ".xml";
+            String path = createPathToRESFolder(virtualFile) + name;
 
             File file = new File(path);
             solutionVirtualFile[0] = LocalFileSystem.getInstance().findFileByIoFile(file);
@@ -73,32 +76,30 @@ public class XmlGenerator extends Generator{
                 }.execute();
             }
 
-        } catch (GenerateViewPresenterAction.CancellationException ignored) {
+        } catch (RuntimeException ignored) {
             if (ignored.getMessage() != null && PluginProject.mProject != null) {
                 Messages.showErrorDialog(PluginProject.mProject, ignored.getMessage(), "Error");
             }
         }
         return solutionVirtualFile[0];
     }
-
     //todo: change method
     public void initAllScreenLayouts(String layoutTitle, String[] folderTitles) {
         init();
         AndroidView androidView = AndroidView.getAndroidViews(virtualFile);
         String path = createPathToRESFolder(virtualFile);
-
-        new WriteCommandAction.Simple(PluginProject.mProject) {
+//        boolean hasRecyclerView = androidView.isContainsRecyclerView();
+        /*new WriteCommandAction.Simple(PluginProject.mProject) {
             @Override
             protected void run() throws Throwable {
                 for (String folder : folderTitles){
-                    // "layout-sw600dp"
                     File file = new File(path + "/" + folder);
                     file.mkdir();
                     file = new File(path + layoutTitle);
-                    createCleanXMLfile(SIMPLE_RELATIVE_LAYOUT, file);
+                    //createCleanXMLfile(SIMPLE_RELATIVE_LAYOUT, file);
                 }
             }
-        }.execute();
+        }.execute();*/
     }
 
     //todo: should it return VirtualFile?
@@ -132,7 +133,7 @@ public class XmlGenerator extends Generator{
         return solutionVirtualFile;
     }
 
-    private String createPathToRESFolder(VirtualFile file){
+    public String createPathToRESFolder(VirtualFile file){
         ProjectRootManager rootManager = ProjectRootManager.getInstance(PluginProject.mProject);
         Module module = rootManager.getFileIndex().getModuleForFile(file);
         ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
@@ -145,4 +146,34 @@ public class XmlGenerator extends Generator{
         fileEditorManager.openFile(virtualFile, true, true);
     }
 
+    public VirtualFile insertNewMenu(BottomNavigationPresenterImpl.ItemBottomNavigation[] allItems,
+                                       String name){
+        final VirtualFile[] solutionVirtualFile = {null};
+
+        try {
+            init();
+            String path = createPathToRESFolder(virtualFile) + "/menu";
+
+            File file = new File(path + "/" + name);
+            solutionVirtualFile[0] = LocalFileSystem.getInstance().findFileByIoFile(file);
+
+            if (solutionVirtualFile[0] == null) {
+                new WriteCommandAction.Simple(PluginProject.mProject) {
+                    @Override
+                    protected void run() throws Throwable {
+                        File file = new File(path);
+                        file.mkdirs();
+                        file = Menu.generateMenu(path + "/" + name, allItems);
+                        solutionVirtualFile[0] = LocalFileSystem.getInstance().findFileByIoFile(file);
+                    }
+                }.execute();
+            }
+
+        } catch (RuntimeException ignored) {
+            if (ignored.getMessage() != null && PluginProject.mProject != null) {
+                Messages.showErrorDialog(PluginProject.mProject, ignored.getMessage(), "Error");
+            }
+        }
+        return solutionVirtualFile[0];
+    }
 }

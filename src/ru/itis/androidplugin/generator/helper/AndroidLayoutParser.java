@@ -12,6 +12,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import ru.itis.androidplugin.android.AndroidView;
+import ru.itis.androidplugin.elements.MaterialChildRecyclerView;
+import ru.itis.androidplugin.elements.MaterialItem;
+import ru.itis.androidplugin.elements.MaterialRecyclerView;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -116,6 +119,7 @@ public class AndroidLayoutParser extends DefaultHandler {
             AndroidView view = new AndroidView();
             view.setTagName(qName);
             view.setIdValue(id);
+            view.setMaterialItem(getMaterialItem(qName, attributes));
             currentView.addSubView(view);
             currentView = view;
             prevLevels.add(currentViewLevel);
@@ -125,14 +129,44 @@ public class AndroidLayoutParser extends DefaultHandler {
 
     private static String getId(Attributes attributes) {
         String id = attributes.getValue("android:id");
+
         if (id != null && id.length() > 0) {
             int idStart = id.indexOf("/");
             if (idStart >= 0) {
+
                 return id.substring(idStart + 1);
             }
         }
 
         return null;
+    }
+
+    private static MaterialItem getMaterialItem(String title, Attributes attributes){
+        MaterialItem materialItem = null;
+        if(title.contains("RecyclerView")){
+            String tempText = null;
+            materialItem = new MaterialRecyclerView();
+            tempText = attributes.getValue("android:id");
+            materialItem.mId = tempText.substring(tempText.indexOf("/") + 1);
+            MaterialChildRecyclerView[] children = new MaterialChildRecyclerView[]{null, null, null};
+            tempText = attributes.getValue("app:layout_item");
+            children[0] = new MaterialChildRecyclerView(tempText.substring(tempText.indexOf("/") + 1),
+                    MaterialChildRecyclerView.childRecyclerViewType[0]);
+            tempText = attributes.getValue("app:layout_empty");
+            if(tempText != null){
+                children[1] = new MaterialChildRecyclerView(tempText.substring(tempText.indexOf("/") + 1),
+                    MaterialChildRecyclerView.childRecyclerViewType[1]);
+            }
+            tempText = attributes.getValue("app:layout_loading");
+            if(tempText != null){
+                children[2] = new MaterialChildRecyclerView(tempText.substring(tempText.indexOf("/") + 1),
+                        MaterialChildRecyclerView.childRecyclerViewType[2]);
+            }
+            materialItem.setСhild(children);
+            materialItem.recyclerViewType = attributes.getValue("app:type_layout");
+        }
+
+        return materialItem;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ru.itis.androidplugin.generator.helper;
 
+import com.github.rjeschke.txtmark.Run;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -57,11 +58,11 @@ public class ClassHelper {
 
     public static PsiClass findClass(Project project, String className) {
         JavaPsiFacade psiFacade = JavaPsiFacade.getInstance(project);
-        if(className.contains("RecyclerView")) className = "android.support.v7.widget.RecyclerView";
+        //if(className.contains("RecyclerView")) className = "android.support.v7.widget.RecyclerView";
         PsiClass viewClass = psiFacade.findClass(className, new EverythingGlobalScope(project));
-       /*if (viewClass == null) {
-               throw new GenerateViewPresenterAction.CancellationException("Class not found: " + className);
-        }*/
+       if (viewClass == null) {
+               throw new RuntimeException("Class not found: " + className);
+        }
         return viewClass;
     }
 
@@ -72,8 +73,7 @@ public class ClassHelper {
                 return field;
             }
         }
-        return null;
-        //throw new GenerateViewPresenterAction.CancellationException("Field not found: " + fieldName);
+        throw new RuntimeException("Field not found: " + fieldName);
     }
 
 }

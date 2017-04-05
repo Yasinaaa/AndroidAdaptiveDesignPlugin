@@ -58,6 +58,25 @@ public class Dimens {
 
     }
 
+    public void addLine(String tag, String value){
+        List<String> list = null;
+        String valuePath = getPathToDimens(allValues[0]);
+
+        try {
+            list = Files.readAllLines(Paths.get(valuePath));
+            String newTag = String.format(tag, value);
+            boolean l = list.contains("    " + newTag);
+            if (!list.contains("    " + newTag)){
+                list.add(list.size() - 1,"    " + newTag);
+            }
+
+            Files.write(Paths.get(valuePath), list);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String getPathToDimens(String value){
         String path = PluginProject.mProject.getBasePath() + Constants.RES_PATH + value;
         File file = new File(path);

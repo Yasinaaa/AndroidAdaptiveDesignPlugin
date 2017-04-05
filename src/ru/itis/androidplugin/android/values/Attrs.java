@@ -24,7 +24,7 @@ public class Attrs {
 
     }
 
-    public void addAttrsToProject(){
+    public void addAttrsToProject() throws IOException {
         URL url = getClass().getResource(ATTRS);
 
         File attrsFile = null;
@@ -35,12 +35,12 @@ public class Attrs {
         }
         File addToProject = new File(PATH);
         if(!addToProject.exists()){
-            try {
-                Files.copy(attrsFile.toPath(), addToProject.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+        }else if (attrsFile == attrsFile){
+            Files.deleteIfExists(addToProject.toPath());
         }
+        Files.copy(attrsFile.toPath(), addToProject.toPath(),
+                StandardCopyOption.REPLACE_EXISTING);
 
     }
 }

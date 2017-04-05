@@ -55,9 +55,9 @@ public class RecyclerViewHolderPattern extends ClassPattern{
         PsiParameter viewParam = factory.createParameter("view", factory.createType(viewClass));
         constructor.getParameterList().add(viewParam);
 
-        /*if (constructor.getBody() == null) {
-            throw new GenerateViewPresenterAction.CancellationException("Failed to create ViewHolder constructor");
-        }*/
+        if (constructor.getBody() == null) {
+            throw new RuntimeException("Failed to create ViewHolder constructor");
+        }
 
         if (hasRecyclerViewSupport()) {
             constructor.getBody().add(factory.createStatementFromText(
@@ -91,9 +91,9 @@ public class RecyclerViewHolderPattern extends ClassPattern{
         constructor.getParameterList().add(inflaterParam);
         constructor.getParameterList().add(viewParentParam);
 
-        /*if (constructor.getBody() == null) {
-            throw new GenerateViewPresenterAction.CancellationException("Failed to create recyclerView compat constructor");
-        }*/
+        if (constructor.getBody() == null) {
+            throw new RuntimeException("Failed to create recyclerView compat constructor");
+        }
 
         PsiStatement callPrimaryConstructorStatement =
                 factory.createStatementFromText("this(" + inflaterParam.getName() + ".inflate(R.layout."
