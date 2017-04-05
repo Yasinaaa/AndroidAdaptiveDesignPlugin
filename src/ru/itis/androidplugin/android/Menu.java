@@ -33,8 +33,12 @@ public class Menu {
             for (int i=0; i<allItems.length; i++){
                 if(allItems[i] != null){
                     strings.add(allItems[i].getTitle());
+                    if(allItems[i].getDrawable().contains(".")){
+                        allItems[i].setDrawable(allItems[i].getDrawable().substring(0, allItems[i].getDrawable().indexOf(".")));
+                    }
                     osw.write(String.format(ITEM, new String[]{
-                            allItems[i].getTitle(), allItems[i].getDrawable(), allItems[i].getTitle().replaceAll(" ","_").toLowerCase()
+                            allItems[i].getTitle(), allItems[i].getDrawable(),
+                            allItems[i].getTitle().replaceAll(" ","_").toLowerCase()
                     }));
                 }
             }

@@ -1,9 +1,6 @@
 package ru.itis.androidplugin.settings;
 
-import ru.itis.androidplugin.elements.*;
-
-import javax.swing.*;
-import java.util.ArrayList;
+import ru.itis.androidplugin.view.*;
 
 /**
  * Created by yasina on 12.02.17.
@@ -18,7 +15,7 @@ public class Constants {
     public static final String VALUES_PATH = String.format("%s/values/", RES_PATH);
 
     //dimens {
-        // elements text {
+        // view text {
         public static final String ACTIVITY_HORISONTAL_MARGIN =
                 "    <dimen name=\"activity_horizontal_margin\">%sdp</dimen>";
         public static final String ACTIVITY_VERTICAL_MARGIN =
@@ -30,7 +27,7 @@ public class Constants {
         };
         public static final String BOTTOM_NAVIGATION_VIEW_HEIGHT =
                 "    <dimen name=\"bottom_navigation_view_height\">%sdp</dimen>";
-        // elements text }
+        // view text }
 
         // mobile constants {
         public static final int M_ACTIVITY_HORISONTAL_MARGIN = 16;

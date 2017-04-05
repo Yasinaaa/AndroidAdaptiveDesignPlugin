@@ -81,6 +81,7 @@ public class ClassGenerator extends Generator {
     }
 
     public void addInitToClass(ClassPattern classPattern, String parentPath, String layoutPath){
+        init();
         PsiClass psiClass = JavaPsiFacade.getInstance(PluginProject.mProject).findClass(parentPath,
                 GlobalSearchScope.allScope(PluginProject.mProject));
 

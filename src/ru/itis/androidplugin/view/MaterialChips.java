@@ -1,13 +1,11 @@
-package ru.itis.androidplugin.elements;
-
-import ru.itis.androidplugin.view.MainView;
+package ru.itis.androidplugin.view;
 
 import javax.swing.*;
 
 /**
  * Created by yasina on 09.03.17.
  */
-public class MaterialCards extends MaterialItem {
+public class MaterialChips extends MaterialItem {
 
     private static final String EMPTY = "materialRecyclerView1";
     public static final String XML_VIEW_PATTERN = "<RecyclerView\n"+
@@ -15,13 +13,13 @@ public class MaterialCards extends MaterialItem {
             "        android:layout_width=\"wrap_content\"\n"+
             "        android:layout_height=\"wrap_content\"\n"+
             "        />";
-    public static final String ICON_PATH = "/icons/cards.png";
-    public static final String VIEW_NAME = "Cards";
+    public static final String ICON_PATH = "/icons/chips.png";
+    public static final String VIEW_NAME = "Chips";
 
     private String mId = EMPTY;
     private ImageIcon mIcon;
 
-    public MaterialCards(){
+    public MaterialChips(){
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
     }
 

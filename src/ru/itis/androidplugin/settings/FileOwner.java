@@ -2,14 +2,9 @@ package ru.itis.androidplugin.settings;
 
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import ru.itis.androidplugin.elements.MaterialChildRecyclerView;
-import ru.itis.androidplugin.elements.MaterialRecyclerView;
-import ru.itis.androidplugin.settings.PluginProject;
-import ru.itis.androidplugin.settings.ToolWindowFactory;
+import ru.itis.androidplugin.view.MaterialChildRecyclerView;
 import ru.itis.androidplugin.view.MainView;
 
-import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.Observable;
 import java.util.Observer;

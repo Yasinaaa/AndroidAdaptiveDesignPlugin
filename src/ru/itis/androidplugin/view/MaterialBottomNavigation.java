@@ -1,18 +1,11 @@
-package ru.itis.androidplugin.elements;
+package ru.itis.androidplugin.view;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
 import ru.itis.androidplugin.generator.XmlChanger;
 import ru.itis.androidplugin.generator.XmlGenerator;
 import ru.itis.androidplugin.presenters.BottomNavigationPresenterImpl;
 import ru.itis.androidplugin.settings.Constants;
-import ru.itis.androidplugin.view.MainView;
-import ru.itis.androidplugin.view.VisibleInvisible;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by yasina on 09.03.17.

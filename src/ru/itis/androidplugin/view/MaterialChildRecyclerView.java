@@ -1,8 +1,7 @@
-package ru.itis.androidplugin.elements;
+package ru.itis.androidplugin.view;
 
 import ru.itis.androidplugin.settings.FileOwner;
 import ru.itis.androidplugin.settings.PluginProject;
-import ru.itis.androidplugin.view.MainView;
 
 import javax.swing.*;
 
@@ -16,6 +15,7 @@ public class MaterialChildRecyclerView extends MaterialItem{
             "        android:layout_width=\"wrap_content\"\n"+
             "        android:layout_height=\"wrap_content\"\n"+
             "        />";
+
     public static final String ICON_PATH = "/icons/recycler_view.png";
     public static final String VIEW_NAME = "Recycler View Child";
     //private String childItemPath = null;

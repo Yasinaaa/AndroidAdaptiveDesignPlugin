@@ -1,11 +1,9 @@
-package ru.itis.androidplugin.elements;
+package ru.itis.androidplugin.view;
 
 import com.intellij.ui.DocumentAdapter;
 import ru.itis.androidplugin.generator.XmlGenerator;
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.generator.XmlChanger;
-import ru.itis.androidplugin.view.MainView;
-import ru.itis.androidplugin.view.VisibleInvisible;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -34,7 +32,16 @@ public class MaterialRecyclerView extends MaterialItem{
             "        android:paddingRight=\"@dimen/activity_horizontal_margin\"" +
             "        android:paddingTop=\"@dimen/activity_horizontal_margin\"" +
             "        />";
-
+    private final String CHILD_RECYCLERVIEW = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+            "<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
+            "              xmlns:app=\"http://schemas.android.com/apk/res-auto\"" +
+            "              android:orientation=\"vertical\"\n" +
+            "              android:layout_width=\"match_parent\"\n" +
+            "              android:layout_height=\"match_parent\"\n" +
+            "              app:child_type_recyclerview=\"%s\""+
+            "              app:parent_recyclerview=\"@id/%s\">"+
+            "\n" +
+            "</RelativeLayout>";
     private final String[] ANOTHER_LAYOUTS = new String[]{
             "        app:layout_empty=\"@layout/%s\"\n",
             "        app:layout_loading=\"@layout/%s\"\n"
@@ -174,8 +181,14 @@ public class MaterialRecyclerView extends MaterialItem{
             }
             else {
                 childrens[i-2].mId = text;
+
+                String inputText = String.format(CHILD_RECYCLERVIEW,
+                        new String[]{
+                                childrens[i-2].getAttrType(),
+                                childrens[i-2].getParent().mId
+                        });
                 childrens[i-2].setLayoutPath(layoutGenerator.
-                        insertNewLayout(childrens[i-2], text).getCanonicalPath());
+                        insertNewLayout(new String[]{inputText},text).getCanonicalPath());
                 items[i] = i>2 ? String.format(ANOTHER_LAYOUTS[i-3], text) : text;
             }
         }
@@ -243,7 +256,12 @@ public class MaterialRecyclerView extends MaterialItem{
             public void mouseClicked(MouseEvent e)
             {
 
-                layoutGenerator.openFile(layoutGenerator.insertNewLayout(materialChildRecyclerView,
+                String inputText = String.format(CHILD_RECYCLERVIEW,
+                        new String[]{
+                                materialChildRecyclerView.getAttrType(),
+                                materialChildRecyclerView.getParent().mId
+                        });
+                layoutGenerator.openFile(layoutGenerator.insertNewLayout(new String[]{inputText},
                          "/layout/" + textField.getText() + ".xml"));
                 materialChildRecyclerView.setView(mainView);
                 materialChildRecyclerView.addItemToHistoryList(mainView);

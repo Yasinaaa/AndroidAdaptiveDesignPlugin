@@ -1,13 +1,11 @@
-package ru.itis.androidplugin.elements;
-
-import ru.itis.androidplugin.view.MainView;
+package ru.itis.androidplugin.view;
 
 import javax.swing.*;
 
 /**
  * Created by yasina on 09.03.17.
  */
-public class MaterialDataTables extends MaterialItem {
+public class MaterialCards extends MaterialItem {
 
     private static final String EMPTY = "materialRecyclerView1";
     public static final String XML_VIEW_PATTERN = "<RecyclerView\n"+
@@ -15,13 +13,13 @@ public class MaterialDataTables extends MaterialItem {
             "        android:layout_width=\"wrap_content\"\n"+
             "        android:layout_height=\"wrap_content\"\n"+
             "        />";
-    public static final String ICON_PATH = "/icons/data_tables.png";
-    public static final String VIEW_NAME = "Data Tables";
+    public static final String ICON_PATH = "/icons/cards.png";
+    public static final String VIEW_NAME = "Cards";
 
     private String mId = EMPTY;
     private ImageIcon mIcon;
 
-    public MaterialDataTables(){
+    public MaterialCards(){
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
     }
 

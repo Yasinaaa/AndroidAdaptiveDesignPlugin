@@ -1,6 +1,4 @@
-package ru.itis.androidplugin.elements;
-
-import ru.itis.androidplugin.view.MainView;
+package ru.itis.androidplugin.view;
 
 import javax.swing.*;
 

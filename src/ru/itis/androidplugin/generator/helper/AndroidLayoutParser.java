@@ -12,9 +12,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import ru.itis.androidplugin.android.AndroidView;
-import ru.itis.androidplugin.elements.MaterialChildRecyclerView;
-import ru.itis.androidplugin.elements.MaterialItem;
-import ru.itis.androidplugin.elements.MaterialRecyclerView;
+import ru.itis.androidplugin.view.MaterialChildRecyclerView;
+import ru.itis.androidplugin.view.MaterialItem;
+import ru.itis.androidplugin.view.MaterialRecyclerView;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -150,8 +150,8 @@ public class AndroidLayoutParser extends DefaultHandler {
             materialItem.mId = tempText.substring(tempText.indexOf("/") + 1);
             MaterialChildRecyclerView[] children = new MaterialChildRecyclerView[]{null, null, null};
             tempText = attributes.getValue("app:layout_item");
-            children[0] = new MaterialChildRecyclerView(tempText.substring(tempText.indexOf("/") + 1),
-                    MaterialChildRecyclerView.childRecyclerViewType[0]);
+            if(tempText != null){children[0] = new MaterialChildRecyclerView(tempText.substring(tempText.indexOf("/") + 1),
+                    MaterialChildRecyclerView.childRecyclerViewType[0]);}
             tempText = attributes.getValue("app:layout_empty");
             if(tempText != null){
                 children[1] = new MaterialChildRecyclerView(tempText.substring(tempText.indexOf("/") + 1),

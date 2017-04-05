@@ -39,19 +39,19 @@ public class Dimens {
 
         try {
             list = Files.readAllLines(Paths.get(valuePath));
-            for(int i=0; i<allDimensTag.length; i++){
-                String newDensity = new Float(allDimensValue[i]*density).toString().
-                        replaceAll("\\.?0*$", "");
-                String newTag = String.format(allDimensTag[i], newDensity);
-                boolean l = list.contains("    " + newTag);
-                if (!list.contains("    " + newTag)){
-                    list.add(list.size() - 1,"    " + newTag);
+            if(allDimensTag != null && allDimensValue != null) {
+                for (int i = 0; i < allDimensTag.length; i++) {
+                    String newDensity = new Float(allDimensValue[i] * density).toString().
+                            replaceAll("\\.?0*$", "");
+                    String newTag = String.format(allDimensTag[i], newDensity);
+                    boolean l = list.contains("    " + newTag);
+                    if (!list.contains("    " + newTag)) {
+                        list.add(list.size() - 1, "    " + newTag);
+                    }
                 }
-
+                Files.write(Paths.get(valuePath), list);
             }
-
-            Files.write(Paths.get(valuePath), list);
-
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

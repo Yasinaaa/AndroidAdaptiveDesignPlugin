@@ -1,17 +1,7 @@
-package ru.itis.androidplugin.elements;
-
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import ru.itis.androidplugin.android.AndroidManifest;
-import ru.itis.androidplugin.settings.PluginProject;
-import ru.itis.androidplugin.view.MainView;
+package ru.itis.androidplugin.view;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 

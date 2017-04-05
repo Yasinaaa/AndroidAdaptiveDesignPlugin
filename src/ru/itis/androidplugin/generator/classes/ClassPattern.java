@@ -30,6 +30,7 @@ public abstract class ClassPattern {
 
     public ClassPattern(AndroidManifest androidManifest){
         this.androidManifest = androidManifest;
+        factory = JavaPsiFacade.getElementFactory(PluginProject.mProject);
     }
 
     public void setRecyclerViewSupport(boolean support) {
@@ -61,7 +62,7 @@ public abstract class ClassPattern {
                                              PsiClass psiClass);
 
     protected PsiClass generatePsiClass(String className){
-        factory = JavaPsiFacade.getElementFactory(PluginProject.mProject);
+
         PsiClass psiClass = factory.createClass(ClassHelper.
                 getClassNameFromFullQualified(className));
         return psiClass;

@@ -1,7 +1,6 @@
 package ru.itis.androidplugin.adapters;
 
-import ru.itis.androidplugin.elements.MaterialItem;
-import ru.itis.androidplugin.settings.Constants;
+import ru.itis.androidplugin.view.MaterialItem;
 
 import javax.swing.*;
 import javax.swing.border.Border;
