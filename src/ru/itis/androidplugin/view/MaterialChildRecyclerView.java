@@ -18,13 +18,7 @@ public class MaterialChildRecyclerView extends MaterialItem{
 
     public static final String ICON_PATH = "/icons/recycler_view.png";
     public static final String VIEW_NAME = "Recycler View Child";
-    //private String childItemPath = null;
-    private MaterialItem parentRecyclerView = null;
-    private ImageIcon mIcon;
-    public static String[] childRecyclerViewType = new String[]{
-      "item_", "empty_", "loading_"
-    };
-    private String type;
+    public static final String[] mAllTypes = new String[]{ "item_", "empty_", "loading_"};
 
     public MaterialChildRecyclerView(){
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
@@ -33,8 +27,9 @@ public class MaterialChildRecyclerView extends MaterialItem{
     public MaterialChildRecyclerView(String path, String attrType){
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
         mId = path.substring(path.lastIndexOf("/") + 1, path.indexOf("."));
-        type = setNormalType(attrType);
-        setLayoutPath(path);
+        mType = setNormalType(attrType);
+        mLayoutPath = path;
+
         //todo get by id
 
     }
@@ -78,26 +73,9 @@ public class MaterialChildRecyclerView extends MaterialItem{
         mainView.saveLayoutButton.addActionListener(actionListener);*/
     }
 
-    @Override
-    public MaterialItem getParent() {
-        return parentRecyclerView;
-    }
-
-    @Override
-    public void setParent(MaterialItem parent) {
-        this.parentRecyclerView = parent;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public String getAttrType() {
-        switch (type){
+        switch (mType){
             case "item_":
                 return "simple_item";
             case "empty_":
@@ -105,7 +83,7 @@ public class MaterialChildRecyclerView extends MaterialItem{
             case "loading_":
                 return "loading_item";
         }
-        return type;
+        return mType;
     }
 
     public String setNormalType(String text) {
@@ -117,6 +95,6 @@ public class MaterialChildRecyclerView extends MaterialItem{
             case "loading_item":
                 return "loading_";
         }
-        return type;
+        return mType;
     }
 }

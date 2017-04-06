@@ -57,9 +57,9 @@ public class BottomSheetPresenterImpl implements BottomSheetPresenter {
     @Override
     public void getAllValues() {
         materialBottomSheets.mId = mainView.itemParentViewJTextField.getText();
-        materialBottomSheets.parentPath = PluginProject.getCurrentVirtualFile().getCanonicalPath();
-        materialBottomSheets.itemPath = mainView.itemMaterialItemJTextField.getText();
-        materialBottomSheets.style = mainView.typeJComboBox.getSelectedItem().toString();
+        materialBottomSheets.mParentItemName = PluginProject.getCurrentVirtualFile().getCanonicalPath();
+        materialBottomSheets.mLayoutName = mainView.itemMaterialItemJTextField.getText();
+        materialBottomSheets.mStyle = mainView.typeJComboBox.getSelectedItem().toString();
         if(mainView.itemMaterialItemJTextField.isEnabled()){
             materialBottomSheets.title = mainView.itemMaterialItemJTextField.getText();
 

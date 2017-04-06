@@ -24,7 +24,7 @@ public class MaterialButton extends MaterialItem {
     }
 
     @Override
-    public void setView(MainView mainView) {
+    public void setView() {
 
     }
 }

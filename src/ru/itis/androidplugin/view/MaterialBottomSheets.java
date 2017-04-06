@@ -42,29 +42,25 @@ public class MaterialBottomSheets extends MaterialItem {
     public static final String ITEM_END = "</RelativeLayout>";
 
 
-    //private ImageIcon mIcon;
     private MainView mainView;
 
     //view
-    public String mId = EMPTY;
-    public String style;
     public String title;
-    //public boolean hasTitle;
-    public String parentPath;
-    public String itemPath;
+
     //view
     private BottomSheetPresenterImpl bottomSheetPresenter;
     private XmlGenerator xmlGenerator;
 
     public MaterialBottomSheets() {
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
+        mId = EMPTY;
     }
 
-    public MaterialBottomSheets(String mId, String parentPath, String style, String title) {
+    public MaterialBottomSheets(String mId, String parent, String style, String title) {
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
         this.mId = mId;
-        this.parentPath = parentPath;
-        this.style = style;
+        this.mParentItemName = parent;
+        this.mStyle = style;
         this.title = title;
     }
 
@@ -94,7 +90,7 @@ public class MaterialBottomSheets extends MaterialItem {
             }
 
             VirtualFile virtualFile = xmlGenerator.insertNewLayout(new String[]
-                    {String.format(ITEM_BANNER, style), titleText, ITEM_END}, "/layout/" + itemPath + ".xml");
+                    {String.format(ITEM_BANNER, mStyle), titleText, ITEM_END}, "/layout/" + mLayoutName + ".xml");
             bottomSheetPresenter.openLayout(virtualFile.getCanonicalPath());
 
         }catch (java.io.IOException e){
@@ -106,7 +102,7 @@ public class MaterialBottomSheets extends MaterialItem {
     @Override
     public void setViewParameters(){
         bottomSheetPresenter.getAllValues();
-        String[] parameters = new String[]{mId, itemPath};
+        String[] parameters = new String[]{mId, mLayoutName};
         mViewParametrs = String.format(mPattern, parameters);
     }
 }

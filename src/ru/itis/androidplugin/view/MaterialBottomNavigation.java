@@ -24,9 +24,6 @@ public class MaterialBottomNavigation extends MaterialItem {
     public static final String ICON_PATH = "/icons/bottom_navigation.png";
     public static final String VIEW_NAME = "Bottom Navigation";
 
-    //private String mId = EMPTY;
-    //private ImageIcon mIcon;
-    private String menuPath;
     private MainView mainView;
     private BottomNavigationPresenterImpl bottomNavigationPresenter;
     private XmlGenerator menuLayoutGenerator;
@@ -37,11 +34,6 @@ public class MaterialBottomNavigation extends MaterialItem {
 
     public MaterialBottomNavigation(){
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
-    }
-
-    @Override
-    public MaterialItem[] getСhild() {
-        return null;
     }
 
     @Override
@@ -76,7 +68,7 @@ public class MaterialBottomNavigation extends MaterialItem {
     public void insertToLayoutOrNo(){
         try {
             System.out.println("insertToLayoutOrNo BottomNavigation");
-            setId(mainView.itemParentViewJTextField.getText());
+            mId = mainView.itemParentViewJTextField.getText();
             setViewParameters();
             XmlChanger.changeXml(Constants.BOTTOM_NAVIGATION_VIEW_HEIGHT,
                     Constants.BOTTOM_NAVIGATION_VIEW_HEIGHT_VALUE,

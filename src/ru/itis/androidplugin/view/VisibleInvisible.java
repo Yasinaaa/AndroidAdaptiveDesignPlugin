@@ -158,4 +158,44 @@ public class VisibleInvisible {
     public static void bottomSheetIncludeCreated(MainView mainView){
         mainView.openItemLayoutJLabel.setVisible(true);
     }
+
+    public static void textViewState(MainView mainView){
+        mainView.currentMaterialItemParametersJPanel.setVisible(true);
+        //1
+        mainView.titleParentViewJLabel.setVisible(true);
+        mainView.typeJLabel.setVisible(true);
+        mainView.titleMaterialItemJLabel.setVisible(true);
+        mainView.emptyItemJLabel.setVisible(false);
+        mainView.titleLoadingJLabel.setVisible(false);
+        //1
+
+        //2
+        mainView.itemParentViewJTextField.setVisible(true);
+        mainView.typeJComboBox.setVisible(true);
+        mainView.itemMaterialItemJTextField.setVisible(true);
+        mainView.emptyItemLayoutJTextField.setVisible(false);
+        mainView.loadingItemLayoutJTextField.setVisible(false);
+        mainView.titleItemsJLabel.setVisible(false);
+        mainView.item1JPanel.setVisible(false);
+        mainView.item2JPanel.setVisible(false);
+        mainView.item3JPanel.setVisible(false);
+        mainView.item4JPanel.setVisible(false);
+        mainView.item5JPanel.setVisible(false);
+
+        mainView.addToLayoutButton.setVisible(true);
+        //2
+
+        //3
+        mainView.removeItemLayoutJLabel.setVisible(false);
+        mainView.openItemLayoutJLabel.setVisible(false);
+        mainView.removeEmptyLayoutJLabel.setVisible(false);
+        mainView.removeLoadingLayoutJLabel.setVisible(false);
+        //3
+
+        //4
+        mainView.openEmptyLayoutJLabel.setVisible(false);
+        mainView.openLoadingLayoutJLabel.setVisible(false);
+        mainView.addNewItemJLabel.setVisible(false);
+        //4
+    }
 }

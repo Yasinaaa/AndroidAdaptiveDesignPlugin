@@ -51,7 +51,6 @@ public class MaterialRecyclerView extends MaterialItem{
     public static final String VIEW_NAME = "Recycler View";
     private final String EMPTY = "empty_";
     private final String LOADING = "loading_";
-    private MaterialChildRecyclerView[] childrens = null;
     private int childrensNum = 3;
 
     //icons
@@ -62,9 +61,7 @@ public class MaterialRecyclerView extends MaterialItem{
     //icons
 
     private MainView mainView;
-    public static final String[] recyclerViewTypes = new String[]{
-        "horizontall_linearlayout", "verticall_linearlayout", "tablelayout"
-    };
+    //public static final String[] recyclerViewTypes
 
     private XmlGenerator layoutGenerator = null;
 
@@ -72,7 +69,10 @@ public class MaterialRecyclerView extends MaterialItem{
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
         setIcons();
         layoutGenerator = new XmlGenerator();
-        childrens = new MaterialChildRecyclerView[childrensNum];
+        mChildrenItems = new MaterialChildRecyclerView[childrensNum];
+        mAllTypes = new String[]{
+                "horizontall_linearlayout", "verticall_linearlayout", "tablelayout"
+        };
         createChildItems();
     }
 
@@ -81,57 +81,46 @@ public class MaterialRecyclerView extends MaterialItem{
         this.mainView = MainView.mainView;
 
         //panel
-        mainView.currentMaterialItemParametersJPanel.setVisible(true);
+        VisibleInvisible.recyclerViewState(mainView);
 
         //textfield
-        //mainView.itemMaterialItemJTextField.setVisible(true);
         setOnRecyclerViewTitleChanged();
         //textfield
 
         //labels
-        //mainView.titleMaterialItemJLabel.setVisible(true);
         mainView.titleMaterialItemJLabel.setText("Item layout");
-        //mainView.titleParentViewJLabel.setVisible(true);
         mainView.titleParentViewJLabel.setText("Recycler View ID");
-        //mainView.titleParentIDJLabel.setVisible(false);
-        //mainView.itemParentIDJLabel.setVisible(false);
 
         //icons
         setLayoutJLabelClickers(mainView.itemMaterialItemJTextField, null,
-                mainView.openItemLayoutJLabel, childrens[0]);
+                mainView.openItemLayoutJLabel, (MaterialChildRecyclerView) mChildrenItems[0]);
         setLayoutJLabelClickers(mainView.emptyItemLayoutJTextField, mainView.removeEmptyLayoutJLabel,
-                mainView.openEmptyLayoutJLabel, childrens[1]);
+                mainView.openEmptyLayoutJLabel, (MaterialChildRecyclerView) mChildrenItems[1]);
         setLayoutJLabelClickers(mainView.loadingItemLayoutJTextField, mainView.removeLoadingLayoutJLabel,
-                mainView.openLoadingLayoutJLabel, childrens[2]);
+                mainView.openLoadingLayoutJLabel, (MaterialChildRecyclerView) mChildrenItems[2]);
         //icons
 
         //labels
 
-        //buttons
-        //mainView.saveLayoutButton.setVisible(true);
-        //buttons
-
         //combobox
-        recyclerViewType = recyclerViewTypes[0];
-        mainView.typeJComboBox.addItem(recyclerViewTypes[0]);
-        mainView.typeJComboBox.addItem(recyclerViewTypes[1]);
-        mainView.typeJComboBox.addItem(recyclerViewTypes[2]);
+        mType = mAllTypes[0];
+        mainView.typeJComboBox.addItem(mAllTypes[0]);
+        mainView.typeJComboBox.addItem(mAllTypes[1]);
+        mainView.typeJComboBox.addItem(mAllTypes[2]);
         mainView.typeJComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                recyclerViewType = (String) mainView.typeJComboBox.getSelectedItem();
+                mType = (String) mainView.typeJComboBox.getSelectedItem();
             }
         });
         //combobox
-
-
 
     }
 
     @Override
     public void insertToLayoutOrNo(){
         try {
-            setId(mainView.itemParentViewJTextField.getText());
+            mId = mainView.itemParentViewJTextField.getText();
             setViewParameters();
             XmlChanger.changeXml(Constants.RECYCLERVIEW_DIMENS_TAGS,
                     Constants.RECYCLERVIEW_DIMENS_VALUE,
@@ -143,20 +132,8 @@ public class MaterialRecyclerView extends MaterialItem{
 
     }
 
-    @Override
-    public MaterialItem[] getСhild() {
-        return childrens;
-    }
-
-    @Override
-    public void setСhild(MaterialItem[] child) {
-        this.childrens = (MaterialChildRecyclerView[]) child;
-    }
-
-    @Override
     public void setViewChildAndParent(MainView mainView) {
         mainView.titleParentViewJLabel.setText("RecyclerView ID");
-        //mainView.itemParentViewJTextField.setVisible(true);
         VisibleInvisible.isChild(true, mainView);
     }
 
@@ -170,25 +147,26 @@ public class MaterialRecyclerView extends MaterialItem{
     private String[] createChildItems(JTextField[] textFields){
         String[] items = new String[5];
         items[0] = mId;
-        items[1] = recyclerViewType;
+        items[1] = mType;
 
         for (int i = 2; i < childrensNum + 2; i++) {
             String text = textFields[i-2].getText();
 
             if (text.equals("None")) {
-                childrens[i-2] = null;
+                mChildrenItems[i-2] = null;
                 items[i] = "";
             }
             else {
-                childrens[i-2].mId = text;
+                mChildrenItems[i-2].mId = text;
+                MaterialChildRecyclerView materialChildRecyclerView = (MaterialChildRecyclerView)mChildrenItems[i-2];
 
                 String inputText = String.format(CHILD_RECYCLERVIEW,
                         new String[]{
-                                childrens[i-2].getAttrType(),
-                                childrens[i-2].getParent().mId
+                                materialChildRecyclerView.getAttrType(),
+                                materialChildRecyclerView.mParentItem.mId
                         });
-                childrens[i-2].setLayoutPath(layoutGenerator.
-                        insertNewLayout(new String[]{inputText},text).getCanonicalPath());
+                mChildrenItems[i-2].mLayoutPath = layoutGenerator.
+                        insertNewLayout(new String[]{inputText},text).getCanonicalPath();
                 items[i] = i>2 ? String.format(ANOTHER_LAYOUTS[i-3], text) : text;
             }
         }
@@ -197,9 +175,9 @@ public class MaterialRecyclerView extends MaterialItem{
 
     private void createChildItems(){
         for (int i = 0; i < childrensNum; i++) {
-            childrens[i] = new MaterialChildRecyclerView();
-            childrens[i].setParent(this);
-            childrens[i].setType(MaterialChildRecyclerView.childRecyclerViewType[i]);
+            mChildrenItems[i] = new MaterialChildRecyclerView();
+            mChildrenItems[i].mParentItem = this;
+            mChildrenItems[i].mType = mChildrenItems[i].mAllTypes[i];
         }
     }
 
@@ -259,12 +237,11 @@ public class MaterialRecyclerView extends MaterialItem{
                 String inputText = String.format(CHILD_RECYCLERVIEW,
                         new String[]{
                                 materialChildRecyclerView.getAttrType(),
-                                materialChildRecyclerView.getParent().mId
+                                materialChildRecyclerView.mParentItem.mId
                         });
                 layoutGenerator.openFile(layoutGenerator.insertNewLayout(new String[]{inputText},
                          "/layout/" + textField.getText() + ".xml"));
-                materialChildRecyclerView.setView(mainView);
-                materialChildRecyclerView.addItemToHistoryList(mainView);
+                materialChildRecyclerView.setView();
 
             }
         });
@@ -284,7 +261,7 @@ public class MaterialRecyclerView extends MaterialItem{
                     }
                     else if(i.equals(mAddIcon)){
                         addRemoveLabel.setIcon(mRemoveIcon);
-                        textField.setText(materialChildRecyclerView.getType() +
+                        textField.setText(materialChildRecyclerView.mType +
                                 mainView.itemParentViewJTextField.getText());
                         textField.setEnabled(true);
                     }
