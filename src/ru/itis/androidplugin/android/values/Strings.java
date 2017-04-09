@@ -16,6 +16,21 @@ public class Strings {
 
     private static final String STRING_TAG = "<string name=\"%s\">%s</string>";
 
+
+    public static void addLine(String string){
+        List<String> list = null;
+        String valuePath = getPathToString();
+
+        try {
+            list = Files.readAllLines(Paths.get(valuePath));
+            addLine(list, string);
+            Files.write(Paths.get(valuePath), list);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void addLines(List<String> allStrings){
         List<String> list = null;
         String valuePath = getPathToString();
@@ -23,13 +38,7 @@ public class Strings {
         try {
             list = Files.readAllLines(Paths.get(valuePath));
             for(int i=0; i<allStrings.size(); i++){
-                String id = allStrings.get(i).replaceAll(" ","_").toLowerCase();
-                String newTag = String.format(STRING_TAG, new String[]{id, allStrings.get(i)});
-                boolean l = list.contains("    " + newTag);
-                if (!list.contains("    " + newTag)){
-                    list.add(list.size() - 1,"    " + newTag);
-                }
-
+                addLine(list, allStrings.get(i));
             }
 
             Files.write(Paths.get(valuePath), list);
@@ -37,7 +46,15 @@ public class Strings {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    private static void addLine(List<String> list, String line){
+        String id = line.replaceAll(" ","_").toLowerCase();
+        String newTag = String.format(STRING_TAG, new String[]{id, line});
+        //boolean l = list.contains("    " + newTag);
+        if (!list.contains("    " + newTag)){
+            list.add(list.size() - 1,"    " + newTag);
+        }
     }
 
     public static String getPathToString(){

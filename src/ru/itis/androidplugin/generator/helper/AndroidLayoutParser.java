@@ -150,7 +150,8 @@ public class AndroidLayoutParser extends DefaultHandler {
             materialItem.mId = tempText.substring(tempText.indexOf("/") + 1);
             MaterialChildRecyclerView[] children = new MaterialChildRecyclerView[]{null, null, null};
             tempText = attributes.getValue("app:layout_item");
-            if(tempText != null){children[0] = new MaterialChildRecyclerView(tempText.substring(tempText.indexOf("/") + 1),
+            if(tempText != null){children[0] = new MaterialChildRecyclerView(
+                    tempText.substring(tempText.indexOf("/") + 1),
                     MaterialChildRecyclerView.mAllTypes[0]);}
 
             tempText = attributes.getValue("app:layout_empty");

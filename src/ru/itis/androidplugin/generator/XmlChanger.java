@@ -25,23 +25,36 @@ import java.io.IOException;
  */
 public class XmlChanger {
 
+    private static boolean attrsIsAdded = false;
+
+    private static void addAttrs() throws IOException {
+        if (!attrsIsAdded) {
+            new Attrs().addAttrsToProject();
+            attrsIsAdded = true;
+        }
+    }
+
     public static void changeXml(String[] allDimensTag, int[] allDimensValue, final String text)
             throws IOException{
-        new Attrs().addAttrsToProject();
-        new Dimens().addAllDimens(allDimensTag, allDimensValue);
+
+        if(allDimensTag != null && allDimensValue != null){
+            new Dimens().addAllDimens(allDimensTag, allDimensValue);
+        }
         insertInEditor(text);
     }
 
     public static void changeXml(String tag, int value, final String text)
             throws IOException{
-        new Dimens().addLine(tag, value + "");
+        if(tag != null && value != 0) {
+            new Dimens().addLine(tag, value + "");
+        }
         insertInEditor(text);
-
     }
 
     private static void insertInEditor(final String text)
             throws IOException {
 
+        addAttrs();
         Project project = getOpenProject();
         Editor editor = getEditor(project);
 

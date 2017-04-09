@@ -38,21 +38,8 @@ public abstract class MaterialItem {
     public void setView() {}
     public void setViewParameters(){}
     public void insertToLayoutOrNo(){}
-    public void parentOptions(){}
 
-
-
-    /*
-    public void setmClassPath(String mClassPath) {
-        this.mClassPath = mClassPath;
-    }
-
-    public void removeAllExistenActionListeners(JButton button){
-        ActionListener[] allActionListeners = button.getListeners(ActionListener.class);
-        for (ActionListener actionListener: allActionListeners){
-            button.removeActionListener(actionListener);
-        }
-    }
-*/
+    public void onDocumentChangeListener(){};
+    public void onFirstJComboBoxChangeListener(){};
 
 }

@@ -6,6 +6,7 @@ package ru.itis.androidplugin.view;
 public class VisibleInvisible {
 
     public static void cleanState(MainView mainView){
+        mainView.invisibleJLabel.setVisible(false);
         mainView.currentMaterialItemParametersJPanel.setVisible(false);
     }
 
@@ -14,9 +15,13 @@ public class VisibleInvisible {
         if (answer){
             mainView.titleParentIDJLabel.setVisible(true);
             mainView.itemParentIDJLabel.setVisible(true);
+            mainView.titleLayoutTypeJLabel.setVisible(true);
+            mainView.itemLayoutTypeJLabel.setVisible(true);
         }else {
             mainView.titleParentIDJLabel.setVisible(false);
             mainView.itemParentIDJLabel.setVisible(false);
+            mainView.titleLayoutTypeJLabel.setVisible(false);
+            mainView.itemLayoutTypeJLabel.setVisible(false);
         }
         //top
     }
@@ -27,13 +32,24 @@ public class VisibleInvisible {
         mainView.openLoadingLayoutJLabel.setVisible(true);
     }
 
+    private static void cleanItems(MainView mainView){
+        mainView.itemParentIDJLabel.setText("");
+        mainView.typeJComboBox.removeAllItems();
+        mainView.itemMaterialItemJTextField.setText("");
+        mainView.jComboBox2.removeAllItems();
+        mainView.emptyItemLayoutJTextField.setText("");
+        mainView.loadingItemLayoutJTextField.setText("");
+    }
+
     public static void recyclerViewState(MainView mainView){
 
+        cleanItems(mainView);
         mainView.currentMaterialItemParametersJPanel.setVisible(true);
         //1
         mainView.titleParentViewJLabel.setVisible(true);
         mainView.typeJLabel.setVisible(true);
         mainView.titleMaterialItemJLabel.setVisible(true);
+        mainView.title4JLabel.setVisible(false);
         mainView.emptyItemJLabel.setVisible(true);
         mainView.titleLoadingJLabel.setVisible(true);
         //1
@@ -44,7 +60,7 @@ public class VisibleInvisible {
         mainView.itemMaterialItemJTextField.setVisible(true);
         mainView.emptyItemLayoutJTextField.setVisible(true);
         mainView.loadingItemLayoutJTextField.setVisible(true);
-
+        mainView.jComboBox2.setVisible(false);
         mainView.titleItemsJLabel.setVisible(false);
         mainView.item1JPanel.setVisible(false);
         mainView.item2JPanel.setVisible(false);
@@ -57,6 +73,7 @@ public class VisibleInvisible {
 
         //3
         mainView.removeItemLayoutJLabel.setVisible(false);
+        mainView.openIconJLabel.setVisible(false);
         mainView.openItemLayoutJLabel.setVisible(false);
         mainView.removeEmptyLayoutJLabel.setVisible(false);
         mainView.removeLoadingLayoutJLabel.setVisible(false);
@@ -71,12 +88,14 @@ public class VisibleInvisible {
     }
 
     public static void bottomNavigationState(MainView mainView){
+        cleanItems(mainView);
         mainView.currentMaterialItemParametersJPanel.setVisible(true);
         //1
         mainView.titleParentViewJLabel.setVisible(true);
 
         mainView.typeJLabel.setVisible(false);
         mainView.titleMaterialItemJLabel.setVisible(true);// bottom_navigation
+        mainView.title4JLabel.setVisible(false);
         mainView.emptyItemJLabel.setVisible(false);
         mainView.titleLoadingJLabel.setVisible(false);
         //1
@@ -88,7 +107,7 @@ public class VisibleInvisible {
         mainView.itemMaterialItemJTextField.setVisible(true);// bottom_navigation
         mainView.emptyItemLayoutJTextField.setVisible(false);
         mainView.loadingItemLayoutJTextField.setVisible(false);
-
+        mainView.jComboBox2.setVisible(false);
         mainView.titleItemsJLabel.setVisible(true);
         mainView.item1JPanel.setVisible(false);
         mainView.item2JPanel.setVisible(false);
@@ -101,6 +120,7 @@ public class VisibleInvisible {
 
         //3
         mainView.removeItemLayoutJLabel.setVisible(false);
+        mainView.openIconJLabel.setVisible(false);
         mainView.openItemLayoutJLabel.setVisible(false);
         mainView.removeEmptyLayoutJLabel.setVisible(false);
         mainView.removeLoadingLayoutJLabel.setVisible(false);
@@ -114,13 +134,14 @@ public class VisibleInvisible {
         //4
     }
     public static void bottomSheetsState(MainView mainView){
+        cleanItems(mainView);
         mainView.currentMaterialItemParametersJPanel.setVisible(true);
         //1
         mainView.titleParentViewJLabel.setVisible(true);
         mainView.typeJLabel.setVisible(true);
         mainView.titleMaterialItemJLabel.setVisible(true);
         mainView.emptyItemJLabel.setVisible(true);
-
+        mainView.title4JLabel.setVisible(false);
         mainView.titleLoadingJLabel.setVisible(false);
         //1
 
@@ -129,7 +150,7 @@ public class VisibleInvisible {
         mainView.typeJComboBox.setVisible(true);
         mainView.itemMaterialItemJTextField.setVisible(true);
         mainView.emptyItemLayoutJTextField.setVisible(true);
-
+        mainView.jComboBox2.setVisible(false);
         mainView.loadingItemLayoutJTextField.setVisible(false);
         mainView.titleItemsJLabel.setVisible(false);
         mainView.item1JPanel.setVisible(false);
@@ -143,6 +164,7 @@ public class VisibleInvisible {
 
         //3
         mainView.removeItemLayoutJLabel.setVisible(false);
+        mainView.openIconJLabel.setVisible(false);
         mainView.openItemLayoutJLabel.setVisible(false);
         mainView.removeEmptyLayoutJLabel.setVisible(true);
         mainView.removeLoadingLayoutJLabel.setVisible(false);
@@ -160,11 +182,13 @@ public class VisibleInvisible {
     }
 
     public static void textViewState(MainView mainView){
+        cleanItems(mainView);
         mainView.currentMaterialItemParametersJPanel.setVisible(true);
         //1
         mainView.titleParentViewJLabel.setVisible(true);
         mainView.typeJLabel.setVisible(true);
         mainView.titleMaterialItemJLabel.setVisible(true);
+        mainView.title4JLabel.setVisible(true);
         mainView.emptyItemJLabel.setVisible(false);
         mainView.titleLoadingJLabel.setVisible(false);
         //1
@@ -173,6 +197,7 @@ public class VisibleInvisible {
         mainView.itemParentViewJTextField.setVisible(true);
         mainView.typeJComboBox.setVisible(true);
         mainView.itemMaterialItemJTextField.setVisible(true);
+        mainView.jComboBox2.setVisible(true);
         mainView.emptyItemLayoutJTextField.setVisible(false);
         mainView.loadingItemLayoutJTextField.setVisible(false);
         mainView.titleItemsJLabel.setVisible(false);
@@ -187,6 +212,7 @@ public class VisibleInvisible {
 
         //3
         mainView.removeItemLayoutJLabel.setVisible(false);
+        mainView.openIconJLabel.setVisible(false);
         mainView.openItemLayoutJLabel.setVisible(false);
         mainView.removeEmptyLayoutJLabel.setVisible(false);
         mainView.removeLoadingLayoutJLabel.setVisible(false);

@@ -35,8 +35,9 @@ public class Gradle {
                     List<String> list = Files.readAllLines(Paths.get(virtualFile.getCanonicalPath()));
                     if(!list.contains("    " + MATERIAL_LIB)){
                         list.add(list.size() - 1, "    " + MATERIAL_LIB);
+                        Files.write(Paths.get(virtualFile.getCanonicalPath()), list);
                     }
-                    Files.write(Paths.get(virtualFile.getCanonicalPath()), list);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

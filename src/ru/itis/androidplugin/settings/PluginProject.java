@@ -26,9 +26,14 @@ public class PluginProject implements ProjectComponent {
     public static VirtualFile getCurrentVirtualFile() {
         FileEditorManager manager = FileEditorManager.getInstance(PluginProject.mProject);
         Editor editor = manager.getSelectedTextEditor();
-        Document document = editor.getDocument();
-        final VirtualFile virtualFile = FileDocumentManager.getInstance().getFile(document);
-        return virtualFile;
+        try {
+            Document document = editor.getDocument();
+            final VirtualFile virtualFile = FileDocumentManager.getInstance().getFile(document);
+            return virtualFile;
+        }catch (NullPointerException e){
+            return null;
+        }
+
     }
 
     @Override

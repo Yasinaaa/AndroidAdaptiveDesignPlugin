@@ -9,8 +9,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import ru.itis.androidplugin.android.Menu;
-import ru.itis.androidplugin.view.MaterialChildRecyclerView;
-import ru.itis.androidplugin.presenters.BottomNavigationPresenterImpl;
+import ru.itis.androidplugin.presenters.BottomNavigationPresenter;
 import ru.itis.androidplugin.settings.PluginProject;
 
 import java.io.File;
@@ -35,7 +34,7 @@ public class XmlGenerator extends Generator{
     public XmlGenerator(){
     }
 
-    public VirtualFile insertNewLayout(String[] inputText,
+    public VirtualFile insertNewLayout(String inputText,
                                        String name){
         final VirtualFile[] solutionVirtualFile = {null};
 
@@ -91,7 +90,7 @@ public class XmlGenerator extends Generator{
     }
 
     //todo: should it return VirtualFile?
-    private VirtualFile createCleanXMLfile(String[] inputText, File file) {
+    private VirtualFile createCleanXMLfile(String inputText, File file) {
 
         VirtualFile solutionVirtualFile = null;
         boolean fileExits = true;
@@ -104,9 +103,7 @@ public class XmlGenerator extends Generator{
 
             FileOutputStream fos = new FileOutputStream(file.getAbsoluteFile());
             OutputStreamWriter osw = new OutputStreamWriter(fos,"UTF-8");
-            for(String line: inputText){
-                if(line != null) osw.write(line);
-            }
+            if(inputText != null) osw.write(inputText);
 
             osw.close();
         } catch (IOException e) {
@@ -137,7 +134,7 @@ public class XmlGenerator extends Generator{
         fileEditorManager.openFile(virtualFile, true, true);
     }
 
-    public VirtualFile insertNewMenu(BottomNavigationPresenterImpl.ItemBottomNavigation[] allItems,
+    public VirtualFile insertNewMenu(BottomNavigationPresenter.ItemBottomNavigation[] allItems,
                                        String name){
         final VirtualFile[] solutionVirtualFile = {null};
 

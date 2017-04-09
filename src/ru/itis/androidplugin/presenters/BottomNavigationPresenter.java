@@ -2,11 +2,9 @@ package ru.itis.androidplugin.presenters;
 
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.DocumentAdapter;
-import ru.itis.androidplugin.interfaces.BottomNavigationPresenter;
 import ru.itis.androidplugin.settings.PluginProject;
 
 import javax.swing.*;
@@ -18,39 +16,22 @@ import java.io.File;
 /**
  * Created by yasina on 04.04.17.
  */
-public class BottomNavigationPresenterImpl implements BottomNavigationPresenter {
+public class BottomNavigationPresenter extends CommonPresenter {
 
     public ItemBottomNavigation[] allItems;
     private int bottomNavigationItemsCounts = 0;
     private final int maxNumOfBottomNavigationItems = 5;
 
-    public BottomNavigationPresenterImpl() {
+    public BottomNavigationPresenter() {
+        super();
         allItems = new ItemBottomNavigation[maxNumOfBottomNavigationItems];
     }
 
-    @Override
-    public void generateItemsLayoutTitle(JTextField idJTextField, JTextField itemsLayoutJTextField) {
-        idJTextField.getDocument().addDocumentListener(new DocumentAdapter() {
-            @Override
-            protected void textChanged(DocumentEvent e) {
-                String text = idJTextField.getText();
-                if(!text.equals("")){
-                    itemsLayoutJTextField.setText("bottom_navigation_item_" + text);
-                }else {
-                    itemsLayoutJTextField.setText(null);
-                }
-            }
-        });
-    }
-
-    @Override
     public void addNewItemToBottomNavigationView(JLabel openJLabel, JPanel[] panels) {
-        openJLabel.addMouseListener(new MouseAdapter() {
+        MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                /*ItemBottomNavigation newItem = new ItemBottomNavigation();
-                panel.add(new ItemBottomNavigation());
-                allItems.add(newItem);*/
+
                 if (bottomNavigationItemsCounts >= maxNumOfBottomNavigationItems){
                     //todo dialog error
                 }else {
@@ -60,60 +41,17 @@ public class BottomNavigationPresenterImpl implements BottomNavigationPresenter 
                 }
 
             }
-        });
-    }
+        };
 
-    @Override
-    public void openItemsLayout(JLabel label, String path){
-        label.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                FileEditorManager fileEditorManager = FileEditorManager.getInstance(PluginProject.mProject);
-                File file = new File(path);
-                VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
-                fileEditorManager.openFile(virtualFile, true, true);
-            }
-        });
-
-    }
-
-
-    public JComboBox setAllDrawablesList(JComboBox iconJComboBox) {
-        File file = new File(PluginProject.mProject.getBasePath() + "/app/src/main/res/drawable");
-        File[] allDrawables = file.listFiles();
-
-        iconJComboBox.addItem("");
-        for(int i=0; i < allDrawables.length; i++){
-            iconJComboBox.addItem(allDrawables[i].getName());
+        try{
+            openJLabel.getMouseListeners()[0] = mouseAdapter;
+        }catch (java.lang.ArrayIndexOutOfBoundsException e){
+            openJLabel.addMouseListener(mouseAdapter);
         }
 
-        iconJComboBox.setEditable(true);
-
-        return iconJComboBox;
     }
 
 
-    public void chooseIcon(JComboBox drawableJComboBox) {
-        File file = new File(PluginProject.mProject.getBasePath() + "/app/src");
-        VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file);
-        FileChooserDescriptor fileChooserDescriptor = new FileChooserDescriptor(true, true, false, false, false, false);
-        VirtualFile selectedFile = FileChooser.chooseFile(fileChooserDescriptor, PluginProject.mProject, virtualFile);
-        String path = selectedFile.getCanonicalPath();
-
-        if (!path.contains(".png")) {
-            JFrame frame = new JFrame();
-            Object stringArray[] = {"You need to choose png file", "Cancel"};
-            JOptionPane.showOptionDialog(frame, "It's not PNG", "Error",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray,
-                    stringArray[0]);
-        } else {
-            drawableJComboBox.addItem(path.substring(path.lastIndexOf("/") + 1,
-                    path.lastIndexOf(".")));
-        }
-    }
-
-
-    @Override
     public void clickAddToLayout(JPanel[] allPanels, JTextField[] allIDs, JComboBox[] allDrawables,
                                   JLabel[] allRemoves, JLabel[] allChoosers){
         for (int i=0; i<maxNumOfBottomNavigationItems; i++) {
@@ -124,7 +62,7 @@ public class BottomNavigationPresenterImpl implements BottomNavigationPresenter 
 
     }
 
-    @Override
+
     public void setAllItems(JPanel[] allPanels, JComboBox[] allDrawables,
                              JLabel[] allRemoves, JLabel[] allChoosers){
         for (int i=0; i<maxNumOfBottomNavigationItems; i++){
@@ -148,6 +86,11 @@ public class BottomNavigationPresenterImpl implements BottomNavigationPresenter 
                 allItems[id]=null;
             }
         });
+    }
+
+    @Override
+    public void setChildViewParameters() {
+
     }
 
     public class ItemBottomNavigation{

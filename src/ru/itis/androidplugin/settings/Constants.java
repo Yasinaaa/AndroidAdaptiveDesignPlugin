@@ -13,6 +13,8 @@ public class Constants {
     public static final String XMLNS = "xmlns:app=\"http://schemas.android.com/apk/res-auto\"";
     public static final String RES_PATH = "/app/src/main/res/";
     public static final String VALUES_PATH = String.format("%s/values/", RES_PATH);
+    public static final String WRAP_CONTENT = "wrap_content";
+    public static final String MATCH_PARENT = "match_parent";
 
     //dimens {
         // view text {

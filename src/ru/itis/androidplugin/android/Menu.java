@@ -1,7 +1,7 @@
 package ru.itis.androidplugin.android;
 
 import ru.itis.androidplugin.android.values.Strings;
-import ru.itis.androidplugin.presenters.BottomNavigationPresenterImpl;
+import ru.itis.androidplugin.presenters.BottomNavigationPresenter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,7 +22,7 @@ public class Menu {
             "        android:icon=\"@drawable/%s\"\n" +
             "        android:title=\"@string/%s\" />";
 
-    public static File generateMenu(String path, BottomNavigationPresenterImpl.ItemBottomNavigation[] allItems){
+    public static File generateMenu(String path, BottomNavigationPresenter.ItemBottomNavigation[] allItems){
         File file = new File(path);
 
         try {

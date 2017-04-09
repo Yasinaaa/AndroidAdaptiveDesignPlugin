@@ -2,7 +2,7 @@ package ru.itis.androidplugin.view;
 
 import ru.itis.androidplugin.generator.XmlChanger;
 import ru.itis.androidplugin.generator.XmlGenerator;
-import ru.itis.androidplugin.presenters.BottomNavigationPresenterImpl;
+import ru.itis.androidplugin.presenters.BottomNavigationPresenter;
 import ru.itis.androidplugin.settings.Constants;
 
 import javax.swing.*;
@@ -23,9 +23,10 @@ public class MaterialBottomNavigation extends MaterialItem {
             "        app:menu=\"@menu/%s\"/>\n";
     public static final String ICON_PATH = "/icons/bottom_navigation.png";
     public static final String VIEW_NAME = "Bottom Navigation";
+    private final String ITEM_BEGIN_NAME = "bottom_navigation_item_";
 
     private MainView mainView;
-    private BottomNavigationPresenterImpl bottomNavigationPresenter;
+    private BottomNavigationPresenter bottomNavigationPresenter;
     private XmlGenerator menuLayoutGenerator;
     private JPanel[] allPanels;
     private JTextField[] allIDs;
@@ -40,7 +41,7 @@ public class MaterialBottomNavigation extends MaterialItem {
     public void setView() {
         mainView = MainView.mainView;
 
-        bottomNavigationPresenter = new BottomNavigationPresenterImpl();
+        bottomNavigationPresenter = new BottomNavigationPresenter();
         menuLayoutGenerator = new XmlGenerator();
         VisibleInvisible.bottomNavigationState(mainView);
         init();
@@ -51,9 +52,8 @@ public class MaterialBottomNavigation extends MaterialItem {
         bottomNavigationPresenter.setAllItems(allPanels, allDrawables, allRemoves, allChoosers);
         bottomNavigationPresenter.addNewItemToBottomNavigationView(mainView.addNewItemJLabel,
                 allPanels);
-        bottomNavigationPresenter.generateItemsLayoutTitle(mainView.itemParentViewJTextField,
-                mainView.itemMaterialItemJTextField);
-        bottomNavigationPresenter.openItemsLayout(mainView.openItemLayoutJLabel, "/menu" +
+
+        bottomNavigationPresenter.openItemLayout(mainView.openItemLayoutJLabel, "/menu" +
                 mainView.itemMaterialItemJTextField.getText() + ".xml");
 
     }
@@ -80,6 +80,13 @@ public class MaterialBottomNavigation extends MaterialItem {
         }catch (java.io.IOException e){
 
         }
+    }
+
+    @Override
+    public void onDocumentChangeListener(){
+        bottomNavigationPresenter.generateItemsLayoutTitle(ITEM_BEGIN_NAME,
+                mainView.itemParentViewJTextField,
+                mainView.itemMaterialItemJTextField);
     }
 
     private void makeMenuLayout(){

@@ -138,7 +138,14 @@ public class ClassGenerator extends Generator {
     }
 
     private String setJavaClassName(String layoutPath) {
-        String className = StringUtils.capitalize(layoutPath) + "_" + "Holder";
+
+        if(StringUtils.containsIgnoreCase(layoutPath, "item_")){
+            layoutPath = layoutPath.substring(layoutPath.indexOf("_") + 1);
+            if (layoutPath.contains(".xml")){
+                layoutPath = layoutPath.replace(".xml","");
+            }
+        }
+        String className = StringUtils.capitalize(layoutPath) + "Holder";
         String fileName = Messages.showInputDialog(PluginProject.mProject, "Input class name", "Creating File",
                 Messages.getQuestionIcon(), className, null);
         /*if (fileName == null || fileName.length() == 0) {

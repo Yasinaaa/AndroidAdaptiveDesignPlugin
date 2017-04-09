@@ -1,5 +1,6 @@
 package ru.itis.androidplugin.view;
 
+import b.g.i.S;
 import ru.itis.androidplugin.settings.FileOwner;
 import ru.itis.androidplugin.settings.PluginProject;
 
@@ -24,11 +25,12 @@ public class MaterialChildRecyclerView extends MaterialItem{
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
     }
 
-    public MaterialChildRecyclerView(String path, String attrType){
+    public MaterialChildRecyclerView(String id, String attrType){
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
-        mId = path.substring(path.lastIndexOf("/") + 1, path.indexOf("."));
+        //mId = path.substring(path.lastIndexOf("/") + 1, path.indexOf("."));
+        mId = id;
         mType = setNormalType(attrType);
-        mLayoutPath = path;
+        //mLayoutPath = path;
 
         //todo get by id
 
@@ -37,14 +39,15 @@ public class MaterialChildRecyclerView extends MaterialItem{
     @Override
     public void setView() {
         MainView mainView = MainView.mainView;
+        VisibleInvisible.cleanState(mainView);
 
-        String[] answer = FileOwner.FileOwnerListener.getOwner(PluginProject.mLayoutPath);
+        /*String[] answer = FileOwner.FileOwnerListener.getOwner(PluginProject.mLayoutPath);
         mainView.itemActivityClassJLabel.setText(answer[0]);
         if (answer[1] != null) {
             mainView.titleParentIDJLabel.setVisible(true);
             mainView.itemParentIDJLabel.setVisible(true);
             mainView.itemParentIDJLabel.setText(answer[1]);
-        }
+        }*/
         mainView.currentMaterialItemParametersJPanel.setVisible(false);
         /*mainView.itemParentViewJTextField.setVisible(false);
         mainView.itemMaterialItemJTextField.setVisible(true);
@@ -77,22 +80,22 @@ public class MaterialChildRecyclerView extends MaterialItem{
     public String getAttrType() {
         switch (mType){
             case "item_":
-                return "simple_item";
+                return "recyclerview_simple_item";
             case "empty_":
-                return "empty_item";
+                return "recyclerview_empty_item";
             case "loading_":
-                return "loading_item";
+                return "recyclerview_loading_item";
         }
         return mType;
     }
 
     public String setNormalType(String text) {
         switch (text){
-            case "simple_item":
+            case "recyclerview_simple_item":
                 return "item_";
-            case "empty_item":
+            case "recyclerview_empty_item":
                 return "empty_";
-            case "loading_item":
+            case "recyclerview_loading_item":
                 return "loading_";
         }
         return mType;
