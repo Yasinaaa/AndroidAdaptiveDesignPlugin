@@ -1,7 +1,6 @@
 package ru.itis.androidplugin.presenters;
 
 import ru.itis.androidplugin.interfaces.TextViewTypes;
-import ru.itis.androidplugin.view.MaterialTextView;
 
 /**
  * Created by yasina on 06.04.17.
@@ -26,7 +25,7 @@ public class TextViewPresenter extends CommonPresenter {
     public void setParametersByChoosedStyle(String style){
         switch (style){
             case TYPE_BOTTOM_SHEET_TEXT:
-                textViewType.setBottomSheetOptions(new String[]{TYPE_BOTTOM_SHEET_TEXT});
+                textViewType.setBottomSheetLayoutOptions(new String[]{TYPE_BOTTOM_SHEET_TEXT});
                 break;
             default:
                 textViewType.setUsualOptions(new String[]{TYPE_USUAL_TEXT});
@@ -37,7 +36,7 @@ public class TextViewPresenter extends CommonPresenter {
     public String setTextByChoosedStyle(String style){
         switch (style){
             case TYPE_BOTTOM_SHEET_TEXT:
-                 return textViewType.setBottomSheetTextView();
+                 return textViewType.setBottomSheetLayoutTextView();
             default:
                  return textViewType.setUsualTextView();
         }

@@ -111,7 +111,7 @@ public class MaterialRecyclerView extends MaterialItem{
     }
 
     @Override
-    public void insertToLayoutOrNo(){
+    public void onAddToLayoutClickListener(){
         try {
             mId = mainView.itemParentViewJTextField.getText();
             setViewParameters();

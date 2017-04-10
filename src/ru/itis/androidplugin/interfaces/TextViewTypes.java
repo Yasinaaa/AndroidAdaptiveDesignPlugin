@@ -6,9 +6,10 @@ package ru.itis.androidplugin.interfaces;
 public interface TextViewTypes {
 
     void setUsualOptions(String[] types);
-    void setBottomSheetOptions(String[] types);
+    void setBottomSheetLayoutOptions(String[] types);
+    void setBottomSheetGridOptions(String[] types);
 
-
-    String setBottomSheetTextView();
+    String setBottomSheetLayoutTextView();
+    String setBottomSheetGridTextView();
     String setUsualTextView();
 }

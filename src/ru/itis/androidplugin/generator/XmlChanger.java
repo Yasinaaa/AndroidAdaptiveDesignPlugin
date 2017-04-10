@@ -34,6 +34,23 @@ public class XmlChanger {
         }
     }
 
+    public static void changeXml(String[] allValues, final String text)
+            throws IOException{
+
+        if(allValues != null){
+            new Dimens().addAllDimens(allValues);
+        }
+        insertInEditor(text);
+    }
+    public static void changeXml(String value, final String text)
+            throws IOException{
+
+        if(value != null){
+            new Dimens().addAllDimens(new String[]{value});
+        }
+        insertInEditor(text);
+    }
+
     public static void changeXml(String[] allDimensTag, int[] allDimensValue, final String text)
             throws IOException{
 

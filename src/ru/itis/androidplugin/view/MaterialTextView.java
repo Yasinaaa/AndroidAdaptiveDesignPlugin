@@ -1,6 +1,5 @@
 package ru.itis.androidplugin.view;
 
-import b.g.i.S;
 import ru.itis.androidplugin.android.values.Strings;
 import ru.itis.androidplugin.generator.XmlChanger;
 import ru.itis.androidplugin.interfaces.TextViewTypes;
@@ -25,13 +24,19 @@ public class MaterialTextView extends MaterialItem implements TextViewTypes{
             "        android:id=\"@+id/%s\"\n"+
             "        android:layout_width=\"%s\"\n"+
             "        android:layout_height=\"%s\"\n";
-    public static final String GRAVITY_CENTER = "        android:gravity=\"center\"";
-    public static final String DRAWABLE =
+    public static final String GRAVITY_CENTER = "        android:gravity=\"center\"\n";
+    public static final String DRAWABLE_LAYOUT_STYLE =
     "        android:drawableLeft=\"@drawable/%s\"" +
     "        android:drawablePadding=\"@dimen/material_bottom_sheet_list_item_label_padding_start\"\n";
-    public static final String TEXT = "        android:text=\"@string/%s\"";
-    public static final String TEXT_SIZE = "        android:textSize=\"@dimen/%s\"";
-    public static final String TEXT_COLOR = "        android:textColor=\"@color/%s\"";
+    public static final String TEXT = "        android:text=\"@string/%s\"\n";
+    public static final String TEXT_SIZE = "        android:textSize=\"@dimen/%s\"\n";
+    public static final String TEXT_COLOR = "        android:textColor=\"@color/%s\"\n";
+    public static final String DRAWABLE_GRID_STYLE = "        android:drawableTop=\"@drawable/%s\"\n";
+    public static final String PADDING_TOP = "        android:paddingTop=\"@dimen/material_bottom_sheet_grid_row_padding_top\"\n";
+    public static final String ITEM_WEIGHT =
+            "        android:layout_gravity=\"fill_horizontal\"\n" +
+            "        android:layout_rowWeight=\"1\"\n" +
+            "        android:layout_columnWeight=\"1\"";
     public static final String XML_END = "/>\n";
 
     //constants
@@ -74,6 +79,7 @@ public class MaterialTextView extends MaterialItem implements TextViewTypes{
 
     }
 
+    //todo: change (what are stupid thing???)
     @Override
     public void setUsualOptions(String[] types) {
         for (String type: types){
@@ -81,8 +87,9 @@ public class MaterialTextView extends MaterialItem implements TextViewTypes{
         }
     }
 
+    //todo: change (what are stupid thing???)
     @Override
-    public void setBottomSheetOptions(String[] types) {
+    public void setBottomSheetLayoutOptions(String[] types) {
 
         for (String type: types){
             mainView.typeJComboBox.addItem(type);
@@ -107,21 +114,22 @@ public class MaterialTextView extends MaterialItem implements TextViewTypes{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*if(mainView.invisibleJLabel.getText().equals(MaterialBottomSheets.VIEW_NAME)){
-
-        }*/
     }
+
+    @Override
+    public void setBottomSheetGridOptions(String[] types) {
+        setBottomSheetLayoutOptions(types);
+    }
+
     @Override
     public void setViewParameters(){
         mId = mainView.itemParentViewJTextField.getText();
         mStyle = mainView.typeJComboBox.getSelectedItem().toString();
-
-
         mViewParametrs = textViewPresenter.setTextByChoosedStyle(mStyle);
     }
 
     @Override
-    public void insertToLayoutOrNo(){
+    public void onAddToLayoutClickListener(){
         try {
             setViewParameters();
             XmlChanger.changeXml(null, null, mViewParametrs);
@@ -132,7 +140,7 @@ public class MaterialTextView extends MaterialItem implements TextViewTypes{
 
     }
     @Override
-    public String setBottomSheetTextView() {
+    public String setBottomSheetLayoutTextView() {
         iconName = mainView.jComboBox2.getSelectedItem().toString().replaceAll(".xml","");
 
         if(mainView.itemMaterialItemJTextField.isEnabled()){
@@ -150,8 +158,37 @@ public class MaterialTextView extends MaterialItem implements TextViewTypes{
         }
         stringBuilder.append(GRAVITY_CENTER);
         if(iconName != null){
-            stringBuilder.append(String.format(DRAWABLE, iconName));
+            stringBuilder.append(String.format(DRAWABLE_LAYOUT_STYLE, iconName));
         }
+        stringBuilder.append(String.format(TEXT_SIZE, BOTTOM_SHEET_TEXT_SIZE));
+        stringBuilder.append(String.format(TEXT_COLOR, BOTTOM_SHEET_TEXT_COLOR));
+        stringBuilder.append(XML_END);
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public String setBottomSheetGridTextView() {
+        iconName = mainView.jComboBox2.getSelectedItem().toString().replaceAll(".xml","");
+
+        if(mainView.itemMaterialItemJTextField.isEnabled()){
+            titleText = mainView.itemMaterialItemJTextField.getText();
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(
+                String.format(XML_VIEW_PATTERN, new String[]{mId, Constants.WRAP_CONTENT,
+                        BOTTOM_SHEET_TEXTVIEW_HEIGHT}));
+
+        if (titleText != null){
+            Strings.addLine(titleText);
+            stringBuilder.append(String.format(TEXT, titleText));
+        }
+        stringBuilder.append(GRAVITY_CENTER);
+        if(iconName != null){
+            stringBuilder.append(String.format(DRAWABLE_GRID_STYLE, iconName));
+        }
+        stringBuilder.append(PADDING_TOP);
+        stringBuilder.append(ITEM_WEIGHT);
         stringBuilder.append(String.format(TEXT_SIZE, BOTTOM_SHEET_TEXT_SIZE));
         stringBuilder.append(String.format(TEXT_COLOR, BOTTOM_SHEET_TEXT_COLOR));
         stringBuilder.append(XML_END);

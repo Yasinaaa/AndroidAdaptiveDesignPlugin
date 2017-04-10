@@ -37,8 +37,8 @@ public abstract class MaterialItem {
 
     public void setView() {}
     public void setViewParameters(){}
-    public void insertToLayoutOrNo(){}
-
+    public void onAddToLayoutClickListener(){}
+    public void onJComboBox1SelectedItemListener(){}
     public void onDocumentChangeListener(){};
     public void onFirstJComboBoxChangeListener(){};
 

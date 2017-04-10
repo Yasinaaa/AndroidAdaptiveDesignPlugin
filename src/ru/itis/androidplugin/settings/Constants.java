@@ -39,12 +39,10 @@ public class Constants {
         M_ACTIVITY_VERTICAL_MARGIN};
         public static final int BOTTOM_NAVIGATION_VIEW_HEIGHT_VALUE = 56;
 
-        /*public static final String MDPI_ACTIVITY_HORISONTAL_MARGIN =
-                String.format(ACTIVITY_HORISONTAL_MARGIN, M_ACTIVITY_HORISONTAL_MARGIN);
-        public static final String MDPI_ACTIVITY_VERTICAL_MARGIN =
-                String.format(ACTIVITY_VERTICAL_MARGIN, M_ACTIVITY_VERTICAL_MARGIN);
-        public static final String MDPI_ACTIVITY_DETAIL_VERTICAL_MARGIN =
-                String.format(ACTIVITY_DETAIL_VERTICAL_MARGIN, M_ACTIVITY_DETAIL_VERTICAL_MARGIN);*/
+        public static final String BOTTOM_SHEET_PEEK_HEIGHT =
+            "    <dimen name=\"bottom_sheet_peek_height\">70dp</dimen>";
+        public static final String BOTTOM_SHEET_COLUMN_COUNT =
+            "    <dimen name=\"bottom_sheet_column_count\">3</dimen>";
         // mobile constants }
     //dimens }
 

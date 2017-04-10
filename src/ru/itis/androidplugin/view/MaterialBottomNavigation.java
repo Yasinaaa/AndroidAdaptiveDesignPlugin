@@ -65,9 +65,9 @@ public class MaterialBottomNavigation extends MaterialItem {
     }
 
     @Override
-    public void insertToLayoutOrNo(){
+    public void onAddToLayoutClickListener(){
         try {
-            System.out.println("insertToLayoutOrNo BottomNavigation");
+            System.out.println("onAddToLayoutClickListener BottomNavigation");
             mId = mainView.itemParentViewJTextField.getText();
             setViewParameters();
             XmlChanger.changeXml(Constants.BOTTOM_NAVIGATION_VIEW_HEIGHT,

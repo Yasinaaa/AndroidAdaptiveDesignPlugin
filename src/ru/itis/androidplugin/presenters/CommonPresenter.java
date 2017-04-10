@@ -53,6 +53,7 @@ public abstract class CommonPresenter {
     }
 
     public void openItemLayout(JLabel label, String path){
+        //todo change
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -72,7 +73,7 @@ public abstract class CommonPresenter {
         File file = new File(PluginProject.mProject.getBasePath() + "/app/src/main/res/drawable");
         File[] allDrawables = file.listFiles();
 
-        iconJComboBox.addItem("");
+        //iconJComboBox.addItem("");
         for(int i=0; i < allDrawables.length; i++){
             iconJComboBox.addItem(allDrawables[i].getName());
         }
