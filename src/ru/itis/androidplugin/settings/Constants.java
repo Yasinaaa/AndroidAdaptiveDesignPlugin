@@ -15,6 +15,9 @@ public class Constants {
     public static final String VALUES_PATH = String.format("%s/values/", RES_PATH);
     public static final String WRAP_CONTENT = "wrap_content";
     public static final String MATCH_PARENT = "match_parent";
+    public static final String DARK_THEME = "Dark theme";
+    public static final String LIGHT_THEME = "Light theme";
+    public static final String[] THEMES = new String[]{DARK_THEME, LIGHT_THEME};
 
     //dimens {
         // view text {
@@ -52,16 +55,14 @@ public class Constants {
     private static MaterialBottomSheets materialBottomSheets = new MaterialBottomSheets();
     private static MaterialButton materialButton = new MaterialButton();
     private static MaterialCards materialCards = new MaterialCards();
-    private static MaterialChips materialChips = new MaterialChips();
-    private static MaterialDataTables materialDataTables = new MaterialDataTables();
-    private static MaterialDialogs materialDialogs = new MaterialDialogs();
-    private static MaterialDividers materialDividers = new MaterialDividers();
+    private static MaterialDivider materialDividers = new MaterialDivider();
     private static MaterialFloatingActionButton materialFloatingActionButton = new MaterialFloatingActionButton();
+    private static MaterialToolbar materialToolbar = new MaterialToolbar();
 
     public static MaterialItem[] mViewMaterialItems = new MaterialItem[]{
             materialRecyclerView,  materialTextView, materialBottomNavigation, materialBottomSheets,
-            materialButton, materialCards, materialChips, materialDataTables, materialDialogs,
-            materialDividers, materialFloatingActionButton
+            materialButton, materialCards, materialDividers, materialFloatingActionButton,
+            materialToolbar
     };
 
 }

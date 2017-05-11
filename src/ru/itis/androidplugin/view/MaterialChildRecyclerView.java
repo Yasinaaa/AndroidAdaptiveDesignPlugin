@@ -1,6 +1,5 @@
 package ru.itis.androidplugin.view;
 
-import b.g.i.S;
 import ru.itis.androidplugin.settings.FileOwner;
 import ru.itis.androidplugin.settings.PluginProject;
 

@@ -8,8 +8,6 @@ import ru.itis.androidplugin.presenters.BottomSheetPresenter;
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.settings.PluginProject;
 
-import java.awt.event.ContainerAdapter;
-import java.awt.event.ContainerEvent;
 import java.io.IOException;
 
 /**
@@ -102,6 +100,16 @@ public class MaterialBottomSheets extends MaterialItem {
                 mainView.itemMaterialItemJTextField);
         setAllValues();
         bottomSheetPresenter.setOrNoTitle(mainView.removeEmptyLayoutJLabel, mainView.emptyItemLayoutJTextField);
+
+        //temp
+        mainView.removeItemLayoutJLabel.setVisible(false);
+        mainView.openItemLayoutJLabel.setVisible(false);
+        mainView.removeEmptyLayoutJLabel.setVisible(false);
+        mainView.removeLoadingLayoutJLabel.setVisible(false);
+        mainView.openEmptyLayoutJLabel.setVisible(false);
+        mainView.openLoadingLayoutJLabel.setVisible(false);
+        mainView.addNewItemJLabel.setVisible(false);
+        //temp
     }
 
     @Override
@@ -132,15 +140,16 @@ public class MaterialBottomSheets extends MaterialItem {
     public void addBottomSheetToLayout() throws IOException {
         switch (mStyle) {
             case "list_style":
-                XmlChanger.changeXml(Constants.BOTTOM_SHEET_PEEK_HEIGHT, mViewParametrs);
+                XmlChanger.addDimens(Constants.BOTTOM_SHEET_PEEK_HEIGHT);
                 break;
             case "grid_style":
-                XmlChanger.changeXml(new String[]{Constants.BOTTOM_SHEET_PEEK_HEIGHT,
-                Constants.BOTTOM_SHEET_COLUMN_COUNT}, mViewParametrs);
+                XmlChanger.addDimens(new String[]{Constants.BOTTOM_SHEET_PEEK_HEIGHT,
+                Constants.BOTTOM_SHEET_COLUMN_COUNT});
                 break;
             default:
                 break;
         }
+        XmlChanger.insertInEditor(mViewParametrs);
     }
 
     public String insertStyle(){

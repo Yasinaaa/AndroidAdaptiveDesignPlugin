@@ -27,6 +27,7 @@ import com.intellij.uiDesigner.core.Spacer;
 import ru.itis.androidplugin.adapters.ViewRender;
 import ru.itis.androidplugin.android.AndroidManifest;
 import ru.itis.androidplugin.android.Gradle;
+import ru.itis.androidplugin.android.values.Drawables;
 import ru.itis.androidplugin.generator.XmlGenerator;
 import ru.itis.androidplugin.generator.classes.ActivityPattern;
 import ru.itis.androidplugin.generator.classes.ClassGenerator;
@@ -122,6 +123,8 @@ public class MainView extends JPanel {
     public JLabel openIconJLabel;
     public JLabel title5JLabel;
     public JComboBox jComboBox3;
+    public boolean isRaisedButtonDrawablesAdded = false;
+    public boolean isFlatButtonDrawablesAdded = false;
 
     public LinkedList<MaterialItem> tenClickedMaterialItems;
     public int currentItem = 0;
@@ -131,6 +134,7 @@ public class MainView extends JPanel {
     public ActionListener saveLayoutActionListener;
     private VirtualFile virtualFile;
     private AndroidManifest androidManifest;
+
 
     public MainView() {
         //TODO change this part
@@ -226,7 +230,7 @@ public class MainView extends JPanel {
         setMouseListener(removeItemLayoutJLabel);
         setMouseListener(removeEmptyLayoutJLabel);
         setMouseListener(removeLoadingLayoutJLabel);
-        setMouseListener(addNewItemJLabel);
+        //setMouseListener(addNewItemJLabel);
         setMouseListener(openItemLayoutJLabel);
         setMouseListener(openEmptyLayoutJLabel);
         setMouseListener(openLoadingLayoutJLabel);
@@ -335,7 +339,7 @@ public class MainView extends JPanel {
         removeEmptyLayoutJLabel = new JLabel();
         removeEmptyLayoutJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/remove.png")));
         removeEmptyLayoutJLabel.setText("");
-        currentMaterialItemParametersJPanel.add(removeEmptyLayoutJLabel, new GridConstraints(5, 2, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        currentMaterialItemParametersJPanel.add(removeEmptyLayoutJLabel, new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         openEmptyLayoutJLabel = new JLabel();
         openEmptyLayoutJLabel.setIcon(new ImageIcon(getClass().getResource("/icons/go.png")));
         openEmptyLayoutJLabel.setText("");
@@ -496,7 +500,7 @@ public class MainView extends JPanel {
         title5JLabel.setText("Parent ID");
         currentMaterialItemParametersJPanel.add(title5JLabel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         saveLayoutButton = new JButton();
-        saveLayoutButton.setText("Create another versions of layout");
+        saveLayoutButton.setText("Save layout");
         panel.add(saveLayoutButton, new GridConstraints(5, 0, 1, 10, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         itemActivityClassJLabel = new JLabel();
         itemActivityClassJLabel.setText("");

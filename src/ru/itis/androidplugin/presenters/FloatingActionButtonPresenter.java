@@ -68,12 +68,5 @@ public class FloatingActionButtonPresenter extends CommonPresenter {
         }
     }
 
-    public void setAllParentsIds(JComboBox jComboBox){
-        VirtualFile virtualFile = PluginProject.getCurrentVirtualFile();
-        AndroidView androidView = AndroidView.getAndroidViews(virtualFile);
 
-        for (int i=0; i<androidView.getAllChildViews().size(); i++) {
-            jComboBox.addItem(androidView.getAllChildViews().get(i).getIdValue());
-        }
-    }
 }

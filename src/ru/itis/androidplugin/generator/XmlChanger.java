@@ -27,51 +27,46 @@ public class XmlChanger {
 
     private static boolean attrsIsAdded = false;
 
-    private static void addAttrs() throws IOException {
+    public static void addAttrs() throws IOException {
         if (!attrsIsAdded) {
             new Attrs().addAttrsToProject();
             attrsIsAdded = true;
         }
     }
 
-    public static void changeXml(String[] allValues, final String text)
+    public static void addDimens(String[] allValues)
             throws IOException{
 
         if(allValues != null){
             new Dimens().addAllDimens(allValues);
         }
-        insertInEditor(text);
     }
-    public static void changeXml(String value, final String text)
+    public static void addDimens(String value)
             throws IOException{
 
         if(value != null){
             new Dimens().addAllDimens(new String[]{value});
         }
-        insertInEditor(text);
     }
 
-    public static void changeXml(String[] allDimensTag, int[] allDimensValue, final String text)
+    public static void addDimens(String[] allDimensTag, int[] allDimensValue)
             throws IOException{
 
         if(allDimensTag != null && allDimensValue != null){
             new Dimens().addAllDimens(allDimensTag, allDimensValue);
         }
-        insertInEditor(text);
     }
 
-    public static void changeXml(String tag, int value, final String text)
+    public static void addDimens(String tag, int value)
             throws IOException{
         if(tag != null && value != 0) {
             new Dimens().addLine(tag, value + "");
         }
-        insertInEditor(text);
     }
 
-    private static void insertInEditor(final String text)
+    public static void insertInEditor(final String text)
             throws IOException {
 
-        addAttrs();
         Project project = getOpenProject();
         Editor editor = getEditor(project);
 

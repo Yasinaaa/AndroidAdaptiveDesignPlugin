@@ -6,6 +6,7 @@ import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.DocumentAdapter;
+import ru.itis.androidplugin.android.AndroidView;
 import ru.itis.androidplugin.settings.PluginProject;
 import ru.itis.androidplugin.view.MainView;
 import ru.itis.androidplugin.view.VisibleInvisible;
@@ -19,6 +20,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by yasina on 06.04.17.
@@ -137,6 +139,19 @@ public abstract class CommonPresenter {
 
                 }
             };
+        }
+    }
+
+    public List<AndroidView> getAllParentIDs(){
+        VirtualFile virtualFile = PluginProject.getCurrentVirtualFile();
+        AndroidView androidView = AndroidView.getAndroidViews(virtualFile);
+        return androidView.getAllChildViews();
+    }
+
+    public void setAllElementIds(JComboBox jComboBox){
+        List<AndroidView> androidView = getAllParentIDs();
+        for (int i=0; i<androidView.size(); i++) {
+            jComboBox.addItem(androidView.get(i).getIdValue());
         }
     }
 }

@@ -1,18 +1,11 @@
 package ru.itis.androidplugin.view;
 
-import com.intellij.openapi.vfs.VirtualFile;
-import ru.itis.androidplugin.android.values.Strings;
 import ru.itis.androidplugin.generator.XmlChanger;
 import ru.itis.androidplugin.interfaces.FloatingActionButtonTypes;
 import ru.itis.androidplugin.presenters.FloatingActionButtonPresenter;
-import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.settings.PluginProject;
 
-import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 
 /**
  * Created by yasina on 09.03.17.
@@ -74,7 +67,7 @@ public class MaterialFloatingActionButton extends MaterialItem implements Floati
     public void setBottomSheetToolbarOptions() {
         mainView.title5JLabel.setVisible(true);
         mainView.jComboBox3.setVisible(true);
-        floatingActionButtonPresenter.setAllParentsIds(mainView.jComboBox3);
+        floatingActionButtonPresenter.setAllElementIds(mainView.jComboBox3);
     }
 
     @Override
@@ -120,7 +113,8 @@ public class MaterialFloatingActionButton extends MaterialItem implements Floati
     public void onAddToLayoutClickListener(){
         try {
             setViewParameters();
-            XmlChanger.changeXml(null, null, mViewParametrs);
+            XmlChanger.addDimens(null, null);
+            XmlChanger.insertInEditor(mViewParametrs);
 
         }catch (java.io.IOException e){
         }
@@ -154,7 +148,7 @@ public class MaterialFloatingActionButton extends MaterialItem implements Floati
         iconName = mainView.jComboBox2.getSelectedItem().toString();
         mStyle = mainView.typeJComboBox.getSelectedItem().toString();
         if(mainView.jComboBox3.isVisible()){
-            parentId = mainView.itemMaterialItemJTextField.getSelectedText();
+            parentId = mainView.jComboBox3.getSelectedItem().toString();
         }
     }
 }

@@ -1,5 +1,6 @@
 package ru.itis.androidplugin.android.values;
 
+import ru.itis.androidplugin.generator.CommonGenerators;
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.settings.PluginProject;
 
@@ -26,21 +27,6 @@ public class Attrs {
 
     public void addAttrsToProject() throws IOException {
         URL url = getClass().getResource(ATTRS);
-
-        File attrsFile = null;
-        try {
-            attrsFile = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        File addToProject = new File(PATH);
-        if(!addToProject.exists()){
-
-        }else if (attrsFile == attrsFile){
-            Files.deleteIfExists(addToProject.toPath());
-        }
-        Files.copy(attrsFile.toPath(), addToProject.toPath(),
-                StandardCopyOption.REPLACE_EXISTING);
-
+        CommonGenerators.addXMLToProject(url, PATH);
     }
 }

@@ -116,6 +116,7 @@ public class MaterialTextView extends MaterialItem implements TextViewTypes{
         }
     }
 
+    //todo: change (what are stupid thing???)
     @Override
     public void setBottomSheetGridOptions(String[] types) {
         setBottomSheetLayoutOptions(types);
@@ -132,7 +133,7 @@ public class MaterialTextView extends MaterialItem implements TextViewTypes{
     public void onAddToLayoutClickListener(){
         try {
             setViewParameters();
-            XmlChanger.changeXml(null, null, mViewParametrs);
+            XmlChanger.insertInEditor(mViewParametrs);
 
         }catch (java.io.IOException e){
 

@@ -28,7 +28,7 @@ public class BottomNavigationPresenter extends CommonPresenter {
     }
 
     public void addNewItemToBottomNavigationView(JLabel openJLabel, JPanel[] panels) {
-        MouseAdapter mouseAdapter = new MouseAdapter() {
+        openJLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
@@ -41,13 +41,13 @@ public class BottomNavigationPresenter extends CommonPresenter {
                 }
 
             }
-        };
+        });
 
-        try{
+        /*try{
             openJLabel.getMouseListeners()[0] = mouseAdapter;
         }catch (java.lang.ArrayIndexOutOfBoundsException e){
             openJLabel.addMouseListener(mouseAdapter);
-        }
+        }*/
 
     }
 

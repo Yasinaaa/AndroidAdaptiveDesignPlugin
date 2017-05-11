@@ -53,6 +53,7 @@ public class MaterialBottomNavigation extends MaterialItem {
         bottomNavigationPresenter.addNewItemToBottomNavigationView(mainView.addNewItemJLabel,
                 allPanels);
 
+
         bottomNavigationPresenter.openItemLayout(mainView.openItemLayoutJLabel, "/menu" +
                 mainView.itemMaterialItemJTextField.getText() + ".xml");
 
@@ -70,9 +71,9 @@ public class MaterialBottomNavigation extends MaterialItem {
             System.out.println("onAddToLayoutClickListener BottomNavigation");
             mId = mainView.itemParentViewJTextField.getText();
             setViewParameters();
-            XmlChanger.changeXml(Constants.BOTTOM_NAVIGATION_VIEW_HEIGHT,
-                    Constants.BOTTOM_NAVIGATION_VIEW_HEIGHT_VALUE,
-                    mViewParametrs);
+            XmlChanger.addDimens(Constants.BOTTOM_NAVIGATION_VIEW_HEIGHT,
+                    Constants.BOTTOM_NAVIGATION_VIEW_HEIGHT_VALUE);
+            XmlChanger.insertInEditor(mViewParametrs);
 
             bottomNavigationPresenter.clickAddToLayout(allPanels, allIDs, allDrawables, allRemoves, allChoosers);
             mainView.openItemLayoutJLabel.setVisible(true);

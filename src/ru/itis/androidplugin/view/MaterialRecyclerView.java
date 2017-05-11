@@ -1,13 +1,11 @@
 package ru.itis.androidplugin.view;
 
-import com.intellij.ui.DocumentAdapter;
 import ru.itis.androidplugin.generator.XmlGenerator;
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.generator.XmlChanger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -115,9 +113,9 @@ public class MaterialRecyclerView extends MaterialItem{
         try {
             mId = mainView.itemParentViewJTextField.getText();
             setViewParameters();
-            XmlChanger.changeXml(Constants.RECYCLERVIEW_DIMENS_TAGS,
-                    Constants.RECYCLERVIEW_DIMENS_VALUE,
-                    mViewParametrs);
+            XmlChanger.addDimens(Constants.RECYCLERVIEW_DIMENS_TAGS,
+                    Constants.RECYCLERVIEW_DIMENS_VALUE);
+            XmlChanger.insertInEditor(mViewParametrs);
 
             VisibleInvisible.layoutsForRecyclerViewCreated(mainView);
         }catch (java.io.IOException e){
