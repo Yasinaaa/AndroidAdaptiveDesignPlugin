@@ -1,20 +1,18 @@
 package ru.itis.androidplugin.presenters;
 
-import ru.itis.androidplugin.interfaces.ButtonTypes;
+import ru.itis.androidplugin.interfaces.ButtonInterface;
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.view.MaterialButton;
-
-import javax.swing.*;
 
 /**
  * Created by yasina on 10.04.17.
  */
 public class ButtonPresenter extends CommonPresenter {
 
-    private ButtonTypes buttonTypes;
+    private ButtonInterface buttonTypes;
 
 
-    public ButtonPresenter(ButtonTypes buttonTypes) {
+    public ButtonPresenter(ButtonInterface buttonTypes) {
         super();
         this.buttonTypes = buttonTypes;
     }

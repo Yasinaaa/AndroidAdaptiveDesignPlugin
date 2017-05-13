@@ -2,7 +2,7 @@ package ru.itis.androidplugin.view;
 
 import ru.itis.androidplugin.android.values.Strings;
 import ru.itis.androidplugin.generator.XmlChanger;
-import ru.itis.androidplugin.interfaces.TextViewTypes;
+import ru.itis.androidplugin.interfaces.TextViewInterface;
 import ru.itis.androidplugin.presenters.TextViewPresenter;
 import ru.itis.androidplugin.settings.Constants;
 
@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Created by yasina on 04.02.17.
  */
-public class MaterialTextView extends MaterialItem implements TextViewTypes{
+public class MaterialTextView extends MaterialItem implements TextViewInterface {
 
     private static final String EMPTY = "materialTextView1";
     //wrap_content

@@ -1,18 +1,18 @@
 package ru.itis.androidplugin.presenters;
 
-import ru.itis.androidplugin.interfaces.TextViewTypes;
+import ru.itis.androidplugin.interfaces.TextViewInterface;
 
 /**
  * Created by yasina on 06.04.17.
  */
 public class TextViewPresenter extends CommonPresenter {
 
-    private TextViewTypes textViewType;
+    private TextViewInterface textViewType;
     private String type;
     private final String TYPE_USUAL_TEXT = "usual_text";
     private final String TYPE_BOTTOM_SHEET_TEXT = "bottom_sheet";
 
-    public TextViewPresenter(TextViewTypes textViewType) {
+    public TextViewPresenter(TextViewInterface textViewType) {
         super();
         this.textViewType = textViewType;
     }

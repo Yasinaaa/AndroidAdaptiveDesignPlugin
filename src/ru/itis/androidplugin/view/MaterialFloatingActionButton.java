@@ -1,7 +1,7 @@
 package ru.itis.androidplugin.view;
 
 import ru.itis.androidplugin.generator.XmlChanger;
-import ru.itis.androidplugin.interfaces.FloatingActionButtonTypes;
+import ru.itis.androidplugin.interfaces.FloatingActionButtonInterface;
 import ru.itis.androidplugin.presenters.FloatingActionButtonPresenter;
 import ru.itis.androidplugin.settings.PluginProject;
 
@@ -10,7 +10,7 @@ import java.awt.event.*;
 /**
  * Created by yasina on 09.03.17.
  */
-public class MaterialFloatingActionButton extends MaterialItem implements FloatingActionButtonTypes {
+public class MaterialFloatingActionButton extends MaterialItem implements FloatingActionButtonInterface {
 
     private static final String EMPTY = "fab1";
     public static final String XML_VIEW_PATTERN =

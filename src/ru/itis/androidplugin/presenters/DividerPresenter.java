@@ -1,20 +1,17 @@
 package ru.itis.androidplugin.presenters;
 
-import ru.itis.androidplugin.interfaces.DividerTypes;
-import ru.itis.androidplugin.view.MaterialBottomSheets;
+import ru.itis.androidplugin.interfaces.DividerInterface;
 import ru.itis.androidplugin.view.MaterialDivider;
-
-import javax.swing.*;
 
 /**
  * Created by yasina on 10.04.17.
  */
 public class DividerPresenter extends CommonPresenter {
 
-    private DividerTypes dividerTypes;
+    private DividerInterface dividerTypes;
 
 
-    public DividerPresenter(DividerTypes dividerTypes) {
+    public DividerPresenter(DividerInterface dividerTypes) {
         super();
         this.dividerTypes = dividerTypes;
     }

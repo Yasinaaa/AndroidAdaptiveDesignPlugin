@@ -1,7 +1,7 @@
 package ru.itis.androidplugin.view;
 
 import ru.itis.androidplugin.generator.XmlChanger;
-import ru.itis.androidplugin.interfaces.DividerTypes;
+import ru.itis.androidplugin.interfaces.DividerInterface;
 import ru.itis.androidplugin.presenters.DividerPresenter;
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.settings.PluginProject;
@@ -11,7 +11,7 @@ import javax.swing.*;
 /**
  * Created by yasina on 09.03.17.
  */
-public class MaterialDivider extends MaterialItem implements DividerTypes{
+public class MaterialDivider extends MaterialItem implements DividerInterface {
 
     private static final String EMPTY = "materialDivider1";
     public static final String ICON_PATH = "/icons/dividers.png";

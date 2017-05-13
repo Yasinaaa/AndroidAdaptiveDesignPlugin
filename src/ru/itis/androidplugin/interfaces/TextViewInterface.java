@@ -3,7 +3,7 @@ package ru.itis.androidplugin.interfaces;
 /**
  * Created by yasina on 08.04.17.
  */
-public interface TextViewTypes {
+public interface TextViewInterface {
 
     void setUsualOptions(String[] types);
     void setBottomSheetLayoutOptions(String[] types);

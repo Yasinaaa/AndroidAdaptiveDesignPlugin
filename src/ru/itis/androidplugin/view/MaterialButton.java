@@ -3,7 +3,7 @@ package ru.itis.androidplugin.view;
 import ru.itis.androidplugin.android.values.Drawables;
 import ru.itis.androidplugin.android.values.Strings;
 import ru.itis.androidplugin.generator.XmlChanger;
-import ru.itis.androidplugin.interfaces.ButtonTypes;
+import ru.itis.androidplugin.interfaces.ButtonInterface;
 import ru.itis.androidplugin.presenters.ButtonPresenter;
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.settings.PluginProject;
@@ -13,7 +13,7 @@ import javax.swing.*;
 /**
  * Created by yasina on 09.03.17.
  */
-public class MaterialButton extends MaterialItem implements ButtonTypes{
+public class MaterialButton extends MaterialItem implements ButtonInterface {
 
     private static final String EMPTY = "materialButton1";
     public static final String XML_VIEW_PATTERN =
