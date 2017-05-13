@@ -1,9 +1,8 @@
 package ru.itis.androidplugin.view;
 
 import ru.itis.androidplugin.android.values.Drawables;
-import ru.itis.androidplugin.android.values.Strings;
 import ru.itis.androidplugin.android.values.Styles;
-import ru.itis.androidplugin.generator.XmlChanger;
+import ru.itis.androidplugin.generator.xml.XmlChanger;
 import ru.itis.androidplugin.interfaces.ToolbarInterface;
 import ru.itis.androidplugin.presenters.ToolbarPresenter;
 

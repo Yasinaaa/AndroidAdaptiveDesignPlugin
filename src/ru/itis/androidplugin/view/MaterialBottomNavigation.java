@@ -1,7 +1,7 @@
 package ru.itis.androidplugin.view;
 
-import ru.itis.androidplugin.generator.XmlChanger;
-import ru.itis.androidplugin.generator.XmlGenerator;
+import ru.itis.androidplugin.generator.xml.XmlChanger;
+import ru.itis.androidplugin.generator.xml.XmlGenerator;
 import ru.itis.androidplugin.presenters.BottomNavigationPresenter;
 import ru.itis.androidplugin.settings.Constants;
 

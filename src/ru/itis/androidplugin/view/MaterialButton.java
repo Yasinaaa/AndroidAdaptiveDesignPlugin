@@ -2,7 +2,7 @@ package ru.itis.androidplugin.view;
 
 import ru.itis.androidplugin.android.values.Drawables;
 import ru.itis.androidplugin.android.values.Strings;
-import ru.itis.androidplugin.generator.XmlChanger;
+import ru.itis.androidplugin.generator.xml.XmlChanger;
 import ru.itis.androidplugin.interfaces.ButtonInterface;
 import ru.itis.androidplugin.presenters.ButtonPresenter;
 import ru.itis.androidplugin.settings.Constants;

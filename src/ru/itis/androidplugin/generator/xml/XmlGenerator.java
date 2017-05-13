@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.generator;
+package ru.itis.androidplugin.generator.xml;
 
 import ru.itis.androidplugin.android.AndroidView;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -9,6 +9,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import ru.itis.androidplugin.android.Menu;
+import ru.itis.androidplugin.generator.Generator;
 import ru.itis.androidplugin.presenters.BottomNavigationPresenter;
 import ru.itis.androidplugin.settings.PluginProject;
 
@@ -20,7 +21,7 @@ import java.io.OutputStreamWriter;
 /**
  * Created by yasina on 01.04.17.
  */
-public class XmlGenerator extends Generator{
+public class XmlGenerator extends Generator {
 
     //todo change to Coordinate Layout
     public static final String SIMPLE_RELATIVE_LAYOUT = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +

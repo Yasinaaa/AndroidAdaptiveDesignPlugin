@@ -2,8 +2,8 @@ package ru.itis.androidplugin.view;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import ru.itis.androidplugin.android.values.Strings;
-import ru.itis.androidplugin.generator.XmlChanger;
-import ru.itis.androidplugin.generator.XmlGenerator;
+import ru.itis.androidplugin.generator.xml.XmlChanger;
+import ru.itis.androidplugin.generator.xml.XmlGenerator;
 import ru.itis.androidplugin.presenters.BottomSheetPresenter;
 import ru.itis.androidplugin.settings.Constants;
 import ru.itis.androidplugin.settings.PluginProject;

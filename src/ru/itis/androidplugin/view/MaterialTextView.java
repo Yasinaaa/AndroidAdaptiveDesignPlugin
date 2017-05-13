@@ -1,7 +1,7 @@
 package ru.itis.androidplugin.view;
 
 import ru.itis.androidplugin.android.values.Strings;
-import ru.itis.androidplugin.generator.XmlChanger;
+import ru.itis.androidplugin.generator.xml.XmlChanger;
 import ru.itis.androidplugin.interfaces.TextViewInterface;
 import ru.itis.androidplugin.presenters.TextViewPresenter;
 import ru.itis.androidplugin.settings.Constants;

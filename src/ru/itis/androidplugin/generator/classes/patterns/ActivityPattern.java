@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.generator.classes;
+package ru.itis.androidplugin.generator.classes.patterns;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;

@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.generator.classes;
+package ru.itis.androidplugin.generator.classes.patterns;
 
 import ru.itis.androidplugin.generator.helper.*;
 import com.intellij.psi.*;
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by yasina on 02.04.17.
  */
-public class RecyclerViewHolderPattern extends ClassPattern{
+public class RecyclerViewHolderPattern extends ClassPattern {
 
     public RecyclerViewHolderPattern(AndroidManifest androidManifest){
         super(androidManifest);

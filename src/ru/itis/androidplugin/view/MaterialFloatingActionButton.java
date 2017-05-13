@@ -1,6 +1,6 @@
 package ru.itis.androidplugin.view;
 
-import ru.itis.androidplugin.generator.XmlChanger;
+import ru.itis.androidplugin.generator.xml.XmlChanger;
 import ru.itis.androidplugin.interfaces.FloatingActionButtonInterface;
 import ru.itis.androidplugin.presenters.FloatingActionButtonPresenter;
 import ru.itis.androidplugin.settings.PluginProject;

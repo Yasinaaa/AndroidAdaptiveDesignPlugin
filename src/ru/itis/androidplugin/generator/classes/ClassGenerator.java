@@ -1,5 +1,6 @@
 package ru.itis.androidplugin.generator.classes;
 
+import ru.itis.androidplugin.generator.classes.patterns.ClassPattern;
 import ru.itis.androidplugin.generator.helper.*;
 import com.intellij.ide.projectView.impl.nodes.PackageUtil;
 import com.intellij.ide.util.PackageChooserDialog;

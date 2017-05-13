@@ -27,11 +27,10 @@ import com.intellij.uiDesigner.core.Spacer;
 import ru.itis.androidplugin.adapters.ViewRender;
 import ru.itis.androidplugin.android.AndroidManifest;
 import ru.itis.androidplugin.android.Gradle;
-import ru.itis.androidplugin.android.values.Drawables;
-import ru.itis.androidplugin.generator.XmlGenerator;
-import ru.itis.androidplugin.generator.classes.ActivityPattern;
+import ru.itis.androidplugin.generator.xml.XmlGenerator;
+import ru.itis.androidplugin.generator.classes.patterns.ActivityPattern;
 import ru.itis.androidplugin.generator.classes.ClassGenerator;
-import ru.itis.androidplugin.generator.classes.RecyclerViewHolderPattern;
+import ru.itis.androidplugin.generator.classes.patterns.RecyclerViewHolderPattern;
 import ru.itis.androidplugin.settings.*;
 
 import javax.swing.*;

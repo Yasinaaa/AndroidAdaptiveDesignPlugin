@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.generator.classes;
+package ru.itis.androidplugin.generator.classes.patterns;
 
 import ru.itis.androidplugin.generator.helper.*;
 import com.intellij.psi.*;

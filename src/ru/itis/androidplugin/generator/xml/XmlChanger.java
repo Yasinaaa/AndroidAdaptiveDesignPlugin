@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.generator;
+package ru.itis.androidplugin.generator.xml;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
