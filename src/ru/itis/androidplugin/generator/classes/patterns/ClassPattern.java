@@ -1,6 +1,6 @@
 package ru.itis.androidplugin.generator.classes.patterns;
 
-import ru.itis.androidplugin.generator.helper.*;
+import ru.itis.androidplugin.generator.classes.helper.*;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.util.PropertyUtil;
@@ -58,10 +58,10 @@ public abstract class ClassPattern {
     }
 
     public abstract PsiClass createOrUpdateClass(AndroidView androidView, PsiClass psiClass);
-    protected abstract void createClassItems(AndroidView androidView, ButterKnife butterKnife,
+    public abstract void createClassItems(AndroidView androidView, ButterKnife butterKnife,
                                              PsiClass psiClass);
 
-    protected PsiClass generatePsiClass(String className){
+    public PsiClass generatePsiClass(String className){
 
         PsiClass psiClass = factory.createClass(ClassHelper.
                 getClassNameFromFullQualified(className));

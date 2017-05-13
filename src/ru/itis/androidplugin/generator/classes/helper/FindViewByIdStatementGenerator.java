@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.generator.helper;
+package ru.itis.androidplugin.generator.classes.helper;
 
 import com.intellij.psi.PsiField;
 import ru.itis.androidplugin.android.AndroidView;

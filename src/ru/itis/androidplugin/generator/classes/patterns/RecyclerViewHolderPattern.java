@@ -1,6 +1,6 @@
 package ru.itis.androidplugin.generator.classes.patterns;
 
-import ru.itis.androidplugin.generator.helper.*;
+import ru.itis.androidplugin.generator.classes.helper.*;
 import com.intellij.psi.*;
 import ru.itis.androidplugin.android.AndroidManifest;
 import ru.itis.androidplugin.android.AndroidView;
@@ -43,7 +43,7 @@ public class RecyclerViewHolderPattern extends ClassPattern {
     }
 
     @Override
-    protected void createClassItems(AndroidView androidView, ButterKnife butterKnife,
+    public void createClassItems(AndroidView androidView, ButterKnife butterKnife,
                                     PsiClass psiClass) {
         FieldGenerator fieldGenerator = new FieldGenerator();
         Map<AndroidView, PsiField> fieldMappings = fieldGenerator.generateFields(

@@ -4,9 +4,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import ru.itis.androidplugin.android.AndroidManifest;
 import ru.itis.androidplugin.android.AndroidView;
-import ru.itis.androidplugin.generator.helper.ButterKnife;
-import ru.itis.androidplugin.generator.helper.ClassHelper;
-import ru.itis.androidplugin.generator.helper.FieldGenerator;
+import ru.itis.androidplugin.generator.classes.helper.ButterKnife;
+import ru.itis.androidplugin.generator.classes.helper.ClassHelper;
+import ru.itis.androidplugin.generator.classes.helper.FieldGenerator;
 import ru.itis.androidplugin.settings.PluginProject;
 import java.util.Map;
 
@@ -49,7 +49,7 @@ public class ActivityPattern extends ClassPattern {
     }
 
     @Override
-    protected void createClassItems(AndroidView androidView, ButterKnife butterKnife,
+    public void createClassItems(AndroidView androidView, ButterKnife butterKnife,
                                     PsiClass psiClass) {
         FieldGenerator fieldGenerator = new FieldGenerator();
         Map<AndroidView, PsiField> fieldMappings = fieldGenerator.generateFields(

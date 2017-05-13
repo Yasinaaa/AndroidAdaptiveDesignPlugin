@@ -1,7 +1,7 @@
 package ru.itis.androidplugin.generator.classes;
 
 import ru.itis.androidplugin.generator.classes.patterns.ClassPattern;
-import ru.itis.androidplugin.generator.helper.*;
+import ru.itis.androidplugin.generator.classes.helper.*;
 import com.intellij.ide.projectView.impl.nodes.PackageUtil;
 import com.intellij.ide.util.PackageChooserDialog;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -16,6 +16,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import org.apache.commons.lang.StringUtils;
 import ru.itis.androidplugin.android.AndroidView;
 import ru.itis.androidplugin.generator.Generator;
+import ru.itis.androidplugin.generator.xml.helper.AndroidLayoutParser;
 import ru.itis.androidplugin.settings.PluginProject;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.generator.helper;
+package ru.itis.androidplugin.generator.xml.helper;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;

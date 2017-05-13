@@ -1,6 +1,5 @@
-package ru.itis.androidplugin.generator.helper;
+package ru.itis.androidplugin.generator.classes.helper;
 
-import com.github.rjeschke.txtmark.Run;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
