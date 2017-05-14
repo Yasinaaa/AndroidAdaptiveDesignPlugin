@@ -8,7 +8,7 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import ru.itis.androidplugin.android.Menu;
+import ru.itis.androidplugin.android.values.Menu;
 import ru.itis.androidplugin.generator.Generator;
 import ru.itis.androidplugin.presenters.BottomNavigationPresenter;
 import ru.itis.androidplugin.settings.PluginProject;

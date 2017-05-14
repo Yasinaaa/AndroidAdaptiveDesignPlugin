@@ -1,4 +1,4 @@
-package ru.itis.androidplugin.android;
+package ru.itis.androidplugin.android.values;
 
 import ru.itis.androidplugin.android.values.Strings;
 import ru.itis.androidplugin.presenters.BottomNavigationPresenter;
