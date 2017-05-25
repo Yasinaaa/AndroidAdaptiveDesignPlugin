@@ -432,14 +432,6 @@
               </component>
             </children>
           </grid>
-          <component id="2bf32" class="javax.swing.JButton" binding="addToLayoutButton" default-binding="true">
-            <constraints>
-              <grid row="14" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Add to Layout"/>
-            </properties>
-          </component>
           <component id="dd8e2" class="javax.swing.JLabel" binding="titleItemsJLabel">
             <constraints>
               <grid row="8" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
@@ -530,6 +522,14 @@
             </constraints>
             <properties>
               <text value="Parent ID"/>
+            </properties>
+          </component>
+          <component id="2bf32" class="javax.swing.JButton" binding="addToLayoutButton" default-binding="true">
+            <constraints>
+              <grid row="14" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Add to Layout"/>
             </properties>
           </component>
         </children>

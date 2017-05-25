@@ -5,11 +5,11 @@ package ru.itis.androidplugin.interfaces;
  */
 public interface ToolbarInterface {
 
-    String STANDARD_TYPE = "STANDARD";
-    String SEARCH_TYPE = "SEARCH";
-    String REMOVE_TYPE = "REMOVE";
-    String SORT_TYPE = "SORT";
-    String EXTENDED_TYPE = "EXTENDED";
+    String STANDARD_TYPE = "standard";
+    String SEARCH_TYPE = "search";
+    String REMOVE_TYPE = "remove";
+    String SORT_TYPE = "sort";
+    String EXTENDED_TYPE = "extended";
     String[] ALL_TYPES = new String[]{
             STANDARD_TYPE, SEARCH_TYPE, REMOVE_TYPE, SORT_TYPE, EXTENDED_TYPE
     };

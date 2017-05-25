@@ -13,8 +13,10 @@ import java.util.List;
  */
 public class Styles {
 
+    private static final String STYLE_TOOLBAR_STR1 =
+            "<style name=\"AppSearchViewStyle\" parent=\"Widget.AppCompat.SearchView\">\n";
     private static final String STYLE_TOOLBAR =
-            "    <style name=\"AppSearchViewStyle\" parent=\"Widget.AppCompat.SearchView\">\n" +
+            "    " + STYLE_TOOLBAR_STR1 +
             "        <item name=\"android:textCursorDrawable\">@drawable/white_cursor</item>\n" +
             "        <item name=\"queryBackground\">@android:color/transparent</item>\n" +
             "        <item name=\"searchIcon\">@drawable/icon_toolbar_search</item>\n" +
@@ -31,9 +33,17 @@ public class Styles {
         try {
             list = Files.readAllLines(Paths.get(valuePath));
             //TEMP
-            if (!list.contains("    " + STYLE_TOOLBAR)){
+            boolean isHave = false;
+            /*if (!list.toString().contains(STYLE_TOOLBAR_STR1)){
                 list.add(list.size() - 1, STYLE_TOOLBAR);
+            }*/
+            for(String line : list){
+                if(line.contains(STYLE_TOOLBAR_STR1)){
+                    list.add(list.size() - 1, STYLE_TOOLBAR);
+                    break;
+                }
             }
+
             //TEMP
             Files.write(Paths.get(valuePath), list);
 

@@ -3,6 +3,7 @@ package ru.itis.androidplugin.view;
 import ru.itis.androidplugin.android.values.Drawables;
 import ru.itis.androidplugin.android.values.Styles;
 import ru.itis.androidplugin.generator.xml.XmlChanger;
+import ru.itis.androidplugin.generator.xml.XmlGenerator;
 import ru.itis.androidplugin.interfaces.ToolbarInterface;
 import ru.itis.androidplugin.presenters.ToolbarPresenter;
 
@@ -17,17 +18,27 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
 
     private static final String EMPTY = "toolbar1";
     public static final String XML_VIEW_PATTERN =
-            "<include " +
-            "        layout=\"@layout/%s\" " +
-            "        toolbar_type=\"%s\" />" +
+            "<include\n " +
+            "        layout=\"@layout/%s\"\n " +
+            "        android:toolbar_type=\"%s\"\n />" +
             "\n";
-    public static final String XML_END = "    </android.support.design.widget.AppBarLayout>\n";
+    public static final String XML_TOOLBAR =
+            "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+            "<android.support.v7.widget.Toolbar\n" +
+            "        xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
+            "        xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n" +
+            "        android:id=\"@+id/toolbar_%s\"\n" +
+            "        android:layout_width=\"match_parent\"\n" +
+            "        app:theme=\"@style/ThemeOverlay.AppCompat.Dark.ActionBar\"\n" +
+            "        android:layout_height=\"?android:actionBarSize\"\n" +
+            "        android:background=\"?attr/colorPrimary\"/>\n";
 
     public static final String ICON_PATH = "/icons/toolbar.png";
     public static final String VIEW_NAME = "Toolbar";
 
     private MainView mainView;
     private ToolbarPresenter toolbarPresenter;
+    private XmlGenerator layoutGenerator;
 
     private String recyclerViewID, navigationViewID;
 
@@ -40,6 +51,7 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
     public void setView() {
         mainView = MainView.mainView;
         toolbarPresenter = new ToolbarPresenter(this);
+        layoutGenerator = new XmlGenerator();
         VisibleInvisible.toolbarState(mainView);
         setAllValues();
     }
@@ -50,6 +62,8 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
             setViewParameters();
             // add drawables
             XmlChanger.insertInEditor(mViewParametrs);
+            layoutGenerator.insertNewLayout(String.format(XML_VIEW_PATTERN, mId),
+                    "/layout/" + mId + ".xml");
 
         }catch (java.io.IOException e){
         }
@@ -83,6 +97,7 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
     public void getAllValues() {
         mStyle = mainView.typeJComboBox.getSelectedItem().toString();
         toolbarPresenter.getParameters(mStyle);
+        mId = mainView.itemParentViewJTextField.getText().toString();
     }
 
 

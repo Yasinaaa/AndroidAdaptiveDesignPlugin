@@ -456,9 +456,6 @@ public class MainView extends JPanel {
         item1JPanel.add(removeIcon1JLabel, new GridConstraints(0, 3, 2, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         chooseIcon1JComboBox = new JComboBox();
         item1JPanel.add(chooseIcon1JComboBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        addToLayoutButton = new JButton();
-        addToLayoutButton.setText("Add to Layout");
-        currentMaterialItemParametersJPanel.add(addToLayoutButton, new GridConstraints(14, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         titleItemsJLabel = new JLabel();
         titleItemsJLabel.setText("Items");
         currentMaterialItemParametersJPanel.add(titleItemsJLabel, new GridConstraints(8, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -498,6 +495,9 @@ public class MainView extends JPanel {
         title5JLabel = new JLabel();
         title5JLabel.setText("Parent ID");
         currentMaterialItemParametersJPanel.add(title5JLabel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        addToLayoutButton = new JButton();
+        addToLayoutButton.setText("Add to Layout");
+        currentMaterialItemParametersJPanel.add(addToLayoutButton, new GridConstraints(14, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         saveLayoutButton = new JButton();
         saveLayoutButton.setText("Save layout");
         panel.add(saveLayoutButton, new GridConstraints(5, 0, 1, 10, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
