@@ -32,6 +32,36 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
             "        app:theme=\"@style/ThemeOverlay.AppCompat.Dark.ActionBar\"\n" +
             "        android:layout_height=\"?android:actionBarSize\"\n" +
             "        android:background=\"?attr/colorPrimary\"/>\n";
+    public static final String MENU_XML ="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
+            "<menu xmlns:android=\"http://schemas.android.com/apk/res/android\"\n"+
+            "    xmlns:yourapp=\"http://schemas.android.com/apk/res-auto\">\n"+
+            "    <item\n"+
+            "        android:id=\"@+id/action_search\"\n"+
+            "        android:title=\"@android:string/search_go\"\n"+
+            "        android:icon=\"@drawable/icon_toolbar_search\"\n"+
+            "        yourapp:showAsAction=\"always|collapseActionView\"\n"+
+            "        yourapp:actionViewClass=\"android.support.v7.widget.SearchView\" />\n"+
+            "    <item\n"+
+            "        android:id=\"@+id/action_edit\"\n"+
+            "        android:title=\"@string/edit\"\n"+
+            "        android:icon=\"@drawable/icon_toolbar_edit\"\n"+
+            "        yourapp:showAsAction=\"ifRoom\" />\n"+
+            "    <item\n"+
+            "        android:id=\"@+id/action_micro\"\n"+
+            "        android:title=\"@string/microphone\"\n"+
+            "        android:icon=\"@drawable/icon_toolbar_micro\"\n"+
+            "        yourapp:showAsAction=\"always\" />\n"+
+            "    <item\n"+
+            "        android:id=\"@+id/action_remove\"\n"+
+            "        android:title=\"@string/remove\"\n"+
+            "        android:icon=\"@drawable/icon_toolbar_remove\"\n"+
+            "        yourapp:showAsAction=\"always\" />\n"+
+            "    <item\n"+
+            "        android:id=\"@+id/action_sort\"\n"+
+            "        android:title=\"@string/sort_ab\"\n"+
+            "        android:icon=\"@drawable/icon_toolbal_sort\"\n"+
+            "        yourapp:showAsAction=\"always\" />\n"+
+            "</menu>\n";
 
     public static final String ICON_PATH = "/icons/toolbar.png";
     public static final String VIEW_NAME = "Toolbar";
@@ -63,7 +93,9 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
             // add drawables
             XmlChanger.insertInEditor(mViewParametrs);
             layoutGenerator.insertNewLayout(String.format(XML_VIEW_PATTERN, mId),
-                    "/layout/" + mId + ".xml");
+                    "/layout/toolbar_" + mId + ".xml");
+            layoutGenerator.insertNewLayout(String.format(XML_VIEW_PATTERN, mId),
+                    "/menu/menu_" + mId + ".xml");
 
         }catch (java.io.IOException e){
         }

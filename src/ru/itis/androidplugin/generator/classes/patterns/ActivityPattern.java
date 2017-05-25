@@ -67,13 +67,28 @@ public class ActivityPattern extends ClassPattern {
             initMethod = factory.createMethodFromText("public void init() {}", psiClass);
             addFindViewStatements(factory, initMethod, androidView, fieldMappings);
             psiClass.add(initMethod);
+
             try {
                 callInitMethodOnCreateView(psiClass, initMethod);
             } catch (java.lang.ArrayIndexOutOfBoundsException e2) {
 
             }
-
         }
+        initToolbarMethod(androidView);
+    }
+
+    private void initToolbarMethod(AndroidView androidView){
+       String toolbarMethod =
+               "    @Override\n" +
+                "    public boolean onCreateOptionsMenu(Menu menu) {\n" +
+                "        getMenuInflater().inflate(R.menu.menu_%s, menu);\n" +
+                "        return true;\n" +
+                "    }";
+       AndroidView toolbar = androidView.isHasToolbar();
+       if(toolbar != null){
+           String id = toolbar.getIdValue();
+       }
+
     }
 
     private void callInitMethodOnCreateView(PsiClass psiClass, PsiMethod psiMethod){

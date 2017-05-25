@@ -1,5 +1,6 @@
 package ru.itis.androidplugin.android;
 
+import com.sun.org.apache.xpath.internal.operations.And;
 import ru.itis.androidplugin.generator.xml.helper.AndroidLayoutParser;
 import ru.itis.androidplugin.view.MaterialItem;
 import ru.itis.androidplugin.generator.classes.helper.*;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AndroidView{
+
+    private final String TOOLBAR = "Toolbar";
 
     private String tagName;
     private String classSimpleName;
@@ -101,6 +104,16 @@ public class AndroidView{
         List<AndroidView> result = new ArrayList<AndroidView>();
         collectViews(result);
         return result;
+    }
+
+    public AndroidView isHasToolbar(){
+        List<AndroidView> result = getAllChildViews();
+        for(AndroidView androidView: result){
+            if (androidView.tagName.contains(TOOLBAR)){
+                return androidView;
+            }
+        }
+        return null;
     }
 
     private void collectViews(List<AndroidView> result) {
