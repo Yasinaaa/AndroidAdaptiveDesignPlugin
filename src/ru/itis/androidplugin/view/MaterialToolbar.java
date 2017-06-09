@@ -17,22 +17,33 @@ import java.awt.event.MouseEvent;
 public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
 
     private static final String EMPTY = "toolbar1";
-    public static final String XML_VIEW_PATTERN =
+    /*public static final String XML_VIEW_PATTERN =
             "<include\n " +
             "        layout=\"@layout/%s\"\n " +
             "        android:toolbar_type=\"%s\"\n />" +
-            "\n";
+            "\n";*/
     public static final String XML_TOOLBAR =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-            "<android.support.v7.widget.Toolbar\n" +
-            "        xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
-            "        xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n" +
-            "        android:id=\"@+id/toolbar_%s\"\n" +
-            "        android:layout_width=\"match_parent\"\n" +
-            "        app:theme=\"@style/ThemeOverlay.AppCompat.Dark.ActionBar\"\n" +
-            "        android:layout_height=\"?android:actionBarSize\"\n" +
-            "        android:background=\"?attr/colorPrimary\"/>\n";
-    public static final String MENU_XML ="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
+                    "<menu xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
+                    "      xmlns:app=\"http://schemas.android.com/apk/res-auto\">\n";
+    public static final String XML_TOOLBAR_END ="</menu>";
+
+    private final String ACTION_SEARCH =
+            "    <item\n"+
+                    "        android:id=\"@+id/action_search\"\n"+
+                    "        android:title=\"@android:string/search_go\"\n"+
+                    "        android:icon=\"@drawable/icon_toolbar_search\"\n"+
+                    "        yourapp:showAsAction=\"always|collapseActionView\"\n"+
+                    "        yourapp:actionViewClass=\"android.support.v7.widget.SearchView\" />\n";
+    private final String ACTION_EDIT =
+            "    <item\n"+
+            "        android:id=\"@+id/action_edit\"\n"+
+            "        android:title=\"@string/edit\"\n"+
+            "        android:icon=\"@drawable/icon_toolbar_edit\"\n"+
+            "        yourapp:showAsAction=\"ifRoom\" />\n";
+
+
+    /*public static final String MENU_XML ="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
             "<menu xmlns:android=\"http://schemas.android.com/apk/res/android\"\n"+
             "    xmlns:yourapp=\"http://schemas.android.com/apk/res-auto\">\n"+
             "    <item\n"+
@@ -61,7 +72,7 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
             "        android:title=\"@string/sort_ab\"\n"+
             "        android:icon=\"@drawable/icon_toolbal_sort\"\n"+
             "        yourapp:showAsAction=\"always\" />\n"+
-            "</menu>\n";
+            "</menu>\n";*/
 
     public static final String ICON_PATH = "/icons/toolbar.png";
     public static final String VIEW_NAME = "Toolbar";
@@ -73,7 +84,7 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
     private String recyclerViewID, navigationViewID;
 
     public MaterialToolbar() {
-        super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
+        super(VIEW_NAME, null, ICON_PATH);
         mId = EMPTY;
     }
 
@@ -91,10 +102,9 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
         try {
             setViewParameters();
             // add drawables
-            XmlChanger.insertInEditor(mViewParametrs);
-            layoutGenerator.insertNewLayout(String.format(XML_VIEW_PATTERN, mId),
-                    "/layout/toolbar_" + mId + ".xml");
-            layoutGenerator.insertNewLayout(String.format(XML_VIEW_PATTERN, mId),
+            XmlChanger.insertInLayoutTop("  app:contains=\"@menu/menu_" + mId + "\"");
+
+            layoutGenerator.insertNewLayout(mViewParametrs,
                     "/menu/menu_" + mId + ".xml");
 
         }catch (java.io.IOException e){
@@ -105,10 +115,11 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
     public void setViewParameters(){
         getAllValues();
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(String.format(XML_VIEW_PATTERN, new String[]{mId, mStyle}));
-        //stringBuilder.append(XML_END);
+        stringBuilder.append(XML_TOOLBAR);
+        toolbarPresenter.setChoosedType(mStyle, stringBuilder);
+        stringBuilder.append(XML_TOOLBAR_END);
         mViewParametrs = stringBuilder.toString();
-        toolbarPresenter.setChoosedType(mStyle);
+
     }
 
     public void setAllValues() {
@@ -154,17 +165,18 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
             navigationViewID = null;
         }
 
+
     }
 
     @Override
-    public void generateStandardToolbar() {
+    public void generateStandardToolbar(StringBuilder stringBuilder) {
         // add drawables
         Drawables drawables = new Drawables();
         drawables.addDrawablesForToolbar();
-
-        // add to styles.xml
         Styles.addToolbarStyle();
-        // create menu xml
+
+        stringBuilder.append(ACTION_SEARCH);
+        stringBuilder.append(ACTION_EDIT);
     }
 
     @Override
@@ -191,22 +203,22 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
 
 
     @Override
-    public void generateSearchToolbar() {
+    public void generateSearchToolbar(StringBuilder stringBuilder) {
 
     }
 
     @Override
-    public void generateRemoveToolbar() {
+    public void generateRemoveToolbar(StringBuilder stringBuilder) {
 
     }
 
     @Override
-    public void generateSortToolbar() {
+    public void generateSortToolbar(StringBuilder stringBuilder) {
 
     }
 
     @Override
-    public void generateExtendedToolbar() {
+    public void generateExtendedToolbar(StringBuilder stringBuilder) {
 
     }
 

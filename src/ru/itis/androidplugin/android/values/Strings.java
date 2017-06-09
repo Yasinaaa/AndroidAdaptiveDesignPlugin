@@ -60,4 +60,16 @@ public class Strings {
     public static String getPathToString(){
         return PluginProject.mProject.getBasePath() + Constants.RES_PATH + "values/strings.xml";
     }
+
+    private static String returnStringName(String text){
+        text = text.toLowerCase();
+        if(text.contains(" ")){
+            text.replaceAll(" ", "_");
+        }
+        if (text.length() > 10){
+            text = text.substring(0,10);
+        }
+
+        return text;
+    }
 }

@@ -73,30 +73,28 @@ public class ToolbarPresenter extends CommonPresenter{
         }
     }
 
-    public void setChoosedType(String style){
+    public void setChoosedType(String style, StringBuilder stringBuilder){
         switch (style){
             case ToolbarInterface.STANDARD_TYPE:
-                toolbarTypes.generateStandardToolbar();
+                toolbarTypes.generateStandardToolbar(stringBuilder);
                 break;
             case ToolbarInterface.SEARCH_TYPE:
-                toolbarTypes.generateSearchToolbar();
+                toolbarTypes.generateSearchToolbar(stringBuilder);
                 break;
             case ToolbarInterface.REMOVE_TYPE:
-                toolbarTypes.generateRemoveToolbar();
+                toolbarTypes.generateRemoveToolbar(stringBuilder);
                 break;
             case ToolbarInterface.SORT_TYPE:
-                toolbarTypes.generateSortToolbar();
+                toolbarTypes.generateSortToolbar(stringBuilder);
                 break;
             case ToolbarInterface.EXTENDED_TYPE:
-                toolbarTypes.generateExtendedToolbar();
+                toolbarTypes.generateExtendedToolbar(stringBuilder);
                 break;
             default:
-                toolbarTypes.generateStandardToolbar();
+                toolbarTypes.generateStandardToolbar(stringBuilder);
                 break;
         }
     }
-
-
 
     public void createToolbarXml(){
         URL url = getClass().getResource(TOOLBAR);

@@ -557,7 +557,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Own Class"/>
+          <text value="Owner Class"/>
         </properties>
       </component>
       <component id="d1085" class="javax.swing.JLabel" binding="titleParentIDJLabel">

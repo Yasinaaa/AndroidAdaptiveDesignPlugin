@@ -505,7 +505,7 @@ public class MainView extends JPanel {
         itemActivityClassJLabel.setText("");
         panel.add(itemActivityClassJLabel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         titleActivityClassJLabel = new JLabel();
-        titleActivityClassJLabel.setText("Own Class");
+        titleActivityClassJLabel.setText("Owner Class");
         panel.add(titleActivityClassJLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(100, 20), null, 0, false));
         titleParentIDJLabel = new JLabel();
         titleParentIDJLabel.setText("Parent ID");

@@ -80,12 +80,13 @@ public class FileOwnerListener implements Observer {
                 //if (line.contains("app:child_type_recyclerview=\"simple_item\"")){
                 if (line.contains("app:layout_style=")){
 
-                    MainView.mainView.titleLayoutTypeJLabel.setVisible(true);
-                    MainView.mainView.itemLayoutTypeJLabel.setVisible(true);
+                  //  MainView.mainView.titleLayoutTypeJLabel.setVisible(true);
+                  //  MainView.mainView.itemLayoutTypeJLabel.setVisible(true);
                     MainView.mainView.itemLayoutTypeJLabel.setText(getAttrValue(line));
                 }
                 if (line.contains("app:parent_id=")){
                     isLayoutChild = true;
+
                     MainView.mainView.itemParentIDJLabel.setText(setParentId(line));
                     MainView.mainView.itemActivityClassJLabel.setText("");
                 }

@@ -47,6 +47,8 @@ public class Constants {
         public static final String BOTTOM_SHEET_COLUMN_COUNT =
             "    <dimen name=\"bottom_sheet_column_count\">3</dimen>";
         // mobile constants }
+        public static final String CARD_CORNER_RADIUS =
+                "    <dimen name=\"card_corner_radius\">4dp</dimen>";
     //dimens }
 
     private static MaterialRecyclerView materialRecyclerView = new MaterialRecyclerView();

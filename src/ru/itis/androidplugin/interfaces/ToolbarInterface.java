@@ -26,10 +26,10 @@ public interface ToolbarInterface {
     void getParametersSortStyle();
     void getParametersExtendedStyle();
 
-    void generateStandardToolbar();
-    void generateSearchToolbar();
-    void generateRemoveToolbar();
-    void generateSortToolbar();
-    void generateExtendedToolbar();
+    void generateStandardToolbar(StringBuilder stringBuilder);
+    void generateSearchToolbar(StringBuilder stringBuilder);
+    void generateRemoveToolbar(StringBuilder stringBuilder);
+    void generateSortToolbar(StringBuilder stringBuilder);
+    void generateExtendedToolbar(StringBuilder stringBuilder);
 
 }

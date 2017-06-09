@@ -11,14 +11,19 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.util.PsiUtilBase;
 import ru.itis.androidplugin.android.values.Attrs;
 import ru.itis.androidplugin.android.values.Dimens;
+import ru.itis.androidplugin.view.MainView;
+import ru.itis.androidplugin.view.VisibleInvisible;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by yasina on 10.02.17.
@@ -62,6 +67,44 @@ public class XmlChanger {
         if(tag != null && value != 0) {
             new Dimens().addLine(tag, value + "");
         }
+    }
+    public static void insertInLayoutTop(final String text)
+            throws IOException {
+
+        Project project = getOpenProject();
+        Editor editor = getEditor(project);
+
+        if (project != null && editor != null && text != null && !text.isEmpty()) {
+            CaretModel caretModel = editor.getCaretModel();
+            final Integer c = caretModel.getOffset();
+            //final int currentOffset = 6;
+            final SelectionModel selectionModel = editor.getSelectionModel();
+
+            CommandProcessor.getInstance().executeCommand(project, () -> ApplicationManager.getApplication().runWriteAction(() -> {
+                Integer textLen = text.length();
+                Document document = editor.getDocument();
+
+                VirtualFile file = FileDocumentManager.getInstance().getFile(document);
+                if (file != null) {
+                    PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, project);
+                    if(psiFile.getText().contains("Layout") && psiFile != null){
+                        String textPsi = psiFile.getText();
+                        final int currentOffset = textPsi.indexOf(">", textPsi.indexOf(">") + 1);
+
+                        document.insertString(currentOffset, "\n" + text);
+                        editor.getCaretModel().moveToOffset(currentOffset + textLen);
+                        CodeStyleManager.getInstance(project).reformatText(psiFile, currentOffset, currentOffset + textLen);
+
+                    }
+                }
+            }), "Paste", UndoConfirmationPolicy.DO_NOT_REQUEST_CONFIRMATION);
+
+            VirtualFile virtualFile = FileDocumentManager.getInstance().getFile(editor.getDocument());
+            if (virtualFile != null) {
+                FileEditorManager.getInstance(project).openFile(virtualFile, true);
+            }
+        }
+
     }
 
     public static void insertInEditor(final String text)
