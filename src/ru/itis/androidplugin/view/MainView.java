@@ -27,6 +27,7 @@ import com.intellij.uiDesigner.core.Spacer;
 import ru.itis.androidplugin.adapters.ViewRender;
 import ru.itis.androidplugin.android.AndroidManifest;
 import ru.itis.androidplugin.android.Gradle;
+import ru.itis.androidplugin.generator.xml.XmlChanger;
 import ru.itis.androidplugin.generator.xml.XmlGenerator;
 import ru.itis.androidplugin.generator.classes.patterns.ActivityPattern;
 import ru.itis.androidplugin.generator.classes.ClassGenerator;
@@ -40,6 +41,7 @@ import javax.swing.event.DocumentEvent;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Observer;
 
@@ -150,6 +152,11 @@ public class MainView extends JPanel {
 
 
     private void init(DefaultListModel<MaterialItem> listModel) {
+        try {
+            XmlChanger.addAttrs();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         mainView = this;
         Gradle.addMaterialVauesLibToProject();
         virtualFile = getCurrentVirtualFile();

@@ -33,6 +33,8 @@ public class AndroidLayoutParser extends DefaultHandler {
     private Stack<Integer> prevLevels = new Stack<Integer>();
     private int level;
 
+    public AndroidView.Toolbar toolbar = null;
+
     public AndroidLayoutParser(Project project) {
         this.project = project;
     }
@@ -40,9 +42,13 @@ public class AndroidLayoutParser extends DefaultHandler {
     public AndroidView parse(VirtualFile virtualFile) {
         this.file = virtualFile;
         try {
+
             return parse(virtualFile.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
+            if (toolbar != null){
+                return new AndroidView(toolbar);
+            }
             return new AndroidView();
         }
     }
@@ -56,6 +62,10 @@ public class AndroidLayoutParser extends DefaultHandler {
             SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
             SAXParser saxParser = saxParserFactory.newSAXParser();
             saxParser.parse(inputStream, this);
+
+            if (toolbar != null){
+                currentView.setToolbar(toolbar);
+            }
 
             return currentView;
         } catch (Exception e) {
@@ -115,9 +125,10 @@ public class AndroidLayoutParser extends DefaultHandler {
         }
 
         String id = getId(attributes);
+        AndroidView view = new AndroidView();
+        view.setTagName(qName);
+
         if (id != null && id.length() > 0) {
-            AndroidView view = new AndroidView();
-            view.setTagName(qName);
             view.setIdValue(id);
             view.setMaterialItem(getMaterialItem(qName, attributes));
             currentView.addSubView(view);
@@ -125,8 +136,22 @@ public class AndroidLayoutParser extends DefaultHandler {
             prevLevels.add(currentViewLevel);
             currentViewLevel = level;
         }
-    }
 
+
+        if(qName.contains("Layout")){
+         getToolbar(attributes);
+        }
+
+    }
+    private void getToolbar(Attributes attributes) {
+        String attributesValue = attributes.getValue("app:toolbar_type");
+        String containsValue = attributes.getValue("app:contains");
+
+        if (attributesValue != null && containsValue != null) {
+            toolbar = new AndroidView.Toolbar(attributesValue, containsValue);
+        }
+
+    }
     private static String getId(Attributes attributes) {
         String id = attributes.getValue("android:id");
 

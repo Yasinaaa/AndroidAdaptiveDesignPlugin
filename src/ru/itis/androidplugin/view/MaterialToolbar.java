@@ -33,14 +33,14 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
                     "        android:id=\"@+id/action_search\"\n"+
                     "        android:title=\"@android:string/search_go\"\n"+
                     "        android:icon=\"@drawable/icon_toolbar_search\"\n"+
-                    "        yourapp:showAsAction=\"always|collapseActionView\"\n"+
-                    "        yourapp:actionViewClass=\"android.support.v7.widget.SearchView\" />\n";
+                    "        app:showAsAction=\"always|collapseActionView\"\n"+
+                    "        app:actionViewClass=\"android.support.v7.widget.SearchView\" />\n";
     private final String ACTION_EDIT =
             "    <item\n"+
             "        android:id=\"@+id/action_edit\"\n"+
             "        android:title=\"@string/edit\"\n"+
             "        android:icon=\"@drawable/icon_toolbar_edit\"\n"+
-            "        yourapp:showAsAction=\"ifRoom\" />\n";
+            "        app:showAsAction=\"ifRoom\" />\n";
 
 
     /*public static final String MENU_XML ="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
@@ -102,7 +102,8 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
         try {
             setViewParameters();
             // add drawables
-            XmlChanger.insertInLayoutTop("  app:contains=\"@menu/menu_" + mId + "\"");
+            XmlChanger.insertInLayoutTop("  app:contains=\"@menu/menu_" + mId + "\"\n"
+                    + "  app:toolbar_type=\"" + mStyle + "\"");
 
             layoutGenerator.insertNewLayout(mViewParametrs,
                     "/menu/menu_" + mId + ".xml");

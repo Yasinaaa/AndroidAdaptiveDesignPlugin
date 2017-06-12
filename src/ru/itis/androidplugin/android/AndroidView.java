@@ -24,16 +24,32 @@ public class AndroidView{
     private AndroidView parent;
     private List<AndroidView> subViews = new ArrayList<AndroidView>();
 
+    public static class Toolbar{
+        public String type, path;
+
+        public Toolbar() {
+        }
+
+        public Toolbar(String type, String path) {
+            this.type = type;
+            this.path = path.substring(path.indexOf("/") + 1);
+        }
+    }
+    private Toolbar toolbar;
+
     public AndroidView() {
+    }
+    public AndroidView(Toolbar toolbar) {
+        this.toolbar = toolbar;
     }
 
     public static AndroidView getAndroidViews(VirtualFile layoutFile) {
         AndroidLayoutParser parser = new AndroidLayoutParser(PluginProject.mProject);
-        return parser.parse(layoutFile);
+        AndroidView androidView = parser.parse(layoutFile);
+        return androidView;
     }
 
     public String getTagName() {
-
         return tagName;
     }
 
@@ -106,15 +122,16 @@ public class AndroidView{
         return result;
     }
 
-    public AndroidView isHasToolbar(){
+   /* public AndroidView isHasToolbar(){
         List<AndroidView> result = getAllChildViews();
         for(AndroidView androidView: result){
-            if (androidView.tagName.contains(TOOLBAR)){
+            androidView.
+            if (androidView.tagName.contains("toolbar")){
                 return androidView;
             }
         }
         return null;
-    }
+    }*/
 
     private void collectViews(List<AndroidView> result) {
         for (AndroidView view : subViews) {
@@ -154,4 +171,11 @@ public class AndroidView{
         return idValue + " - " +  className;
     }
 
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
+
+    public void setToolbar(Toolbar toolbar) {
+        this.toolbar = toolbar;
+    }
 }
