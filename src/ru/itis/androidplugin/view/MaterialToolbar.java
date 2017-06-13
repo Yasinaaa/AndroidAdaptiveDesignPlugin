@@ -17,11 +17,7 @@ import java.awt.event.MouseEvent;
 public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
 
     private static final String EMPTY = "toolbar1";
-    /*public static final String XML_VIEW_PATTERN =
-            "<include\n " +
-            "        layout=\"@layout/%s\"\n " +
-            "        android:toolbar_type=\"%s\"\n />" +
-            "\n";*/
+
     public static final String XML_TOOLBAR =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
                     "<menu xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
@@ -30,17 +26,29 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
 
     private final String ACTION_SEARCH =
             "    <item\n"+
-                    "        android:id=\"@+id/action_search\"\n"+
-                    "        android:title=\"@android:string/search_go\"\n"+
-                    "        android:icon=\"@drawable/icon_toolbar_search\"\n"+
-                    "        app:showAsAction=\"always|collapseActionView\"\n"+
-                    "        app:actionViewClass=\"android.support.v7.widget.SearchView\" />\n";
+                    "android:id=\"@+id/action_search\"\n"+
+                    "android:title=\"@android:string/search_go\"\n"+
+                    "android:icon=\"@drawable/icon_toolbar_search\"\n"+
+                    "app:showAsAction=\"always|collapseActionView\"\n"+
+                    "app:actionViewClass=\"android.support.v7.widget.SearchView\" />\n";
     private final String ACTION_EDIT =
             "    <item\n"+
             "        android:id=\"@+id/action_edit\"\n"+
             "        android:title=\"@string/edit\"\n"+
             "        android:icon=\"@drawable/icon_toolbar_edit\"\n"+
             "        app:showAsAction=\"ifRoom\" />\n";
+    private final String ACTION_MICRO =
+            "    <item\n"+
+            "        android:id=\"@+id/action_micro\"\n"+
+            "        android:title=\"@string/microphone\"\n"+
+            "        android:icon=\"@drawable/icon_toolbar_micro\"\n"+
+            "        yourapp:showAsAction=\"always\" />\n";
+    private final String ACTION_REMOVE =
+            "    <item\n"+
+            "        android:id=\"@+id/action_remove\"\n"+
+            "        android:title=\"@string/remove\"\n"+
+            "        android:icon=\"@drawable/icon_toolbar_remove\"\n"+
+            "        yourapp:showAsAction=\"always\" />\n";
 
 
     /*public static final String MENU_XML ="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"+
@@ -148,8 +156,8 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
     @Override
     public void setParametersStandardStyle(){
         VisibleInvisible.setStandardToolbar(mainView);
-        mainView.title4JLabel.setText("RecyclerView ID");
-        mainView.title5JLabel.setText("NavigationView ID");
+        mainView.title4JLabel.setText("ViewHolder");
+        mainView.title5JLabel.setText("Adapter");
         toolbarPresenter.setAllParentIDs(mainView.jComboBox2, mainView.jComboBox3);
     }
 
@@ -171,11 +179,6 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
 
     @Override
     public void generateStandardToolbar(StringBuilder stringBuilder) {
-        // add drawables
-        Drawables drawables = new Drawables();
-        drawables.addDrawablesForToolbar();
-        Styles.addToolbarStyle();
-
         stringBuilder.append(ACTION_SEARCH);
         stringBuilder.append(ACTION_EDIT);
     }
@@ -201,16 +204,17 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
     public void getParametersExtendedStyle(){}
 
 
-
-
     @Override
     public void generateSearchToolbar(StringBuilder stringBuilder) {
-
+        stringBuilder.append(ACTION_SEARCH);
+        stringBuilder.append(ACTION_REMOVE);
+        stringBuilder.append(ACTION_MICRO);
     }
 
     @Override
     public void generateRemoveToolbar(StringBuilder stringBuilder) {
-
+        stringBuilder.append(ACTION_SEARCH);
+        stringBuilder.append(ACTION_EDIT);
     }
 
     @Override
@@ -220,7 +224,8 @@ public class MaterialToolbar extends MaterialItem implements ToolbarInterface{
 
     @Override
     public void generateExtendedToolbar(StringBuilder stringBuilder) {
-
+        stringBuilder.append(ACTION_SEARCH);
+        stringBuilder.append(ACTION_EDIT);
     }
 
 

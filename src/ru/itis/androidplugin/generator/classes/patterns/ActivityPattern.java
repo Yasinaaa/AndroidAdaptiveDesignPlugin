@@ -17,6 +17,7 @@ import ru.itis.androidplugin.settings.PluginProject;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -142,31 +143,73 @@ public class ActivityPattern extends ClassPattern {
                "\n" +
                "     return true;\n" +
                "    }";
+       String newToolbarClass = "\npublic interface ToolbarStates {\n" +
+               "\n" +
+               "    void setSelectedStateToolbar(int num, int count);\n" +
+               "    void setRemoveStateToolbar(int id);\n" +
+               "\n}";
+       String removeMethods =
+               "    @Override\n" +
+               "    public void setSelectedStateToolbar(int num, int count) {\n" +
+               "        getSupportActionBar().setTitle(num + \" from \" + count);\n" +
+               "    }\n" +
+               "\n" +
+               "    @Override\n" +
+               "    public void setRemoveStateToolbar(int id) {\n" +
+               "\n" +
+               "    }";
 
 
-
-        AndroidView.Toolbar toolbar = androidView.getToolbar();
+       AndroidView.Toolbar toolbar = androidView.getToolbar();
        if(toolbar != null){
             System.out.println(androidView.getToolbar().type);
 
-           switch (toolbar.type){
-               case ToolbarInterface.STANDARD_TYPE:{
-                   List<String> list = null;
-                   VirtualFile virtualFile = psiClass.getContainingFile().getVirtualFile();
-                   File file = new File(virtualFile.getPath());
+           List<String> list = null;
+           VirtualFile virtualFile = psiClass.getContainingFile().getVirtualFile();
+           String path = virtualFile.getPath();
+           File file = new File(path);
 
-                   try {
-                       list = Files.readAllLines(Paths.get(virtualFile.getPath()));
+           try {
+               list = Files.readAllLines(Paths.get(virtualFile.getPath()));
+               String packageName = list.get(0);
+
+               switch (toolbar.type){
+                   case ToolbarInterface.STANDARD_TYPE:{
                        if(!list.contains(onCreateOptionsMenu))
                            list.add(list.size() - 1, onCreateOptionsMenu);
                        if(!list.contains(onOptionItemSelectedMethod))
                            list.add(list.size() - 1, onOptionItemSelectedMethod);
-                       Files.write(Paths.get(virtualFile.getPath()), list);
-                   } catch (IOException e) {
-                       e.printStackTrace();
+
+                       break;
+                  }
+                   case ToolbarInterface.REMOVE_TYPE:{
+
+                       for(int i=0; i<list.size(); i++){
+                           if(list.get(i).contains("public class")){
+                               list.set(i, list.get(i).replace("{", "implements ToolbarStates {"));
+                               break;
+                           }
+                       }
+                       list.add(list.size() - 1, removeMethods);
+                       Files.write(Paths.get(path), list);
+
+                       int slash = path.lastIndexOf("/");
+                       path = path.substring(0,slash) + "/ToolbarStates.java";
+                       list = new ArrayList<String>();
+                       list.add(packageName);
+                       list.add(newToolbarClass);
+                       Files.write(Paths.get(path), list);
+
+                       break;
                    }
-              }
-          }
+               }
+
+               Files.write(Paths.get(path), list);
+
+
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
        }
     }
 

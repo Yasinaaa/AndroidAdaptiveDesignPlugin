@@ -1,6 +1,7 @@
 package ru.itis.androidplugin.presenters;
 
 import ru.itis.androidplugin.android.AndroidView;
+import ru.itis.androidplugin.android.values.Drawables;
 import ru.itis.androidplugin.generator.CommonGenerators;
 import ru.itis.androidplugin.interfaces.ToolbarInterface;
 import ru.itis.androidplugin.settings.Constants;
@@ -74,6 +75,9 @@ public class ToolbarPresenter extends CommonPresenter{
     }
 
     public void setChoosedType(String style, StringBuilder stringBuilder){
+        Drawables drawables = new Drawables();
+        drawables.addDrawablesForToolbar();
+
         switch (style){
             case ToolbarInterface.STANDARD_TYPE:
                 toolbarTypes.generateStandardToolbar(stringBuilder);
