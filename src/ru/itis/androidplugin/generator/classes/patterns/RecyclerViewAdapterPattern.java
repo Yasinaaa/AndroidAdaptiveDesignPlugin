@@ -24,16 +24,17 @@ import java.util.Map;
 public class RecyclerViewAdapterPattern extends ClassPattern {
 
     private final String TYPE = "Adapter";
-    private String viewHolderClassName;
+    private String viewHolderClassName, layoutName, className;
 
     @Override
     public String getType() {
         return TYPE;
     }
 
-    public RecyclerViewAdapterPattern(AndroidManifest androidManifest, String viewHolderClassName){
+    public RecyclerViewAdapterPattern(AndroidManifest androidManifest, String viewHolderClassName, String layoutName){
         super(androidManifest);
         this.viewHolderClassName = viewHolderClassName;
+        this.layoutName = layoutName.substring(0, layoutName.indexOf("."));
     }
 
     @Override
@@ -47,6 +48,9 @@ public class RecyclerViewAdapterPattern extends ClassPattern {
         PsiClass rvClass = ClassHelper.findClass(PluginProject.mProject,
                 ANDROID_RECYCLER_VIEW_CLASS);
         addImport(psiClass, rvClass);*/
+        PsiClass rvClass = ClassHelper.findClass(PluginProject.mProject,
+                ANDROID_RECYCLER_VIEW_CLASS);
+        addImport(psiClass, rvClass);
 
         //todo: change
         createClassItems(androidView, butterKnife, psiClass);
@@ -65,7 +69,14 @@ public class RecyclerViewAdapterPattern extends ClassPattern {
                 androidView, PluginProject.mProject, butterKnife, new FieldGenerator.AddToPsiClassCallback(psiClass));
 
         PsiElementFactory factory = JavaPsiFacade.getElementFactory(psiClass.getProject());
-        PsiMethod constructor = factory.createConstructor();
+       // PsiMethod constructor = factory.createConstructor();
+
+       /* PsiField psiField = factory.createField("private final List<Object> mValues;", null);
+        PsiMethod psiMethod = factory.createMethodFromText("    @Override\n" +
+                "    public MyRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {return new MyRecyclerViewHolder(itemView);\n" +
+                "    }", psiClass);*/
+
+
 
         /*if (constructor.getBody() == null) {
             throw new RuntimeException("Failed to create ViewHolder constructor");
@@ -77,28 +88,68 @@ public class RecyclerViewAdapterPattern extends ClassPattern {
     }
 
     @Override
-    public void afterSaveClass(AndroidView androidView, PsiClass psiClass) {
-        addExtendsToClass(psiClass);
+    public void afterSaveClass(String path) {
+        addExtendsToClass(path);
     }
 
-    private void addExtendsToClass(PsiClass psiClass){
-        VirtualFile virtualFile = psiClass.getContainingFile().getVirtualFile();
-        String path = virtualFile.getPath();
+    private void addExtendsToClass(String path){
         File file = new File(path);
         List<String> list = null;
         try {
-            list = Files.readAllLines(Paths.get(virtualFile.getPath()));
-            String packageName = list.get(0);
+            list = Files.readAllLines(Paths.get(path));
             for (int i=0; i<list.size(); i++){
-                if(list.contains("public class " + psiClass.getName())){
+                className = path.substring(path.lastIndexOf("/") + 1, path.indexOf("."));
+                if(list.get(i).contains("public class " + className)){
                     list.set(i, list.get(i).replace("{", "extends RecyclerView.Adapter<" + viewHolderClassName + ">{"));
                     break;
                 }
             }
+            addMethods(list);
             Files.write(Paths.get(path), list);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    String imports =
+            "\nimport android.content.Context;\n" +
+                    "import android.support.v7.widget.RecyclerView;\n" +
+                    "import android.view.LayoutInflater;\n" +
+                    "import android.view.View;\n" +
+                    "import android.view.ViewGroup;\n" +
+                    "import java.util.List;";
+    String fields = "    private final List<Object> mValues;\n    private Context context;\n";
+    String constructor =
+            "\n" +"    public %s(List<Object> items) {\n" +
+            "        mValues = items;\n" +
+            "    }";
+    String onCreateViewHolderMethod =
+            "\n" + "    @Override\n" +
+            "    public %s onCreateViewHolder(ViewGroup parent, int viewType) {\n" +
+            "        context = parent.getContext();\n" +
+            "        View itemView = LayoutInflater.from(context)\n" +
+            "                .inflate(R.layout.%s, parent, false);\n" +
+            "\n" +
+            "        return new %s(itemView);\n" +
+            "    }\n\n" +
+            "    @Override\n" + "    public int getItemCount() {\n" + "        return mValues.size();\n" + "    }";
+    String onBindViewHolder =
+            "\n" +"    @Override\n" +
+                    "    public void onBindViewHolder(final %s holder, final int position) {\n" +
+                    "       /* holder.getCardView().setOnLongClickListener(new View.OnLongClickListener() {\n" +
+                    "            @Override\n" +
+                    "            public boolean onLongClick(View v) {\n" +
+                    "                changeBackground(holder);\n" +
+                    "            }\n" +
+                    "        });*/\n" +
+                    "    }";
+    private void addMethods(List<String> list){
+        list.add(2, imports);
+        list.add(list.size() - 1, fields);
+        list.add(list.size() - 1, String.format(constructor, className));
+        list.add(list.size() - 1, String.format(onCreateViewHolderMethod, new String[]
+                {className, layoutName, viewHolderClassName}));
+        list.add(list.size() - 1, String.format(onBindViewHolder, viewHolderClassName));
     }
 
 

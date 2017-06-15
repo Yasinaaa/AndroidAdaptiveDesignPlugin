@@ -59,7 +59,7 @@ public abstract class ClassPattern {
 
     public abstract String getType();
     public abstract PsiClass createOrUpdateClass(AndroidView androidView, PsiClass psiClass);
-    public abstract void afterSaveClass(AndroidView androidView, PsiClass psiClass);
+    public abstract void afterSaveClass(String path);
     public abstract void createClassItems(AndroidView androidView, ButterKnife butterKnife,
                                              PsiClass psiClass);
 

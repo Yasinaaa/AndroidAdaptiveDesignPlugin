@@ -56,9 +56,8 @@ public class ClassGenerator extends Generator {
                         + "." + className);
                 PsiClass resultClass =
                         classPattern.createOrUpdateClass(androidViews, inputClass);
-                saveClass(resultDirectory, resultClass);
-
-                classPattern.afterSaveClass(androidViews, resultClass);
+                String path = saveClass(resultDirectory, resultClass);
+                classPattern.afterSaveClass(path);
             }
         }.execute();
         return className;
@@ -76,15 +75,13 @@ public class ClassGenerator extends Generator {
         return null;
     }
 
-    private void saveClass(final PsiDirectory resultDirectory, final PsiClass resultClass) {
+    private String saveClass(final PsiDirectory resultDirectory, final PsiClass resultClass) {
         if (resultDirectory != null) {
             if (resultClass != null) {
                 PsiClass added = (PsiClass) resultDirectory.add(resultClass);
 
                 VirtualFile virtualFile = added.getContainingFile().getVirtualFile();
                 String path = virtualFile.getPath();
-                File file = new File(path);
-
 
                 PsiFile psiFile = added.getNavigationElement().getContainingFile();
                 JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(added.getProject());
@@ -92,11 +89,10 @@ public class ClassGenerator extends Generator {
                 CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(added.getProject());
                 PsiClass formatted = (PsiClass) codeStyleManager.reformat(added);
                 formatted.navigate(true);
-
-                virtualFile = formatted.getContainingFile().getVirtualFile();
-                path = virtualFile.getPath();
+                return path;
             }
         }
+        return null;
     }
 
     private AndroidView getAndroidViews(VirtualFile layoutFile, Project project) {

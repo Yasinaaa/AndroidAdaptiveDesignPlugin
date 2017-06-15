@@ -111,7 +111,7 @@ public class RecyclerViewHolderPattern extends ClassPattern {
         psiClass.add(constructor);
     }
     @Override
-    public void afterSaveClass(AndroidView androidView, PsiClass psiClass) {
+    public void afterSaveClass(String path) {
 
     }
 }

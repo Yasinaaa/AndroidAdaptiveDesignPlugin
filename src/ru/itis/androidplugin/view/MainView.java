@@ -272,7 +272,8 @@ public class MainView extends JPanel {
                     String viewHolderClassName =
                             activityInit.insertNewClass(new RecyclerViewHolderPattern(androidManifest),
                             virtualFile.getName());
-                    activityInit.insertNewClass(new RecyclerViewAdapterPattern(androidManifest, viewHolderClassName),
+                    activityInit.insertNewClass(new RecyclerViewAdapterPattern(androidManifest,
+                                    viewHolderClassName, virtualFile.getName()),
                             virtualFile.getName(), activityInit.getSelectedPackage(),
                             activityInit.getResultDirectory(), true);
                 } else {

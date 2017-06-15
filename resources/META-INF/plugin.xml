@@ -1,33 +1,21 @@
-<idea-plugin version="2">
+<idea-plugin version="1">
   <id>ru.itis.androidplugin</id>
-  <!-- com.your.company.unique.plugin.id-->
-  <name>Material Design</name>
+  <name>Plugin for Adaptive Android Imposition</name>
   <version>1.0</version>
-  <!--<vendor email="support@yourcompany.com" url="http://www.yourcompany.com">High School ITIS</vendor>
+ <vendor email="yahootadaa@gmail.com" url="http://kpfu.ru/itis">High School ITIS</vendor>
 
-  <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
-    ]]></description>
+  <description>
+    This plugin can help you create Android items such as RecyclerView, TextView, BottomNavigation,
+    BottomSheet, Buttons, Cards, Divider, FloatingActionButton, Toolbar with only few steps. You need to write
+    some specific parameters and you receive qualitative code for your XML files. Also you can initialize your XML code in Java Activity classes or create new one as ViewHolder and Adapter class for RecyclerView.
+  </description>
 
-  <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
-    ]]>
-  </change-notes> -->
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
   <idea-version since-build="145.0"/>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-       on how to target different products -->
   <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-    <!--<applicationConfigurable groupId="project" displayName="my own" id="ru.itis.androidplugin.TempClass">
-    </applicationConfigurable> -->
-
     <toolWindow id="Material Palette" anchor="right"
                   factoryClass="ru.itis.androidplugin.settings.ToolWindowFactory"
                   icon="/icons/ic_palette.png"/>

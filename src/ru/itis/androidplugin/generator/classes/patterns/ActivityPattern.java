@@ -70,7 +70,7 @@ public class ActivityPattern extends ClassPattern {
     }
 
     @Override
-    public void afterSaveClass(AndroidView androidView, PsiClass psiClass) {
+    public void afterSaveClass(String path) {
 
     }
 
