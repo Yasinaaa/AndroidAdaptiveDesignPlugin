@@ -12,7 +12,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import ru.itis.androidplugin.android.AndroidView;
-import ru.itis.androidplugin.view.MaterialChildRecyclerView;
 import ru.itis.androidplugin.view.MaterialItem;
 import ru.itis.androidplugin.view.MaterialRecyclerView;
 
@@ -130,7 +129,7 @@ public class AndroidLayoutParser extends DefaultHandler {
 
         if (id != null && id.length() > 0) {
             view.setIdValue(id);
-            view.setMaterialItem(getMaterialItem(qName, attributes));
+            //view.setMaterialItem(getMaterialItem(qName, attributes));
             currentView.addSubView(view);
             currentView = view;
             prevLevels.add(currentViewLevel);
@@ -166,14 +165,14 @@ public class AndroidLayoutParser extends DefaultHandler {
         return null;
     }
 
-    private static MaterialItem getMaterialItem(String title, Attributes attributes){
+    /*private static MaterialItem getMaterialItem(String title, Attributes attributes){
         MaterialItem materialItem = null;
         if(title.contains("RecyclerView")){
             String tempText = null;
             materialItem = new MaterialRecyclerView();
             tempText = attributes.getValue("android:id");
             materialItem.mId = tempText.substring(tempText.indexOf("/") + 1);
-            MaterialChildRecyclerView[] children = new MaterialChildRecyclerView[]{null, null, null};
+            /*MaterialChildRecyclerView[] children = new MaterialChildRecyclerView[]{null, null, null};
             tempText = attributes.getValue("app:layout_item");
             if(tempText != null){children[0] = new MaterialChildRecyclerView(
                     tempText.substring(tempText.indexOf("/") + 1),
@@ -190,11 +189,11 @@ public class AndroidLayoutParser extends DefaultHandler {
                         MaterialChildRecyclerView.mAllTypes[2]);
             }
             materialItem.mChildrenItems = children;
-            materialItem.mType = attributes.getValue("app:type_layout");
-        }
+            materialItem.mType = attributes.getValue("app:type_layout");*/
+    //    }
 
-        return materialItem;
-    }
+    //    return materialItem;
+   // }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {

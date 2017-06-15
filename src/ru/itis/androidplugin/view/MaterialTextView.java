@@ -72,7 +72,8 @@ public class MaterialTextView extends MaterialItem implements TextViewInterface 
 
     }
 
-    private void setAllValues(){
+    @Override
+    public void setAllValues(){
         mainView.titleParentViewJLabel.setText("Text View ID");
         mainView.typeJLabel.setText("Style");
         mainView.titleMaterialItemJLabel.setText("Text");

@@ -50,7 +50,7 @@ public class CardsPresenter extends CommonPresenter{
 
     /*public void setChoosedType(String style){
         switch (style){
-            case CardsInterface.STANDARD_TYPE:
+            case CardsInterface.ITEM_TYPE:
                 cardsInterface.generateStandardToolbar();
                 break;
             case CardsInterface.COMMENT_TYPE:

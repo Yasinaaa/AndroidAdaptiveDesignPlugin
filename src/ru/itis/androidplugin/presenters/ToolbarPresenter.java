@@ -100,42 +100,20 @@ public class ToolbarPresenter extends CommonPresenter{
         }
     }
 
-    public void createToolbarXml(){
-        URL url = getClass().getResource(TOOLBAR);
-        try {
-            CommonGenerators.addXMLToProject(url, PATH);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addToolbarToStyleFile(){
-        URL url = getClass().getResource(TOOLBAR);
-        try {
-            CommonGenerators.addXMLToProject(url, PATH);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void generateCodeForJavaClass(){
-
-    }
-
     @Override
     public void setChildViewParameters() {
 
     }
 
-    public void setAllParentIDs(JComboBox recyclerView, JComboBox navigationView){
+    public void setAllParentIDs(JComboBox recyclerView){
         List<AndroidView> elements = getAllParentIDs();
         for (int i=0; i<elements.size(); i++) {
             if(elements.get(i).getClassName().contains("RecyclerView")){
                 recyclerView.addItem(elements.get(i).getIdValue());
             }
-            if(elements.get(i).getClassName().contains("NavigationView")){
+           /* if(elements.get(i).getClassName().contains("NavigationView")){
                 navigationView.addItem(elements.get(i).getIdValue());
-            }
+            }*/
         }
     }
 

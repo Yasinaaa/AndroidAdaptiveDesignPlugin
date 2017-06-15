@@ -19,7 +19,7 @@ public abstract class MaterialItem {
     public String mLayoutPath; // /home/yasina/.../activit_main.xml
     public String mClassPath;  // /home/yasina/.../ActivityMain.java
     public String mStyle;
-    public MaterialItem[] mChildrenItems = null;
+    //public MaterialItem[] mChildrenItems = null;
     public MaterialItem mParentItem = null;
     public String mParentItemName;
     public String mType;
@@ -35,6 +35,8 @@ public abstract class MaterialItem {
 
     }
 
+    public void setAllValues() {}
+    public void getAllValues() {}
     public void setView() {}
     public void setViewParameters(){}
     public void onAddToLayoutClickListener(){}
