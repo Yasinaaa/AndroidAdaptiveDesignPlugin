@@ -33,6 +33,13 @@ public class ActivityPattern extends ClassPattern {
         super(androidManifest);
     }
 
+    private final String TYPE = "Activity";
+
+    @Override
+    public String getType() {
+        return TYPE;
+    }
+
     @Override
     public PsiClass createOrUpdateClass(AndroidView androidView, PsiClass psiClass) {
         getClassType(psiClass);
@@ -60,6 +67,11 @@ public class ActivityPattern extends ClassPattern {
         }else {
             return null;
         }
+    }
+
+    @Override
+    public void afterSaveClass(AndroidView androidView, PsiClass psiClass) {
+
     }
 
     @Override
@@ -91,17 +103,6 @@ public class ActivityPattern extends ClassPattern {
         initToolbarMethod(androidView, psiClass);
     }
 
-    String[] ON_CREATE_OPTIONS_MENU_STATEMENTS = new String[]{
-            "MenuInflater inflater = getMenuInflater();\n",
-            "inflater.inflate(R.menu.%s, menu);\n",
-            "final MenuItem searchItem = menu.findItem(R.id.action_search);\n",
-            "final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);\n",
-            "searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {\n ",
-            "@Override\n"+ "public boolean onQueryTextSubmit(String query) {\n" + "return false;\n"+ "}\n\n",
-            "@Override\n"+ "public boolean onQueryTextChange(String newText) {\n" + "return false;\n" + "}\n",
-            "};",
-            "return true;"
-    };
 
     private void initToolbarMethod(AndroidView androidView, PsiClass psiClass){
         String onCreateOptionsMenu =

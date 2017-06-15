@@ -13,6 +13,13 @@ import java.util.Map;
  */
 public class RecyclerViewHolderPattern extends ClassPattern {
 
+    private final String TYPE = "Holder";
+
+    @Override
+    public String getType() {
+        return TYPE;
+    }
+
     public RecyclerViewHolderPattern(AndroidManifest androidManifest){
         super(androidManifest);
     }
@@ -102,5 +109,9 @@ public class RecyclerViewHolderPattern extends ClassPattern {
                         + ", false));", constructor.getContext());
         constructor.getBody().add(callPrimaryConstructorStatement);
         psiClass.add(constructor);
+    }
+    @Override
+    public void afterSaveClass(AndroidView androidView, PsiClass psiClass) {
+
     }
 }

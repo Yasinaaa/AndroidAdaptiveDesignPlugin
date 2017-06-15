@@ -27,6 +27,7 @@ import com.intellij.uiDesigner.core.Spacer;
 import ru.itis.androidplugin.adapters.ViewRender;
 import ru.itis.androidplugin.android.AndroidManifest;
 import ru.itis.androidplugin.android.Gradle;
+import ru.itis.androidplugin.generator.classes.patterns.RecyclerViewAdapterPattern;
 import ru.itis.androidplugin.generator.xml.XmlChanger;
 import ru.itis.androidplugin.generator.xml.XmlGenerator;
 import ru.itis.androidplugin.generator.classes.patterns.ActivityPattern;
@@ -268,8 +269,12 @@ public class MainView extends JPanel {
 
                 if (itemParentIDJLabel.getText() != null && itemParentIDJLabel.isVisible()) {
                     //todo: change
-                    activityInit.insertNewClass(new RecyclerViewHolderPattern(androidManifest),
+                    String viewHolderClassName =
+                            activityInit.insertNewClass(new RecyclerViewHolderPattern(androidManifest),
                             virtualFile.getName());
+                    activityInit.insertNewClass(new RecyclerViewAdapterPattern(androidManifest, viewHolderClassName),
+                            virtualFile.getName(), activityInit.getSelectedPackage(),
+                            activityInit.getResultDirectory(), true);
                 } else {
                     path = itemActivityClassJLabel.getText();
                     activityInit.addInitToClass(new ActivityPattern(androidManifest),

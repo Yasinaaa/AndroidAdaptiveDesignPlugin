@@ -49,7 +49,7 @@ public abstract class ClassPattern {
             String currentClassExtends = psiClassTypes[0].getClassName();
             type = "Activity";
         }catch (java.lang.ArrayIndexOutOfBoundsException e){
-            type = "ViewHolder";
+            type = "Holder";
         }
 
         String[] types = new String[]{
@@ -57,7 +57,9 @@ public abstract class ClassPattern {
         };
     }
 
+    public abstract String getType();
     public abstract PsiClass createOrUpdateClass(AndroidView androidView, PsiClass psiClass);
+    public abstract void afterSaveClass(AndroidView androidView, PsiClass psiClass);
     public abstract void createClassItems(AndroidView androidView, ButterKnife butterKnife,
                                              PsiClass psiClass);
 

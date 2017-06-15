@@ -62,7 +62,6 @@ public class MaterialRecyclerView extends MaterialItem implements RecyclerViewIn
     private ArrayList<JLabel> mouseClickedLabels;
     private MainView mainView;
     private RecyclerViewPresenter recyclerViewPresenter;
-    //public static final String[] recyclerViewTypes
 
     private XmlGenerator layoutGenerator = null;
     private String[] recyclerViewInnerType = new String[]{
@@ -72,7 +71,6 @@ public class MaterialRecyclerView extends MaterialItem implements RecyclerViewIn
 
     public MaterialRecyclerView(){
         super(VIEW_NAME, XML_VIEW_PATTERN, ICON_PATH);
-        //createChildItems();
     }
 
     @Override
@@ -140,29 +138,6 @@ public class MaterialRecyclerView extends MaterialItem implements RecyclerViewIn
         items[0] = mId;
         items[1] = mStyle;
 
-        /*for (int i = 2; i < childrensNum + 2; i++) {
-            String text = textFields[i-2].getText();
-
-            if (text.equals("None")) {
-                //mChildrenItems[i-2] = null;
-                items[i] = "";
-            }
-            else {
-                //mChildrenItems[i-2].mId = text;
-                //MaterialChildRecyclerView materialChildRecyclerView = (MaterialChildRecyclerView)mChildrenItems[i-2];
-
-                String inputText = String.format(CHILD_RECYCLERVIEW,
-                        new String[]{
-                                mStyle,
-                                recyclerViewPresenter.getAttrType(mType),
-                                materialChildRecyclerView.mParentItem.mId
-                        });
-                mChildrenItems[i-2].mLayoutPath = layoutGenerator.
-                        insertNewLayout(inputText,"/layout/" + text + ".xml").getCanonicalPath();
-                items[i] = i>2 ? String.format(ANOTHER_LAYOUTS[i-3], text) : text;
-            }
-        }*/
-
         for(int i=2;i<textFields.length + 2; i++){
             String text = textFields[i-2].getText();
 
@@ -182,15 +157,6 @@ public class MaterialRecyclerView extends MaterialItem implements RecyclerViewIn
         }
         return items;
     }
-
-    /*private void createChildItems(){
-        for (int i = 0; i < childrensNum; i++) {
-            mChildrenItems[i] = new MaterialChildRecyclerView();
-            mChildrenItems[i].mParentItem = this;
-            mChildrenItems[i].mType = MaterialChildRecyclerView.mAllTypes[i];
-        }
-    }*/
-
 
     @Override
     public void onDocumentChangeListener(){
@@ -229,16 +195,14 @@ public class MaterialRecyclerView extends MaterialItem implements RecyclerViewIn
     }
 
     private void setLayoutJLabelClickers(){
-        for (String type: ALL_TYPES){
-            //icons
-            setLayoutJLabelClickers(mainView.itemMaterialItemJTextField, null,
-                    mainView.openItemLayoutJLabel, ITEM_TYPE);
-            setLayoutJLabelClickers(mainView.emptyItemLayoutJTextField, mainView.removeEmptyLayoutJLabel,
-                    mainView.openEmptyLayoutJLabel, EMPTY_TYPE);
-            setLayoutJLabelClickers(mainView.loadingItemLayoutJTextField, mainView.removeLoadingLayoutJLabel,
-                    mainView.openLoadingLayoutJLabel, LOADING_TYPE);
-            //icons
-        }
+        //icons
+        setLayoutJLabelClickers(mainView.itemMaterialItemJTextField, null,
+                mainView.openItemLayoutJLabel, ITEM_TYPE);
+        setLayoutJLabelClickers(mainView.emptyItemLayoutJTextField, mainView.removeEmptyLayoutJLabel,
+                mainView.openEmptyLayoutJLabel, EMPTY_TYPE);
+        setLayoutJLabelClickers(mainView.loadingItemLayoutJTextField, mainView.removeLoadingLayoutJLabel,
+                mainView.openLoadingLayoutJLabel, LOADING_TYPE);
+        //icons
     }
 
     private void setLayoutJLabelClickers(JTextField textField, JLabel addRemoveLabel, JLabel openLabel,
@@ -259,8 +223,6 @@ public class MaterialRecyclerView extends MaterialItem implements RecyclerViewIn
                         });
                 layoutGenerator.openFile(layoutGenerator.insertNewLayout(inputText,
                          "/layout/" + textField.getText() + ".xml"));
-               // materialChildRecyclerView.setView();
-
             }
         };
 

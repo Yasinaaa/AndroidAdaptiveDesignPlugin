@@ -28,51 +28,73 @@ import static ru.itis.androidplugin.settings.PluginProject.mProject;
  */
 public class ClassGenerator extends Generator {
 
+    private PsiPackage selectedPackage;
+    private PsiDirectory resultDirectory;
 
     public ClassGenerator(){
 
     }
 
-    public void insertNewClass(ClassPattern classPattern, String layoutPath){
-        extendedInit();
+    public String insertNewClass(ClassPattern classPattern, String layoutPath, final PsiPackage selectedPackage,
+                               PsiDirectory resultDirectory, boolean isInit){
+        if(!isInit){
+            extendedInit();
+        }
 
+        String fileName = setJavaClassName(layoutPath, classPattern.getType());
+        throwIfFileAlreadyExists(resultDirectory, fileName);
+        String className = classPattern.removeExtension(fileName);
+        //todo: show error dialog
+        //throwIfFileAlreadyExists(resultDirectory, className);
+        //todo change
+
+
+        new WriteCommandAction.Simple(PluginProject.mProject) {
+            @Override
+            protected void run() throws Throwable {
+                PsiClass inputClass = classPattern.generatePsiClass(selectedPackage.getQualifiedName()
+                        + "." + className);
+                PsiClass resultClass =
+                        classPattern.createOrUpdateClass(androidViews, inputClass);
+                saveClass(resultDirectory, resultClass);
+
+                classPattern.afterSaveClass(androidViews, resultClass);
+            }
+        }.execute();
+        return className;
+    }
+
+    public String insertNewClass(ClassPattern classPattern, String layoutPath){
+        extendedInit();
         PackageChooserDialog packageChooserDialog = new PackageChooserDialog("Destination Package", module);
 
-        PsiPackage selectedPackage;
         if (packageChooserDialog.showAndGet()) {
             selectedPackage = packageChooserDialog.getSelectedPackage();
-            PsiDirectory resultDirectory = getPsiDirectoryFromPackage(selectedPackage);
-            String fileName = setJavaClassName(layoutPath);
-            throwIfFileAlreadyExists(resultDirectory, fileName);
-            String className = classPattern.removeExtension(fileName);
-            //todo: show error dialog
-            //throwIfFileAlreadyExists(resultDirectory, className);
-            //todo change
-
-
-            new WriteCommandAction.Simple(PluginProject.mProject) {
-                @Override
-                protected void run() throws Throwable {
-                    PsiClass inputClass = classPattern.generatePsiClass(selectedPackage.getQualifiedName()
-                            + "." + className);
-                    PsiClass resultClass =
-                            classPattern.createOrUpdateClass(androidViews, inputClass);
-                    saveClass(resultDirectory, resultClass);
-                }
-            }.execute();
+            resultDirectory = getPsiDirectoryFromPackage(selectedPackage);
+            return insertNewClass(classPattern, layoutPath, selectedPackage, resultDirectory, true);
         }
+        return null;
     }
 
     private void saveClass(final PsiDirectory resultDirectory, final PsiClass resultClass) {
         if (resultDirectory != null) {
             if (resultClass != null) {
                 PsiClass added = (PsiClass) resultDirectory.add(resultClass);
+
+                VirtualFile virtualFile = added.getContainingFile().getVirtualFile();
+                String path = virtualFile.getPath();
+                File file = new File(path);
+
+
                 PsiFile psiFile = added.getNavigationElement().getContainingFile();
                 JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(added.getProject());
                 styleManager.optimizeImports(psiFile);
                 CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(added.getProject());
                 PsiClass formatted = (PsiClass) codeStyleManager.reformat(added);
                 formatted.navigate(true);
+
+                virtualFile = formatted.getContainingFile().getVirtualFile();
+                path = virtualFile.getPath();
             }
         }
     }
@@ -139,7 +161,7 @@ public class ClassGenerator extends Generator {
         }
     }
 
-    private String setJavaClassName(String layoutPath) {
+    private String setJavaClassName(String layoutPath, String type) {
 
         if(StringUtils.containsIgnoreCase(layoutPath, "item_")){
             layoutPath = layoutPath.substring(layoutPath.indexOf("_") + 1);
@@ -147,7 +169,8 @@ public class ClassGenerator extends Generator {
                 layoutPath = layoutPath.replace(".xml","");
             }
         }
-        String className = StringUtils.capitalize(layoutPath) + "Holder";
+        //String className = StringUtils.capitalize(layoutPath) + "Holder";
+        String className = StringUtils.capitalize(layoutPath) + type;
         String fileName = Messages.showInputDialog(PluginProject.mProject, "Input class name", "Creating File",
                 Messages.getQuestionIcon(), className, null);
         /*if (fileName == null || fileName.length() == 0) {
@@ -159,4 +182,19 @@ public class ClassGenerator extends Generator {
         return fileName;
     }
 
+    public PsiPackage getSelectedPackage() {
+        return selectedPackage;
+    }
+
+    public void setSelectedPackage(PsiPackage selectedPackage) {
+        this.selectedPackage = selectedPackage;
+    }
+
+    public PsiDirectory getResultDirectory() {
+        return resultDirectory;
+    }
+
+    public void setResultDirectory(PsiDirectory resultDirectory) {
+        this.resultDirectory = resultDirectory;
+    }
 }
